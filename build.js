@@ -20,19 +20,16 @@ function main() {
 	{
 		fs.mkdir(nodedeploy, mode);
 	}
-	makeNode();
+	//makeNode();
+	buildOmapImage();
 
+	console.log('All DONE!');	
 }
 
 function makeNode() {
-console.log('WorkDir: ' + workdir); 
 	var args = [ workdir, CONFIG.nodegit, CONFIG.nodeversion, nodedeploy ];
 	var cmd = path.join(workdir, '../lib/nodejs.sh');
-	console.log('Getting/compiling node ' + cmd); 
- 	/*var child = exec(cmd);
-	child.on('data', function(data) { console.log(data); });
-	child.on('exit', function(code) { console.log('lib/nodejs.sh exiting with code ' + code); });*/
-	//exec(cmd, {silent:false, async:false});
+	console.log('Getting/compiling node '); 
 	var build_process = spawn(cmd, args);
 	build_process.stderr.on('data', function(data) {
         	console.error('build err:', data.toString());
@@ -42,6 +39,21 @@ console.log('WorkDir: ' + workdir);
 		});
 	build_process.on('exit', function(x) { console.log('build done:', x);});
 	
+}
+
+function buildOmapImage() {
+	var args = [ workdir, CONFIG.omapimagebuildergit, CONFIG.omapimagebuilderbranch];
+	var cmd = path.join(workdir, '../lib/omapimage.sh');
+        console.log('Building the image!' + args)
+        var build_process = spawn(cmd, args);
+        build_process.stderr.on('data', function(data) {
+                console.error('build err:', data.toString());
+              });
+        build_process.stdout.on('data', function(data) {
+                console.log('build data:', data.toString());
+                });
+        build_process.on('exit', function(x) { console.log('build done:', x);});
+
 }
 
 main();

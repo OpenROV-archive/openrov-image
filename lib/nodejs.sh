@@ -12,7 +12,7 @@ type $LINK >/dev/null 2>&1 || { echo >&2 "I require $LINK but it's not installed
 
 export DIR=$1
 export NODEGIT=$2
-export NODEVERSION=$2
+export NODEVERSION=$3
 export NODEDIR=$4
 
 if [ ! -d $DIR ]
@@ -22,7 +22,7 @@ fi
 cd $DIR
 
 git clone $2 || { echo >&2 "git clone $NODEGIT failed.  Aborting."; exit 1; }
-git checkout -b $NODEVERSION
+git checkout $NODEVERSION
 cd node
 
 ./configure --without-snapshot --dest-cpu=arm --dest-os=linux  --prefix=$NODEDIR || { echo >&2 "Tried to configure NodeJS but it failed.  Aborting."; exit 1; }
