@@ -11,7 +11,8 @@ var additions = path.join(workdir, "additions");
 var nodedeploy = path.resolve(path.join(additions, CONFIG.nodedeploypath));
 var eventLoop = new EventEmitter();
 
-var taskQueue = [ makeNode, buildOmapImage ];
+//var taskQueue = [ makeNode, buildOmapImage ];
+var taskQueue = [ buildOmapImage ];
 
 function main() {
 
@@ -28,7 +29,7 @@ function main() {
 
 	eventLoop.on('done', function() {
 		var task = taskQueue.shift();
-		task();
+		if (task) task();
 	});
 	eventLoop.emit('done');
 
