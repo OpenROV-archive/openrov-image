@@ -2,11 +2,16 @@ var CONFIG = require('./config')
 	,fs = require('fs')
 	,path = require('path')
 	,spawn = require('child_process').spawn
+	,EventEmitter = require('events').EventEmitter
 	;
 
 var mode = 0755;
 var workdir = path.resolve(CONFIG.workdir);
-var nodedeploy = path.resolve(path.join(workdir, CONFIG.nodedeploypath));
+var additions = path.join(workdir, "additions");
+var nodedeploy = path.resolve(path.join(additions, CONFIG.nodedeploypath));
+var eventLoop = new EventEmitter();
+
+var taskQueue = [ makeNode, buildOmapImage ];
 
 function main() {
 
@@ -20,16 +25,22 @@ function main() {
 	{
 		fs.mkdir(nodedeploy, mode);
 	}
-	//makeNode();
-	buildOmapImage();
+
+	eventLoop.on('done', function() {
+		var task = taskQueue.shift();
+		task();
+	});
+	eventLoop.emit('done');
 
 	console.log('All DONE!');	
 }
 
 function makeNode() {
+	var nodeBuilt = false;
 	var args = [ workdir, CONFIG.nodegit, CONFIG.nodeversion, nodedeploy ];
 	var cmd = path.join(workdir, '../lib/nodejs.sh');
 	console.log('Getting/compiling node '); 
+	console.log('Command line: ' + cmd + ' ' + args.join(' '));
 	var build_process = spawn(cmd, args);
 	build_process.stderr.on('data', function(data) {
         	console.error('build err:', data.toString());
@@ -37,8 +48,11 @@ function makeNode() {
 	build_process.stdout.on('data', function(data) {
 		console.log('build data:', data.toString());
 		});
-	build_process.on('exit', function(x) { console.log('build done:', x);});
-	
+	build_process.on('exit', function(x) {
+		 console.log('build done:', x);
+		eventLoop.emit('done');
+		});
+
 }
 
 function buildOmapImage() {
@@ -52,7 +66,10 @@ function buildOmapImage() {
         build_process.stdout.on('data', function(data) {
                 console.log('build data:', data.toString());
                 });
-        build_process.on('exit', function(x) { console.log('build done:', x);});
+        build_process.on('exit', function(x) {
+		 console.log('build done:', x);
+		eventLoop.emit('done');
+		 });
 
 }
 
