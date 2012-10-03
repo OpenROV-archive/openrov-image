@@ -15,6 +15,7 @@ cd $DIR
 git clone $2 || { echo >&2 "git clone $NODEGIT failed.  Aborting."; exit 1; }
 cd omap-image-builder
 git checkout $OMAPBRANCH
+touch release
 
 ./build_image.sh
 

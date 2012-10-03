@@ -42,8 +42,8 @@ function makeNode() {
 }
 
 function buildOmapImage() {
-	var args = [ workdir, CONFIG.omapimagebuildergit, CONFIG.omapimagebuilderbranch];
-	var cmd = path.join(workdir, '../lib/omapimage.sh');
+	var args = [ path.join(workdir, '../lib/omapimage.sh'), workdir, CONFIG.omapimagebuildergit, CONFIG.omapimagebuilderbranch];
+	var cmd = 'sudo' 
         console.log('Building the image!' + args)
         var build_process = spawn(cmd, args);
         build_process.stderr.on('data', function(data) {
