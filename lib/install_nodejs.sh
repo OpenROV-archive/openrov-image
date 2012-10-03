@@ -6,7 +6,7 @@ if [ ! -d /opt/node ]; then
 	mkdir -p /opt/node
 fi
 cp -r $DIR/* /opt/node
-
+rm /opt/node/install.sh
 
 git clone git://github.com/creationix/nvm.git ~/.nvm
 echo ". ~/.nvm/nvm.sh" >> .bashrc

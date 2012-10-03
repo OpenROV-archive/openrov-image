@@ -31,4 +31,4 @@ make --jobs=8 || { echo >&2 "Tried to compile NodeJS but it failed.  Aborting.";
 make install || { echo >&2 "Tried to install node to $NODEDIR but it failed. Aborting."; exit 1; }
 
 SCRIPT_DIR="`dirname \"$0\"`"
-cp $SCRIPT_DIR\install_nodejs.sh $NODEDIR\install.sh 
+cp $SCRIPT_DIR\install_nodejs.sh $NODEDIR/install.sh 
