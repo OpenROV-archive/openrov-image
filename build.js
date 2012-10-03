@@ -41,36 +41,29 @@ function makeNode() {
 	var cmd = path.join(workdir, '../lib/nodejs.sh');
 	console.log('Getting/compiling node '); 
 	console.log('Command line: ' + cmd + ' ' + args.join(' '));
-	var build_process = spawn(cmd, args);
-	build_process.stderr.on('data', function(data) {
-        	console.error('build err:', data.toString());
-	      });
-	build_process.stdout.on('data', function(data) {
-		console.log('build data:', data.toString());
-		});
-	build_process.on('exit', function(x) {
-		 console.log('build done:', x);
-		eventLoop.emit('done');
-		});
-
+	executeTask(cmd, args);
 }
 
 function buildOmapImage() {
 	var args = [ path.join(workdir, '../lib/omapimage.sh'), workdir, CONFIG.omapimagebuildergit, CONFIG.omapimagebuilderbranch];
 	var cmd = 'sudo' 
         console.log('Building the image!' + args)
-        var build_process = spawn(cmd, args);
-        build_process.stderr.on('data', function(data) {
-                console.error('build err:', data.toString());
-              });
-        build_process.stdout.on('data', function(data) {
-                console.log('build data:', data.toString());
-                });
-        build_process.on('exit', function(x) {
+	executeTask(cmd, args);
+}
+
+function executeTask(cmd, args) {
+
+	var build_process = spawn(cmd, args);
+	build_process.stderr.on('data', function(data) {
+        	console.error(data.toString());
+	      });
+	build_process.stdout.on('data', function(data) {
+		console.log(data.toString());
+		});
+	build_process.on('exit', function(x) {
 		 console.log('build done:', x);
 		eventLoop.emit('done');
-		 });
-
+		});
 }
 
 main();
