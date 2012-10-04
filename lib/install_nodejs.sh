@@ -8,7 +8,7 @@ fi
 cp -r $DIR/* /opt/node
 rm /opt/node/install.sh
 
-cd /home/${NEWUSER}/
+cd /home/rov/
 
 git clone git://github.com/creationix/nvm.git .nvm
 echo ". ~/.nvm/nvm.sh" >> .bashrc
