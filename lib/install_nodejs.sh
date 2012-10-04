@@ -8,7 +8,9 @@ fi
 cp -r $DIR/* /opt/node
 rm /opt/node/install.sh
 
-git clone git://github.com/creationix/nvm.git ~/.nvm
+cd /home/${NEWUSER}/
+
+git clone git://github.com/creationix/nvm.git .nvm
 echo ". ~/.nvm/nvm.sh" >> .bashrc
 echo "export LD_LIBRARY_PATH=/usr/local/lib" >> .bashrc
 echo "export PATH=$PATH:/opt/node/bin" >> .bashrc
