@@ -1,3 +1,3 @@
 #!/bin/sh
 
-sudo node build.sh
+sudo node build.js
