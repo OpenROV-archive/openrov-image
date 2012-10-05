@@ -14,6 +14,7 @@ echo `ls /opt`
 echo "rov ALL=NOPASSWD: /opt/openrov/linux/*.sh" >> /etc/sudoers
 
 ln -s /opt/openrov/linux/openrov.service /etc/init.d/openrov
+chmod +x /opt/openrov/linux/openrov.service
 
 if [ -f '/etc/init.d/openrov' ]; then
 	update-rc.d openrov defaults

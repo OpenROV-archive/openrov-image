@@ -6,6 +6,10 @@ if [ ! -d /opt/node ]; then
 	mkdir -p /opt/node
 fi
 cp -r $DIR/* /opt/node
+sed '1 c #!/opt/node/bin/node' /opt/node/bin/npm > /tmp/npm
+cat /tmp/npm > /opt/node/lib/node_modules/npm/bin/npm-cli.js
+rm /tmp/npm
+
 rm /opt/node/install.sh
 
 cd /home/rov/
