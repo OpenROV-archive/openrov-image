@@ -11,7 +11,7 @@ cp -r /tmp/additions/openrov/openrov /opt/
 echo "ls /opt:"
 echo `ls /opt`
 
-echo "rov ALL=NOPASSWD: /opt/openrov/linux/*.sh" >> /etc/sudoers
+echo "rov ALL=NOPASSWD: /opt/openrov/linux/" >> /etc/sudoers
 
 ln -s /opt/openrov/linux/openrov.service /etc/init.d/openrov
 chmod +x /opt/openrov/linux/openrov.service
@@ -20,3 +20,5 @@ if [ -f '/etc/init.d/openrov' ]; then
 	update-rc.d openrov defaults
 fi  
 
+cd /opt/openrov/
+npm install express socket.io serialport
