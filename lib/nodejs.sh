@@ -1,15 +1,14 @@
 #!/bin/sh
 # call with: nodejs.sh ~/work/ https://github.com/joyent/node.git v0.8.11 ~/node_deploy/
 export AR=arm-linux-gnueabi-ar
-export CC="arm-linux-gnueabi-gcc --dynamic-linker=/lib/ld-linux-armhf.so.3"
-export CXX="arm-linux-gnueabi-g++ --dynamic-linker=/lib/ld-linux-armhf.so.3"
-export LINK="arm-linux-gnueabi-g++ --dynamic-linker=/lib/ld-linux-armhf.so.3"
-export GYPFLAGS="--dynamic-linker=/lib/ld-linux-armhf.so.3"
+export CC=arm-linux-gnueabi-gcc
+export CXX=arm-linux-gnueabi-g++
+export LINK=arm-linux-gnueabi-g++
 
-#type $AR >/dev/null 2>&1 || { echo >&2 "I require $AR but it's not installed.  Aborting."; exit 1; }
-#type $CC >/dev/null 2>&1 || { echo >&2 "I require $CC but it's not installed.  Aborting."; exit 1; }
-#type $CXX >/dev/null 2>&1 || { echo >&2 "I require $CXX but it's not installed.  Aborting."; exit 1; }
-#type $LINK >/dev/null 2>&1 || { echo >&2 "I require $LINK but it's not installed.  Aborting."; exit 1; }
+type $AR >/dev/null 2>&1 || { echo >&2 "I require $AR but it's not installed.  Aborting."; exit 1; }
+type $CC >/dev/null 2>&1 || { echo >&2 "I require $CC but it's not installed.  Aborting."; exit 1; }
+type $CXX >/dev/null 2>&1 || { echo >&2 "I require $CXX but it's not installed.  Aborting."; exit 1; }
+type $LINK >/dev/null 2>&1 || { echo >&2 "I require $LINK but it's not installed.  Aborting."; exit 1; }
 
 export DIR=$1
 export NODEGIT=$2
