@@ -55,7 +55,6 @@ function openrov() {
 
 function done() {
 	console.log("All done, bye!");
-	exit(0);	
 }
 
 function ensureDir(dir) {

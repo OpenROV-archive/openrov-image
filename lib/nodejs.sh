@@ -4,6 +4,8 @@ export AR=arm-linux-gnueabi-ar
 export CC=arm-linux-gnueabi-gcc
 export CXX=arm-linux-gnueabi-g++
 export LINK=arm-linux-gnueabi-g++
+export CCFLAGS=--dynamic-linker=/lib/ld-linux-armhf.so.3
+export CCCFLAGS=--dynamic-linker=/lib/ld-linux-armhf.so.3
 
 type $AR >/dev/null 2>&1 || { echo >&2 "I require $AR but it's not installed.  Aborting."; exit 1; }
 type $CC >/dev/null 2>&1 || { echo >&2 "I require $CC but it's not installed.  Aborting."; exit 1; }
