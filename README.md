@@ -14,7 +14,7 @@ How to build?
 =============
 
 Once you have all what you need (node, cross compilers) you can run:
-     sudo node build.sh
+     ./build.sh
 
 
 What happens?
