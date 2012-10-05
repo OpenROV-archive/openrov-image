@@ -16,14 +16,7 @@ function main() {
 
 	console.log('Welcome to the OpenROV image builder!');
 
-	if (fs.existsSync(workdir) == false )
-	{
-		fs.mkdir(workdir, mode);
-	}
-	if (fs.existsSync(nodedeploy) == false )
-	{
-		fs.mkdir(nodedeploy, mode);
-	}
+	ensureDir(workdir);
 
 	eventLoop.on('done', function() {
 		var task = taskQueue.shift();
@@ -35,6 +28,7 @@ function main() {
 
 function makeNode() {
 	var nodedeploy = path.resolve(path.join(additions, CONFIG.nodedeploypath));
+	ensureDir(nodeDeploy);
 	var args = [ workdir, CONFIG.nodegit, CONFIG.nodeversion, nodedeploy ];
 	var cmd = path.join(workdir, '../lib/nodejs.sh');
 	console.log('Getting/compiling node '); 
@@ -51,6 +45,7 @@ function buildOmapImage() {
 
 function openrov() {
 	var deploy = path.resolve(path.join(additions, "openrov"));
+	ensureDir(deploy);
 	var args = [ path.join(workdir, '../lib/openrov.sh'), workdir, CONFIG.openrovgit, CONFIG.openrovbranch, deploy ];
 	var cmd = 'sudo' 
         console.log('setting up OpenROV Software' + args)
@@ -61,6 +56,13 @@ function openrov() {
 function done() {
 	console.log("All done, bye!");
 	exit(0);	
+}
+
+function ensureDir(dir) {
+	if (fs.existsSync(dir) == false )
+	{
+		fs.mkdir(dir, mode);
+	}
 }
 
 function executeTask(cmd, args) {
