@@ -13,7 +13,3 @@ ln -s /opt/openrov/linux/openrov.service /etc/init.d/openrov
 
 update-rc.d openrov defaults
 
-rm /opt/openrov/install.sh
-
-
-
