@@ -8,11 +8,9 @@ var CONFIG = require('./config')
 var mode = 0755;
 var workdir = path.resolve(CONFIG.workdir);
 var additions = path.join(workdir, "additions");
-var nodedeploy = path.resolve(path.join(additions, CONFIG.nodedeploypath));
 var eventLoop = new EventEmitter();
 
-var taskQueue = [ makeNode, buildOmapImage ];
-//var taskQueue = [ buildOmapImage ];
+var taskQueue = [ makeNode, openrov, buildOmapImage, done ];
 
 function main() {
 
@@ -33,11 +31,10 @@ function main() {
 	});
 	eventLoop.emit('done');
 
-	console.log('All DONE!');	
 }
 
 function makeNode() {
-	var nodeBuilt = false;
+	var nodedeploy = path.resolve(path.join(additions, CONFIG.nodedeploypath));
 	var args = [ workdir, CONFIG.nodegit, CONFIG.nodeversion, nodedeploy ];
 	var cmd = path.join(workdir, '../lib/nodejs.sh');
 	console.log('Getting/compiling node '); 
@@ -50,6 +47,20 @@ function buildOmapImage() {
 	var cmd = 'sudo' 
         console.log('Building the image!' + args)
 	executeTask(cmd, args);
+}
+
+function openrov() {
+	var deploy = path.resolve(path.join(additions, "openrov"));
+	var args = [ path.join(workdir, '../lib/openrov.sh'), workdir, CONFIG.openrovgit, CONFIG.openrovbranch, deploy ];
+	var cmd = 'sudo' 
+        console.log('setting up OpenROV Software' + args)
+	executeTask(cmd, args);
+
+}
+
+function done() {
+	console.log("All done, bye!");
+	exit(0);	
 }
 
 function executeTask(cmd, args) {
