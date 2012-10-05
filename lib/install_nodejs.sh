@@ -15,4 +15,6 @@ echo ". ~/.nvm/nvm.sh" >> .bashrc
 echo "export LD_LIBRARY_PATH=/usr/local/lib" >> .bashrc
 echo "export PATH=$PATH:/opt/node/bin" >> .bashrc
 
+#right now, the cross compiler setus the wrong dinamic linker. We 'fix' this here:
+ln -s /lib/arm-linux-gnueabihf/ld-2.15.so /lib/ld-linux.so.3
 
