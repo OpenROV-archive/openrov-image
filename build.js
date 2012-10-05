@@ -28,7 +28,7 @@ function main() {
 
 function makeNode() {
 	var nodedeploy = path.resolve(path.join(additions, CONFIG.nodedeploypath));
-	ensureDir(nodeDeploy);
+	ensureDir(nodedeploy);
 	var args = [ workdir, CONFIG.nodegit, CONFIG.nodeversion, nodedeploy ];
 	var cmd = path.join(workdir, '../lib/nodejs.sh');
 	console.log('Getting/compiling node '); 
