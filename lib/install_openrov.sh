@@ -20,5 +20,3 @@ if [ -f '/etc/init.d/openrov' ]; then
 	update-rc.d openrov defaults
 fi  
 
-cd /opt/openrov/
-#npm install express socket.io serialport

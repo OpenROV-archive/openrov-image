@@ -1,9 +1,5 @@
 #!/bin/sh
 # call with: nodejs.sh ~/work/ https://github.com/joyent/node.git v0.8.11 ~/node_deploy/
-export AR=arm-linux-gnueabi-ar
-export CC=arm-linux-gnueabi-gcc
-export CXX=arm-linux-gnueabi-g++
-export LINK=arm-linux-gnueabi-g++
 
 export AR=arm-linux-gnueabihf-ar
 export CC=arm-linux-gnueabihf-gcc-4.6
