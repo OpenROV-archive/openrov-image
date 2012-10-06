@@ -37,3 +37,7 @@ GYP_DEFINES="armv7=0" CXXFLAGS='-mfpu=vfp -mfloat-abi=hard -DUSE_EABI_HARDFLOAT'
 
 SCRIPT_DIR="`dirname \"$0\"`"
 cp $SCRIPT_DIR/install_nodejs.sh $NODEDIR/install.sh 
+cd $NODEDIR/lib
+npm install node-gyp 
+
+
