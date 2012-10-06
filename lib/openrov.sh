@@ -15,5 +15,12 @@ git clone $OPENROVGIT openrov || { echo >&2 "git clone $OPENROVGIT failed.  Abor
 cd openrov
 git checkout $OPENROVBRANCH
 
+
+export AR=arm-linux-gnueabihf-ar
+export CC=arm-linux-gnueabihf-gcc-4.6
+export CXX=arm-linux-gnueabihf-g++-4.6
+export LINK=arm-linux-gnueabihf-g++-4.6
+npm install express socket.io serialport
+
 SCRIPT_DIR="`dirname \"$0\"`"
 cp $SCRIPT_DIR/install_openrov.sh $OPENROVDIR/install.sh 

@@ -21,4 +21,4 @@ if [ -f '/etc/init.d/openrov' ]; then
 fi  
 
 cd /opt/openrov/
-npm install express socket.io serialport
+#npm install express socket.io serialport
