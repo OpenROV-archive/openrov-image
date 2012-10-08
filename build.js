@@ -10,7 +10,7 @@ var workdir = path.resolve(CONFIG.workdir);
 var additions = path.join(workdir, "additions");
 var eventLoop = new EventEmitter();
 
-var taskQueue = [ makeNode, openrov, buildOmapImage, done ];
+var taskQueue = [ makeNode, openrov, mjpgStreamer, buildOmapImage, done ];
 //var taskQueue = [ openrov, done ];
 
 function main() {
@@ -48,6 +48,15 @@ function openrov() {
 	var deploy = path.resolve(path.join(additions, "openrov"));
 	ensureDir(deploy);
 	var args = [ path.join(workdir, '../lib/openrov.sh'), workdir, CONFIG.openrovgit, CONFIG.openrovbranch, deploy ];
+	var cmd = 'sudo' 
+        console.log('setting up OpenROV Software' + args)
+	executeTask(cmd, args);
+}
+
+function mjpgStreamer() {
+	var deploy = path.resolve(path.join(additions, "mjpeg-streamer"));
+	ensureDir(deploy);
+	var args = [ path.join(workdir, '../lib/mjpg-streamer.sh'), workdir, CONFIG.mjpgstreamerurl, deploy ];
 	var cmd = 'sudo' 
         console.log('setting up OpenROV Software' + args)
 	executeTask(cmd, args);

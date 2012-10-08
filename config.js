@@ -8,4 +8,5 @@ module.exports =  {
 	nodedeploypath: 'node_deploy',
 	openrovgit: 'https://github.com/codewithpassion/openrov-software-ui.git',
 	openrovbranch: 'master',
+	mjpgstreamerurl: 'http://mjpg-streamer.svn.sourceforge.net/viewvc/mjpg-streamer/mjpg-streamer/?view=tar'
 };
