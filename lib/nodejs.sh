@@ -26,7 +26,7 @@ cd $DIR
 git clone $2 || { echo >&2 "git clone $NODEGIT failed.  Aborting."; exit 1; }
 cd node
 git checkout $NODEVERSION
-#git apply ../../lib/node.patch
+git apply ../../lib/node.patch
 
 ./configure --without-snapshot --dest-cpu=arm --dest-os=linux --with-arm-float-abi=hard --prefix=$NODEDIR || { echo >&2 "Tried to configure NodeJS but it failed.  Aborting."; exit 1; }
 
