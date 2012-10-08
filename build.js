@@ -11,6 +11,7 @@ var additions = path.join(workdir, "additions");
 var eventLoop = new EventEmitter();
 
 var taskQueue = [ makeNode, openrov, buildOmapImage, done ];
+//var taskQueue = [ openrov, done ];
 
 function main() {
 
