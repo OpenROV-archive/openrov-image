@@ -3,6 +3,7 @@ var CONFIG = require('./config')
 	,path = require('path')
 	,spawn = require('child_process').spawn
 	,EventEmitter = require('events').EventEmitter
+	,moment = require('moment')
 	;
 
 var mode = 0755;
@@ -10,7 +11,7 @@ var workdir = path.resolve(CONFIG.workdir);
 var additions = path.join(workdir, "additions");
 var eventLoop = new EventEmitter();
 
-var taskQueue = [ makeNode, openrov, mjpgStreamer, buildOmapImage, done ];
+var taskQueue = [ makeNode, openrov, mjpgStreamer, buildOmapImage, copyImage, done ];
 
 function main() {
 
@@ -60,6 +61,28 @@ function mjpgStreamer() {
         console.log('setting up OpenROV Software' + args)
 	executeTask(cmd, args);
 
+}
+
+function copyImage() {
+	var expectedFolderName = moment().format('YYYY-MM-DD');
+	var dir = path.join(workdir, 'omap-image-builder/deploy', expectedFolderName);
+	if (fs.existsSync(dir) == false) {
+		console.error('Expected to find the omap image directory to be: ' + expectedFolderName + " but it doesn't exist :-/");
+		eventLoop.emit('done');
+		return;
+	}
+	var files = fs.readdirSync(dir).filter(
+		function(element, index, array) {
+			return ( element.indexOf('.xz', element.length - 3) !== -1);
+		});
+	if (files.length >= 1) {
+		fs.symlinkSync(path.join(dir, files[0]), path.join(workdir, files[0]));
+		console.log('Successfully created link to disk image in: ' + path.join(workdir, files[0]));
+		eventLoop.emit('done');	
+		return; 
+	}
+	console.log('Found no disk image file ending on .xz');
+	eventLoop.emit('done');
 }
 
 function done() {
