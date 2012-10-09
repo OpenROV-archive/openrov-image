@@ -11,7 +11,6 @@ var additions = path.join(workdir, "additions");
 var eventLoop = new EventEmitter();
 
 var taskQueue = [ makeNode, openrov, mjpgStreamer, buildOmapImage, done ];
-//var taskQueue = [ openrov, done ];
 
 function main() {
 
@@ -54,7 +53,7 @@ function openrov() {
 }
 
 function mjpgStreamer() {
-	var deploy = path.resolve(path.join(additions, "mjpeg-streamer"));
+	var deploy = path.resolve(path.join(additions, "mjpg-streamer"));
 	ensureDir(deploy);
 	var args = [ path.join(workdir, '../lib/mjpg-streamer.sh'), workdir, CONFIG.mjpgstreamerurl, deploy ];
 	var cmd = 'sudo' 
