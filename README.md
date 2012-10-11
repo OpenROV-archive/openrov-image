@@ -8,6 +8,7 @@ To get the latest version of the OpenROV disk image for your ROV, you will need 
 A windows based solution will follow.
 
 To download:
+
 	wget http://bit.ly/openrov-image
 
 That will give you an file like _ubuntu-12.04-r8-minimal-armhf-YYYY-MM-DD.tar.xz_.
