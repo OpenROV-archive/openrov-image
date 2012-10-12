@@ -43,7 +43,12 @@ Starting the OpenROV
 --------------------
 
 Just put the newly created sd-card into your BeagleBone.
-To see the output, connect the BeagleBone to your computer via the USB cable and open a terminal.
+
+On the first boot it will take some time (like 5 minutes) to fully setup the installation.
+Once its fully started, you should be able to browse to: http://<IP.OF.THE.ROV>:8080.
+If that doesn't work, most probably the npm module _serialport_ couldn't be installed correctly.
+
+Connect the BeagleBone to your computer via the USB cable and open a terminal.
 
 	picocom -b 115200 /dev/ttyUSBx
 
@@ -53,12 +58,18 @@ Find the IP address the BeagleBone got from your dhcp server and use ssh to conn
 	
 	ssh rov@123.123.123.123
 
-On the first boot it will take some time (like a few minutes) to fully setup the installation.
-
 Once you see the logon screen, use:
 
 	username: rov
 	password: OpenROV
+
+Then you have to do:
+
+	cd /opt/openrov
+	sudo rm node_modules
+	sudo /etc/init.d/openrov start
+
+This will restart the server process again and while doing so, tries to install the NodeJS modules.
 
 
 
