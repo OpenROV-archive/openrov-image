@@ -9,7 +9,7 @@ A windows based solution will follow.
 
 To download:
 
-	wget https://www.dropbox.com/s/cw5rk0e2bn0in1e/ubuntu-12.04-r8-minimal-armhf-2012-10-12.tar.xz?dl=1
+	wget http://wp.nu/openrov-image-0
 
 That will give you an file like _ubuntu-12.04-r8-minimal-armhf-YYYY-MM-DD.tar.xz_.
 
