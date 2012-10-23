@@ -11,7 +11,7 @@ var workdir = path.resolve(CONFIG.workdir);
 var additions = path.join(workdir, "additions");
 var eventLoop = new EventEmitter();
 
-var taskQueue = [ makeNode, openrov, mjpgStreamer, buildOmapImage, copyImage, done ];
+var taskQueue = [ makeNode, openrov, mjpgStreamer, ino, buildOmapImage, copyImage, done ];
 
 function main() {
 
@@ -60,7 +60,15 @@ function mjpgStreamer() {
 	var cmd = 'sudo' 
         console.log('setting up OpenROV Software' + args)
 	executeTask(cmd, args);
+}
 
+function ino() {
+	var deploy = path.resolve(path.join(additions, "ino"));
+	ensureDir(deploy);
+	var args = [ path.join(workdir, '../lib/ino.sh'), workdir, CONFIG.mjpgstreamerurl, deploy ];
+	var cmd = 'sudo' 
+        console.log('setting up ino (command line Arduino programmer)' + args)
+	executeTask(cmd, args);
 }
 
 function copyImage() {

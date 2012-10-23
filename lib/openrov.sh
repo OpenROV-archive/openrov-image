@@ -21,10 +21,12 @@ unset AR
 unset CC
 unset CXX
 unset LINK
-npm config set cache ./.npm_cache
-npm install express socket.io serialport
-rm -rf node_modules #we only want the packages in the cache
-npm config set cache $NPM_CACHE
+
+npm install
+npm pack
+mv OpenROV-*.tgz ../
+cd ..
+rm -rf openrov
 
 SCRIPT_DIR="`dirname \"$0\"`"
 cp $SCRIPT_DIR/install_openrov.sh $OPENROVDIR/install.sh 
