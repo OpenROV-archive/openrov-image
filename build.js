@@ -14,7 +14,7 @@ var eventLoop = new EventEmitter();
 var taskQueue = [ 
 	makeNode, 
 	openrov, 
-//	mjpgStreamer, 
+	mjpgStreamer, 
 	ino, 
 	buildOmapImage, 
 	copyImage, 
@@ -63,7 +63,7 @@ function openrov() {
 function mjpgStreamer() {
 	var deploy = path.resolve(path.join(additions, "mjpg-streamer"));
 	ensureDir(deploy);
-	var args = [ path.join(workdir, '../lib/mjpg-streamer.sh'), workdir, CONFIG.mjpgstreamerurl, deploy ];
+	var args = [ path.join(workdir, '../lib/mjpg-streamer.sh'), workdir, CONFIG.mjpgstreamergit, deploy ];
 	var cmd = 'sudo' 
         console.log('setting up OpenROV Software' + args)
 	executeTask(cmd, args);

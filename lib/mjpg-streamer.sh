@@ -13,8 +13,7 @@ then
 fi
 cd $DESTINATION
 
-wget $URL -O mjpg-streamer.tgz
-tar zxf mjpg-streamer.tgz
+git clone $URL mjpg-streamer
 
 SCRIPT_DIR="`dirname \"$0\"`"
 cp $SCRIPT_DIR/install_mjpg-streamer.sh $DESTINATION/install.sh 
