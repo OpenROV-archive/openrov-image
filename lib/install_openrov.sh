@@ -6,9 +6,10 @@ DIR="`dirname \"$0\"`"
 if [ ! -d /opt/openrov ]; then
 	mkdir -p /opt/openrov
 fi
-cp -r /tmp/additions/openrov/OpenROV*.tgz /opt/openrov/
+cd $DIR
+cp -r *.tgz /opt/openrov/
 cd /opt/openrov/
-npm install OpenROV.*.tgz
+/opt/node/bin/npm install OpenROV.*.tgz
 cp -r node_modules/OpenROV-Cockpit/*.* .
 rm -rf node_modules/OpenROV-Cockpit
 
