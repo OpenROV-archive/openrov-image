@@ -9,9 +9,12 @@ fi
 cd $DIR
 cp -r *.tgz /opt/openrov/
 cd /opt/openrov/
-/opt/node/bin/npm install OpenROV.*.tgz
-cp -r node_modules/OpenROV-Cockpit/*.* .
-rm -rf node_modules/OpenROV-Cockpit
+tar zxf OpenROV*.tgz
+cp -r package/* .
+rm OpenROV*.tgz
+rm -rf package
+
+/opt/node/bin/npm rebuild
 
 echo "rov ALL=NOPASSWD: /opt/openrov/linux/" >> /etc/sudoers
 
