@@ -6,8 +6,8 @@ module.exports =  {
 	omapimagebuildergit: 'https://github.com/codewithpassion/omap-image-builder.git',
 	omapimagebuilderbranch: 'master',
 	nodedeploypath: 'node_deploy',
-	openrovgit: 'https://github.com/codewithpassion/openrov-software-ui.git',
-	openrovbranch: 'master',
+	openrovgit: 'https://github.com/OpenROV/openrov-software.git',
+	openrovbranch: 'cockpit',
 	mjpgstreamergit: 'https://github.com/codewithpassion/mjpg-streamer.git',
 	inogit: 'https://github.com/amperka/ino.git' 
 };
