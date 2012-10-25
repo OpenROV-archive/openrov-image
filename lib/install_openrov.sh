@@ -11,14 +11,13 @@ cp -r *.tgz /opt/openrov/
 cd /opt/openrov/
 tar zxf OpenROV*.tgz
 cp -r package/* .
-rm OpenROV*.tgz
 rm -rf package
 
 /opt/node/bin/npm rebuild
 
 echo "rov ALL=NOPASSWD: /opt/openrov/linux/" >> /etc/sudoers
 
-echo > /etc/rc.local << __EOF__
+cat > /etc/rc.local << __EOF__
 #!/bin/sh -e
 #
 # rc.local
