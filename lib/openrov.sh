@@ -16,11 +16,12 @@ git clone $OPENROVGIT openrov || { echo >&2 "git clone $OPENROVGIT failed.  Abor
 cd openrov
 git checkout $OPENROVBRANCH
 
-
-unset AR
-unset CC
-unset CXX
-unset LINK
+export AR=arm-linux-gnueabihf-ar
+export CC=arm-linux-gnueabihf-gcc-4.6
+export CXX=arm-linux-gnueabihf-g++-4.6
+export LINK=arm-linux-gnueabihf-g++-4.6
+export npm_config_arch=arm
+export npm_config_nodedir=$DIR/node
 
 npm install
 npm pack

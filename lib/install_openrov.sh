@@ -13,8 +13,6 @@ tar zxf OpenROV*.tgz
 cp -r package/* .
 rm -rf package
 
-/opt/node/bin/npm rebuild
-
 echo "rov ALL=NOPASSWD: /opt/openrov/linux/" >> /etc/sudoers
 
 cat > /etc/rc.local << __EOF__
@@ -31,14 +29,26 @@ cat > /etc/rc.local << __EOF__
 #
 # By default this script does nothing.
 
-sh /opt/openrov/linux/seturat.sh
+sh /opt/openrov/linux/setuart.sh
 
 exit 0
 
 __EOF__
 
+#enable a fixed IP address on the network interface
+cat >> /etc/network/interfaces << __EOF__
 
 
+auto eth0:0
+iface eth0:0 inet static
+name Ethernet alias LAN card
+address 192.168.254.1
+netmask 255.255.255.0
+broadcast 192.168.254.255
+network 192.168.254.0
+
+
+__EOF__
 
 
 ln -s /opt/openrov/linux/openrov.service /etc/init.d/openrov
