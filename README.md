@@ -44,33 +44,48 @@ Starting the OpenROV
 
 Just put the newly created sd-card into your BeagleBone.
 
-On the first boot it will take some time (like 5 minutes) to fully setup the installation.
 Once its fully started, you should be able to browse to: http://<IP.OF.THE.ROV>:8080.
-If that doesn't work, most probably the npm module _serialport_ couldn't be installed correctly.
 
-Connect the BeagleBone to your computer via the USB cable and open a terminal.
+The BB tries to get an IP address from your DHCP server. Beside that, it listens on the IP address 192.168.254.1. So, if you connect your BB directly via a network cable, you cann change you PC ip address to 192.168.254.2 or add an additional alias (in linux something like: ifconfig eth0:0 192.168.254.2 up) and you should be able to connect to the BB by:
+http://192.168.254.1:8080/
 
-	picocom -b 115200 /dev/ttyUSBx
 
-OR
+Debuging and being in control
+-----------------------------
 
-Find the IP address the BeagleBone got from your dhcp server and use ssh to connect:
+If you wan't to log on to your BB, either connect a USB cable and us:
 	
-	ssh rov@123.123.123.123
+	picocom -b 115200 /dev/ttyUSB1
+
+Or SSH:
+
+	ssh rov@<IP ADDRESS>
+
+Or SSH on the static IP:
+
+	ssh rov@192.168.254.1
+
 
 Once you see the logon screen, use:
 
 	username: rov
 	password: OpenROV
 
-Then you have to do:
+The OpenROV cockpit service writes a logfile to:
+	
+	/var/log/openrov.log
 
-	cd /opt/openrov
-	sudo rm node_modules
+To Start/Stop the cockpit service use:
+
 	sudo /etc/init.d/openrov start
+	sudo /etc/init.d/openrov stop
 
-This will restart the server process again and while doing so, tries to install the NodeJS modules.
+To manually start the cockpit service use:
 
+	sudo /etc/init.d/openrov stop
+	sudo bash
+	/opt/node/bin/node /opt/openrov/src/app.js
+	
 
 
 Build your own disk image
