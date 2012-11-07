@@ -24,9 +24,8 @@ export npm_config_arch=arm
 export npm_config_nodedir=$DIR/node
 
 npm install
-npm pack
-mv OpenROV-*.tgz ../
 cd ..
+tar zcf openrov.tgz openrov
 rm -rf openrov
 
 SCRIPT_DIR="`dirname \"$0\"`"

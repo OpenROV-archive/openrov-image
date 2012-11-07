@@ -9,9 +9,9 @@ fi
 cd $DIR
 cp -r *.tgz /opt/openrov/
 cd /opt/openrov/
-tar zxf OpenROV*.tgz
-cp -r package/* .
-rm -rf package
+tar zxf openrov.tgz
+cp -r openrov/* .
+rm -rf openrov
 
 echo "rov ALL=NOPASSWD: /opt/openrov/linux/" >> /etc/sudoers
 
