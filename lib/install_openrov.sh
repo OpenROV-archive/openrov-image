@@ -30,6 +30,7 @@ cat > /etc/rc.local << __EOF__
 # By default this script does nothing.
 
 sh /opt/openrov/linux/setuart.sh
+sh /opt/openrov/linux/reset.sh #reset arduino to make sure the GPIO is set correctly
 
 exit 0
 
