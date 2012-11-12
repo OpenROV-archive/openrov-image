@@ -9,7 +9,7 @@ A windows based solution will follow.
 
 To download:
 
-	wget https://www.dropbox.com/s/g7wgd7k0whb3wft/ubuntu-12.04-r8-minimal-armhf-2012-11-07_2.tar.xz?dl=1
+	wget https://www.dropbox.com/s/rhiw3lgewfoc44q/ubuntu-12.04-r8-minimal-armhf-2012-11-10.tar.xz?dl=1
 
 That will give you an file like _ubuntu-12.04-r8-minimal-armhf-YYYY-MM-DD.tar.xz_.
 
@@ -49,6 +49,13 @@ Once its fully started, you should be able to browse to: http://<IP.OF.THE.ROV>:
 The BB tries to get an IP address from your DHCP server. Beside that, it listens on the IP address 192.168.254.1. So, if you connect your BB directly via a network cable, you cann change you PC ip address to 192.168.254.2 or add an additional alias (in linux something like: ifconfig eth0:0 192.168.254.2 up) and you should be able to connect to the BB by:
 http://192.168.254.1:8080/
 
+Uploading Arduino Firmware
+--------------------------
+
+If you have a OpenROV cape connected to your BeagleBone (if you build your own, make sure you use UART1), you can upload a firmware to Arduino directly from the browser.
+In the OpenROV Cockpit there is a Settings page (top left corner). From there you can upload a .ZIP or .tar.gz file containing your Arduino sketch (.ino files with additional .c/h files).
+
+**Right now there is no error reporting on the firmware upload! You always see it seccessful. To check for errors, please look in the OpenROV logfile as explained below.**
 
 Debuging and being in control
 -----------------------------
