@@ -52,10 +52,16 @@ http://192.168.254.1:8080/
 Uploading Arduino Firmware
 --------------------------
 
+**Right now there is no error reporting on the firmware upload! You always see it seccessful. To check for errors, please look in the OpenROV logfile as explained below.**
+
 If you have a OpenROV cape connected to your BeagleBone (if you build your own, make sure you use UART1), you can upload a firmware to Arduino directly from the browser.
 In the OpenROV Cockpit there is a Settings page (top left corner). From there you can upload a .ZIP or .tar.gz file containing your Arduino sketch (.ino files with additional .c/h files).
 
-**Right now there is no error reporting on the firmware upload! You always see it seccessful. To check for errors, please look in the OpenROV logfile as explained below.**
+The Arduino upload needs the reset.sh script that is part of the cockpit branch of openrov-software.
+https://github.com/OpenROV/openrov-software/blob/cockpit/linux/reset.sh
+This script is laid out to use GPIO1_0 in a mode where the GPIO0_1 is on high in the beginning and therefore there is 5V on pin 1 (RESET) on the ATMEGA chip.
+On reset, pin1 is pulled to low and the Arduino will reset once pin 1 goes on high again.
+
 
 Debuging and being in control
 -----------------------------
