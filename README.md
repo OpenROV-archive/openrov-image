@@ -13,8 +13,8 @@ To download:
 
 That will give you an file like _ubuntu-12.04-r8-minimal-armhf-YYYY-MM-DD.tar.xz_.
 
-	tar xJf ubuntu-12.04-r7-minimal-armhf-YYYY-MM-DD.tar.xz
-	cd ubuntu-12.04-r7-minimal-armhf-YYYY-MM-DD
+	tar xJf ubuntu-12.04-r8-minimal-armhf-YYYY-MM-DD.tar.xz
+	cd ubuntu-12.04-r8-minimal-armhf-YYYY-MM-DD
 
 If you don't know the location of your SD card:
 	
