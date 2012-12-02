@@ -9,7 +9,7 @@ A windows based solution will follow.
 
 To download:
 
-	wget https://www.dropbox.com/s/uapd1t02g3pyirh/ubuntu-12.04-r8-minimal-armhf-2012-11-28.tar.xz?dl=1
+	wget https://www.dropbox.com/s/krwbf7gm7z4xoyq/ubuntu-12.04-r8-minimal-armhf-2012-12-02.tar.xz?dl=1
 
 That will give you an file like _ubuntu-12.04-r8-minimal-armhf-YYYY-MM-DD.tar.xz_.
 
