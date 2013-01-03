@@ -5,7 +5,7 @@ Get and install the OpenROV disk image
 ======================================
 
 To get the latest version of the OpenROV disk image for your ROV, you will need a Linux box (or virtual machine) and a micro-sd card with at least 2 GB.
-For a [Windows Solution]() see below.
+*For a [Windows Solution](#windows-solution) see below.*
 
 To download:
 
