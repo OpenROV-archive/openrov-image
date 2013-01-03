@@ -5,7 +5,7 @@ Get and install the OpenROV disk image
 ======================================
 
 To get the latest version of the OpenROV disk image for your ROV, you will need a Linux box (or virtual machine) and a micro-sd card with at least 2 GB.
-A windows based solution will follow.
+For a [Windows Solution]() see below.
 
 To download:
 
@@ -38,6 +38,18 @@ Install image:
 	sudo ./setup_sdcard.sh --mmc /dev/sdX --uboot "bone"
 
 This will write the image onto your sd-card.
+
+## Windows Solution ##
+
+1. Download the compressed image file from:
+	
+	https://www.dropbox.com/s/bt7bhrta3jus7kl/OpenROV-image.img.bz2?dl=1
+	
+2. Unpack it with a suitable tool (for example http://www.7-zip.org/)
+3. Get the *Win32DiskImager* from https://launchpad.net/win32-image-writer/+download
+4. Point the Win32DiskImager to the image file 'OpenROV-Image.img' and the SD card
+5. Press 'Write' and wait till its written to the SD card
+
 
 Starting the OpenROV
 --------------------
