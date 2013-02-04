@@ -46,9 +46,10 @@ This will write the image onto your sd-card.
 	https://www.dropbox.com/s/bt7bhrta3jus7kl/OpenROV-image.img.bz2?dl=1
 	
 2. Unpack it with a suitable tool (for example http://www.7-zip.org/)
-3. Get the *Win32DiskImager* from https://launchpad.net/win32-image-writer/+download
-4. Point the Win32DiskImager to the image file 'OpenROV-Image.img' and the SD card
-5. Press 'Write' and wait till its written to the SD card
+3. If the sd-card already has a linux image on it, reformat it to clear the partition with this utility https://www.sdcard.org/downloads/formatter_3/
+4. Get the *Win32DiskImager* from https://launchpad.net/win32-image-writer/+download
+5. Point the Win32DiskImager to the image file 'OpenROV-Image.img' and the SD card
+6. Press 'Write' and wait till its written to the SD card
 
 
 Starting the OpenROV
