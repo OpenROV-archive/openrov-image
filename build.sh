@@ -1,5 +1,5 @@
 #!/bin/sh
 
 rm -rf work
-npm instamm moment
+npm install moment
 sudo node build.js

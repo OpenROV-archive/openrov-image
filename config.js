@@ -1,7 +1,7 @@
 module.exports =  {
 	debug: false,
 	workdir: './work/',
-	nodeversion: 'v0.8.15',
+	nodeversion: 'v0.10.3',
 	nodegit: 'https://github.com/joyent/node.git',
 	omapimagebuildergit: 'https://github.com/codewithpassion/omap-image-builder.git',
 	omapimagebuilderbranch: 'master',

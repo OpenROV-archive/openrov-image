@@ -12,6 +12,8 @@ rm /tmp/npm
 
 rm /opt/node/install.sh
 
+mkdir /home/rov
+chmod 777 /home/rov
 cd /home/rov/
 
 git clone git://github.com/creationix/nvm.git .nvm

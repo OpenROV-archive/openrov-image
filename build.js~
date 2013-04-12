@@ -17,7 +17,7 @@ var taskQueue = [
 	mjpgStreamer, 
 	ino, 
 	// buildOmapImage, 
-	//copyImage, 
+	copyImage, 
 	done ];
 
 function main() {

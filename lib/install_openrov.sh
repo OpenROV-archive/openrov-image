@@ -37,20 +37,36 @@ exit 0
 __EOF__
 
 #enable a fixed IP address on the network interface
-cat >> /etc/network/interfaces << __EOF__
+cat > /etc/network/interfaces.std << __EOF__
+auto lo
+iface lo inet loopback
 
-
-auto eth0:0
-iface eth0:0 inet static
+auto eth0
+iface eth0 inet static
 name Ethernet alias LAN card
 address 192.168.254.1
 netmask 255.255.255.0
 broadcast 192.168.254.255
 network 192.168.254.0
 
+auto eht0:0
+iface eth0:0 inet dhcp
+
 
 __EOF__
 
+cat > /etc/init.d/fixnet << __EOF__
+#!/bin/sh
+
+cat /etc/network/interfaces.std > /etc/network/interfaces
+
+update-rc.d -f fixnet remove # removes itself
+rm /etc/init.d/fixnet
+
+__EOF__
+chmod +x /etc/init.d/fixnet
+
+update-rc.d fixnet defaults 1
 
 ln -s /opt/openrov/linux/openrov.service /etc/init.d/openrov
 chmod +x /opt/openrov/linux/openrov.service
