@@ -46,6 +46,7 @@ unset SVIDEO_PAL
 ROOTFS_TYPE=ext4
 ROOTFS_LABEL=rootfs
 
+SCRIPTDIR="$( cd "$( dirname "$0" )" && pwd )"
 DIR="$PWD"
 TEMPDIR=$(mktemp -d)
 
@@ -693,6 +694,7 @@ function populate_boot {
 	BOOT_LOOP=`losetup -f`
 	losetup -o 1048576 ${BOOT_LOOP} ${MMC} #offset = 2048 * 512
 	format_boot_partition
+	dd if=${SCRIPTDIR}/mbr.bin of=${BOOT_LOOP}
 
 	if mount -t ${mount_partition_format} ${BOOT_LOOP} ${TEMPDIR}/disk; then
 		mkdir -p ${TEMPDIR}/disk/backup
