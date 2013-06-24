@@ -1,4 +1,5 @@
 #!/bin/sh
+sudo apt-get install python-software-properties
 
 sudo add-apt-repository ppa:richarvey/nodejs
 sudo add-apt-repository ppa:linaro-maintainers/toolchain
