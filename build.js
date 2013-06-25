@@ -20,12 +20,15 @@ var taskQueue = [
 	copyImage, 
 	done ];
 
+
+
 function main() {
 
 	console.log('Welcome to the OpenROV image builder!');
 
+	rmDir(workdir);
 	ensureDir(workdir);
-
+	
 	eventLoop.on('done', function() {
 		var task = taskQueue.shift();
 		if (task) task();
@@ -125,5 +128,19 @@ function executeTask(cmd, args) {
 		eventLoop.emit('done');
 		});
 }
+
+rmDir = function(dirPath) {
+      try { var files = fs.readdirSync(dirPath); }
+      catch(e) { return; }
+      if (files.length > 0)
+        for (var i = 0; i < files.length; i++) {
+          var filePath = dirPath + '/' + files[i];
+          if (fs.statSync(filePath).isFile())
+            fs.unlinkSync(filePath);
+          else
+            rmDir(filePath);
+        }
+      fs.rmdirSync(dirPath);
+    };
 
 main();

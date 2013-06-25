@@ -133,6 +133,20 @@ But you might want to check what it installs, quite a lot...
 You will need the ARM compiler toolchain as described here: 
 http://elinux.org/Toolchains#Linaro_.28ARM.29
 
+Alternativly...
+
+We have added a vagrant file for easy builds of your own disk images and general access to the cross compiler envionment that works across all major O/S types.
+It has two pre-reqs
+1) [Virtual Box](https://www.virtualbox.org/wiki/Downloads)
+2) [Vagrant](http://downloads.vagrantup.com/)
+
+Once they are installed you simply download this git repo to your local system and from the command-line type:
+     vagrant up
+
+The system will automatically spin up a virtual image and load the pre-reqs.  To login to it type:
+     vagrant ssh
+
+There will be a /vagrant folder in the virtual image that you can go to and run the build command below. That folder is a shared link to the folder on your local computer.
 
 How to build?
 -------------
