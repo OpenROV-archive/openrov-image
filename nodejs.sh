@@ -15,7 +15,6 @@ export DIR=$1
 export NODEGIT=$2
 export NODEVERSION=$3
 export NODEDIR=$4
-export NODEDIR=$4
 
 if [ ! -d $DIR ]
 then
@@ -26,18 +25,13 @@ cd $DIR
 git clone $2 || { echo >&2 "git clone $NODEGIT failed.  Aborting."; exit 1; }
 cd node
 git checkout $NODEVERSION
-git apply ../../lib/node.patch
 
 ./configure --without-snapshot --dest-cpu=arm --dest-os=linux --with-arm-float-abi=hard --prefix=$NODEDIR || { echo >&2 "Tried to configure NodeJS but it failed.  Aborting."; exit 1; }
 
 GYP_DEFINES="armv7=0" CXXFLAGS='-mfpu=vfp -mfloat-abi=hard -DUSE_EABI_HARDFLOAT' CCFLAGS='-mfpu=vfp -mfloat-abi=hard -DUSE_EABI_HARDFLOAT' make --jobs=8
 GYP_DEFINES="armv7=0" CXXFLAGS='-mfpu=vfp -mfloat-abi=hard -DUSE_EABI_HARDFLOAT' CCFLAGS='-mfpu=vfp -mfloat-abi=hard -DUSE_EABI_HARDFLOAT' make install
-#make --jobs=8 || { echo >&2 "Tried to compile NodeJS but it failed.  Aborting."; exit 1; }
-#make install || { echo >&2 "Tried to install node to $NODEDIR but it failed. Aborting."; exit 1; }
 
-SCRIPT_DIR="`dirname \"$0\"`"
-cp $SCRIPT_DIR/install_nodejs.sh $NODEDIR/install.sh 
-cd $NODEDIR/lib
-npm install node-gyp 
-
-
+# fix the path to node in the npm script
+sed '1 c #!/opt/node/bin/node' $NODEDIR/bin/npm > /tmp/npm
+cat /tmp/npm > $NODEDIR/lib/node_modules/npm/bin/npm-cli.js
+rm /tmp/npm
