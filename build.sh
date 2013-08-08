@@ -6,7 +6,7 @@ export NODEVERSION=v0.10.15
 export MJPG_STREAMERGIT=https://github.com/codewithpassion/mjpg-streamer.git
 export INOGIT=https://github.com/amperka/ino.git
 
-export DIR=${PWD##*/}
+export DIR=${PWD#}
 
 IMAGE_FULLNAME=$(basename "$IMAGE")
 IMAGE_NAME="${IMAGE_FULLNAME%%.*}"
@@ -18,7 +18,7 @@ cd $IMAGE_NAME
 # extract the root fs
 mkdir root
 cd root
-export ROOT=${PWD##*/}
+export ROOT=${PWD#}
 
 echo Extracting rootfs
 tar xf ../armhf-rootfs-*.tar
