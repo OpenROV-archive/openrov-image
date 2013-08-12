@@ -77,3 +77,5 @@ umount dev
 cd $ROOT
 tar cf ../armhf-rootfs-ubuntu-saucy.tar .
 
+cd $IMAGE_NAME
+sed -i 's/\[1024\*800\]/\[1024*1200]/' setup_sdcard.sh
