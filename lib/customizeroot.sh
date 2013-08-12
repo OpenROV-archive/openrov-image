@@ -59,8 +59,41 @@ __EOF__
 
 
 ## fix network
-cat >> /etc/udev/rules.d/70-persistent-net.rules << __EOF__
-# BeagleBone: net device ()
-SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth0"
+
+cat > /etc/network/interfaces.std << __EOF__
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet static
+name Ethernet alias LAN card
+address 192.168.254.1
+netmask 255.255.255.0
+broadcast 192.168.254.255
+network 192.168.254.0
+# Example to keep MAC address between reboots
+#hwaddress ether DE:AD:BE:EF:CA:FE
+
+auto eht0:0
+iface eth0:0 inet dhcp
+
+# WiFi Example
+#auto wlan0
+#iface wlan0 inet dhcp
+#    wpa-ssid "essid"
+#    wpa-psk  "password"
+
+# Ethernet/RNDIS gadget (g_ether)
+# ... or on host side, usbnet and random hwaddr
+iface usb0 inet static
+    address 192.168.7.2
+    netmask 255.255.255.0
+    network 192.168.7.0
+    gateway 192.168.7.1
+
 
 __EOF__
+
+
+#cleanup
+rm -rf /tmp/work
