@@ -34,7 +34,7 @@ mount --bind /etc/resolv.conf etc/resolv.conf
 cp /usr/bin/qemu-arm-static usr/bin/
 
 # build node
-sh $DIR/nodejs.sh $DIR/work $NODEGIT $NODEVERSION $ROOT/tmp/work/node/
+sh $DIR/lib/nodejs.sh $DIR/work $NODEGIT $NODEVERSION $ROOT/tmp/work/node/
 
 # get mjpeg-streamer
 cd $ROOT/tmp/work
@@ -54,7 +54,7 @@ npm install --arch=arm
 cd $ROOT
 
 
-cp $DIR/customizeroot.sh ./tmp/
+cp $DIR/lib/customizeroot.sh ./tmp/
 chroot . /tmp/customizeroot.sh
 
 echo Unmounting system directories
