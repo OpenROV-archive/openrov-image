@@ -1,5 +1,15 @@
 #!/bin/sh
 
+if [ "$(id -u)" != "0" ]; then
+   echo "This script must be run as root or with sudo" 1>&2
+   exit 1
+fi
+
+if [ "$1" = "" ]; then
+	echo "Please pass the name of the elinux ubuntu image (from http://elinux.org/BeagleBoardUbuntu) as the first argument."
+	exit 1
+fi
+
 export IMAGE=$1
 export NODEGIT=https://github.com/joyent/node.git
 export NODEVERSION=v0.10.15
