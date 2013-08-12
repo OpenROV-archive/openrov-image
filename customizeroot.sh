@@ -59,3 +59,8 @@ __EOF__
 
 
 ## fix network
+cat >> /etc/udev/rules.d/70-persistent-net.rules << __EOF__
+# BeagleBone: net device ()
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="eth0"
+
+__EOF__
