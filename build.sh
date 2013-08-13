@@ -135,9 +135,11 @@ umount $ROOT
 mkdir boot
 mount $BOOT_media boot
 
-sed -i '/#optargs/a optargs=capemgr.enable_partno=BB-UART1' uEnv.txt
+sed -i '/#optargs/a optargs=capemgr.enable_partno=BB-UART1' $DIR/boot/uEnv.txt
 
 cd $DIR
+sync
+sleep 1
 umount boot
 
 kpartx -d ${media_loop}
