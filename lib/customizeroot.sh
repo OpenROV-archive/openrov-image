@@ -60,7 +60,7 @@ __EOF__
 
 ## fix network
 
-cat > /etc/network/interfaces.std << __EOF__
+cat > /etc/network/interfaces << __EOF__
 auto lo
 iface lo inet loopback
 

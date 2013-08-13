@@ -138,6 +138,15 @@ mount $BOOT_media boot
 
 sed -i '/#optargs/a optargs=capemgr.enable_partno=BB-UART1' $DIR/boot/uEnv.txt
 
+# change Start.html and autorun.inf file for OpenROV
+sed -i 's/192.168.7.2/192.168.7.2:8080/' $DIR/boot/START.htm
+
+sed -i 's/icon=Docs\beagle.ico/icon=Docs\openrov.ico/' $DIR/boot/autorun.inf
+sed -i 's/label=BeagleBone Getting Started/label=OpenROV Cockpit/' $DIR/boot/autorun.inf
+sed -i 's/action=Open BeagleBone Getting Started Guide/action=Open the OpenROV Cockpit/' $DIR/boot/autorun.inf
+
+cp $DIR/lib/openrov.ico $DIR/boot/Docs/
+
 cd $DIR
 sync
 sleep 1
