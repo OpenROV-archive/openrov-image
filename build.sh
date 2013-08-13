@@ -21,10 +21,11 @@ fi
  
 if [ "$2" = "" ] || [ "$2" = "--bone" ]; then
 	uboot=bone
+	image_suffix=
 
 elif [ "$2" = "--black" ]; then
-	uboot=bone_dbt
-
+	uboot=bone_dtb
+	image_suffix=-black
 else
 	echo "Currently only --bone and --black are supported as targets!"
 	exit 1
@@ -144,7 +145,6 @@ umount boot
 
 kpartx -d ${media_loop}
 losetup -d ${media_loop}
-cp $DIR/$IMAGE_NAME/image.img $DIR
+cp $DIR/$IMAGE_NAME/image.img $DIR/OpenROV${image_suffix}.img
 
-
-echo Image file: image.img
+echo Image file: OpenROV${image_suffix}.img
