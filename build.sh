@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 export IMAGE=$1
 export NODEGIT=https://github.com/joyent/node.git
@@ -8,6 +8,7 @@ export INOGIT=https://github.com/amperka/ino.git
 
 export DIR=${PWD#}
 
+. $DIR/lib/libmount.sh
 
 if [ "$(id -u)" != "0" ]; then
    echo "This script must be run as root or with sudo" 1>&2
@@ -53,51 +54,16 @@ echo "Building image file!"
 sleep 1
 ./setup_sdcard.sh --uboot $uboot --img || exit 1
 
-
 # mounting
-	media_loop=$(losetup -f || true)
-	if [ ! "${media_loop}" ] ; then
-		echo "losetup -f failed"
-		echo "Unmount some via: [sudo losetup -a]"
-		echo "-----------------------------"
-		losetup -a
-		echo "sudo kpartx -d /dev/loopX ; sudo losetup -d /dev/loopX"
-		echo "-----------------------------"
-		exit
-	fi
-
-	losetup ${media_loop} image.img
-	kpartx -av ${media_loop}
-	sleep 1
-	sync
-	test_loop=$(echo ${media_loop} | awk -F'/' '{print $3}')
-	if [ -e /dev/mapper/${test_loop}p1 ] && [ -e /dev/mapper/${test_loop}p2 ] ; then
-		media_prefix="/dev/mapper/${test_loop}p"
-		ROOT_media=${media_prefix}2
-		BOOT_media=${media_prefix}1
-	else
-		ls -lh /dev/mapper/
-		echo "Error: not sure what to do (new feature)."
-		exit
-	fi
 cd ..
-mkdir root
-cd root
-export ROOT=${PWD#}
+mount_image $IMAGE_NAME/image.img
 
-mount $ROOT_media $ROOT
+export ROOT=${PWD#}/root
 
-cd $ROOT
-
-echo Mounting system directories from root: $ROOT
-mount --bind /dev/ dev/
-mount --bind /proc/ proc/
-mount --bind /sys/ sys/
-mount --bind /run/ run/
-mount --bind /etc/resolv.conf etc/resolv.conf
+chroot_mount
 
 # copy qemu for chrooting
-cp /usr/bin/qemu-arm-static usr/bin/
+cp /usr/bin/qemu-arm-static $ROOT/usr/bin/
 
 # build node
 sh $DIR/lib/nodejs.sh $DIR/work $NODEGIT $NODEVERSION $ROOT/tmp/work/node/
@@ -122,20 +88,9 @@ cd $ROOT
 cp $DIR/lib/customizeroot.sh ./tmp/
 chroot . /tmp/customizeroot.sh
 
-echo Unmounting system directories
-umount etc/resolv.conf
-umount run
-umount sys
-umount proc
-umount dev
-
 cd $DIR 
-umount $ROOT
 
 # change boot script for uart
-mkdir boot
-mount $BOOT_media boot
-
 sed -i '/#optargs/a optargs=capemgr.enable_partno=BB-UART1' $DIR/boot/uEnv.txt
 
 # change Start.html and autorun.inf file for OpenROV
@@ -150,10 +105,11 @@ cp $DIR/lib/openrov.ico $DIR/boot/Docs/
 cd $DIR
 sync
 sleep 1
-umount boot
 
-kpartx -d ${media_loop}
-losetup -d ${media_loop}
+chroot_umount
+
+unmount_image
+
 cp $DIR/$IMAGE_NAME/image.img $DIR/OpenROV${image_suffix}.img
 
 echo Image file: OpenROV${image_suffix}.img
