@@ -107,10 +107,10 @@ cat > /etc/rc.local << __EOF__
 # In order to enable or disable this script just change the execution
 # bits.
 #
-# By default this script does nothing.
 
+# setup the 'reset' GPIO configuration
 /opt/openrov/linux/reset.sh
-/opt/openrov/linux/setuart.sh
+
 
 exit 0
 
