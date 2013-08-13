@@ -73,6 +73,7 @@ sleep 1
 	if [ -e /dev/mapper/${test_loop}p1 ] && [ -e /dev/mapper/${test_loop}p2 ] ; then
 		media_prefix="/dev/mapper/${test_loop}p"
 		ROOT_media=${media_prefix}2
+		BOOT_media=${media_prefix}1
 	else
 		ls -lh /dev/mapper/
 		echo "Error: not sure what to do (new feature)."
@@ -130,7 +131,18 @@ umount dev
 cd $DIR 
 umount $ROOT
 
+# change boot script for uart
+mkdir boot
+mount $BOOT_media boot
+
+sed -i '/#optargs/a optargs=capemgr.enable_partno=BB-UART1' uEnv.txt
+
+cd $DIR
+umount boot
+
 kpartx -d ${media_loop}
 losetup -d ${media_loop}
+cp $DIR/$IMAGE_NAME/image.img $DIR
+
 
 echo Image file: image.img
