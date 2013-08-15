@@ -9,17 +9,15 @@ export INOGIT=https://github.com/amperka/ino.git
 export DIR=${PWD#}
 
 . $DIR/lib/libmount.sh
+. $DIR/lib/libtools.sh
 
-if [ "$(id -u)" != "0" ]; then
-   echo "This script must be run as root or with sudo" 1>&2
-   exit 1
-fi
+checkroot
 
 if [ "$1" = "" ]; then
 	echo "Please pass the name of the elinux ubuntu image (from http://elinux.org/BeagleBoardUbuntu) as the first argument."
 	exit 1
 fi
- 
+
 if [ "$2" = "" ] || [ "$2" = "--bone" ]; then
 	uboot=bone
 	image_suffix=
