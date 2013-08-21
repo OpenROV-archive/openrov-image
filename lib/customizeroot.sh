@@ -35,7 +35,7 @@ cd /tmp/work/avrdude
 PATH=/usr/:$PATH
 cd avrdude
 ./bootstrap
-./configure --prefix=/usr/
+./configure --prefix=/usr/ --localstatedir=/var/ --sysconfdir=/etc/
 make
 sudo make install
 
