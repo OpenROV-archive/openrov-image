@@ -10,7 +10,7 @@ sudo apt-get -y upgrade
 # apache gets updated and then started, so we need to stop it again
 apache2ctl stop
 
-sudo apt-get -y install linux-firmware devmem2 python-software-properties python-configobj python-jinja2 python-serial gcc g++ make libjpeg-dev picocom zip unzip dhcpd vim ethtool arduino-core avr-libc avrdude binutils-avr
+sudo apt-get -y install linux-firmware devmem2 python-software-properties python-configobj python-jinja2 python-serial gcc g++ make libjpeg-dev picocom zip unzip dhcpd vim ethtool arduino-core avr-libc avrdude binutils-avr bison flex autoconf libftdi-dev libusb-dev
 
 cd /opt/openrov
 /opt/node/bin/npm rebuild
@@ -24,6 +24,20 @@ make install
 cd /tmp/work/mjpg-streamer/mjpg-streamer
 make install
 
+# dtc
+cd /tmp/work/dtc/
+make PREFIX=/usr/ CC=gcc CROSS_COMPILE= all
+echo "Installing dtc into: /usr/bin/"
+sudo make PREFIX=/usr/ install
+
+# avrdude
+cd /tmp/work/avrdude
+PATH=/usr/:$PATH
+cd avrdude
+./bootstrap
+./configure --prefix=/usr/
+make
+sudo make install
 
 #fix user
 useradd rov -m -s /bin/bash -g ubuntu -G admin

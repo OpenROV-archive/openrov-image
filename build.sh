@@ -76,6 +76,17 @@ git clone https://github.com/amperka/ino.git ino
 cd ino
 wget http://peak.telecommunity.com/dist/ez_setup.py
 
+# get dtc, we compile it in chroot
+cd $ROOT/tmp/work
+git clone git://git.kernel.org/pub/scm/linux/kernel/git/jdl/dtc.git
+cd dtc
+git checkout master -f
+git pull || true
+git checkout 65cc4d2748a2c2e6f27f1cf39e07a5dbabd80ebf -b 65cc4d2748a2c2e6f27f1cf39e07a5dbabd80ebf-build
+
+# avrdude
+cd $ROOT/tmp/work
+git clone https://github.com/kcuzner/avrdude.git
 
 cd $ROOT/opt
 git clone https://github.com/OpenROV/openrov-software.git openrov
