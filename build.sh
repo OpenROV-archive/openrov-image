@@ -83,6 +83,7 @@ cd dtc
 git checkout master -f
 git pull || true
 git checkout 65cc4d2748a2c2e6f27f1cf39e07a5dbabd80ebf -b 65cc4d2748a2c2e6f27f1cf39e07a5dbabd80ebf-build
+git pull git://github.com/RobertCNelson/dtc.git dtc-fixup-65cc4d2
 
 # avrdude
 cd $ROOT/tmp/work

@@ -125,10 +125,70 @@ cat > /etc/rc.local << __EOF__
 # setup the 'reset' GPIO configuration
 /opt/openrov/linux/reset.sh
 
+# load the device tree overlay for pin 25 (RESET)
+echo OPENROV-RESET > /sys/devices/bone_capemgr.7/slots
 
 exit 0
 
 __EOF__
+
+# create device tree overlay
+cd /home/rov/
+cat > OPENROV-RESET-00A0.dts << __EOF__
+/* 
+
+#compile 
+dtc -O dtb -o OPENROV-RESET-00A0.dtbo -b 0 -@ OPENROV-RESET-00A0.dts  
+cp OPENROV-RESET-00A0.dtbo /lib/firmware
+
+echo BB-RESET > /sys/devices/bone_capemgr.*/slots
+
+export SLOTS=/sys/devices/bone_capemgr.*/slots
+export PINS=/sys/kernel/debug/pinctrl/44e10800.pinmux/pins
+
+
+*/
+/dts-v1/;
+/plugin/;
+
+/{
+       compatible = "ti,beaglebone", "ti,beaglebone-black";
+       part-number = "OPENROV-RESET";
+       version = "00A0";
+
+       fragment@0 {
+             target = <&am33xx_pinmux>;
+            
+             __overlay__ {
+                  pinctrl_test: openrov_reset_pin {
+            pinctrl-single,pins = <
+
+                0x064 0x07  /* P8_25 */
+
+                   /* OUTPUT  GPIO(mode7) 0x07 pulldown, 0x17 pullup, 0x?f no pullup/down */
+                   /* INPUT   GPIO(mode7) 0x27 pulldown, 0x37 pullup, 0x?f no pullup/down */
+
+            >;
+          };
+             };
+       };
+
+       fragment@1 {
+        target = <&ocp>;
+        __overlay__ {
+            test_helper: helper {
+                compatible = "bone-pinmux-helper";
+                pinctrl-names = "default";
+                pinctrl-0 = <&pinctrl_test>;
+                status = "okay";
+            };
+        };
+    };
+};
+
+__EOF__
+dtc -O dtb -o OPENROV-RESET-00A0.dtbo -b 0 -@ OPENROV-RESET-00A0.dts  
+cp OPENROV-RESET-00A0.dtbo /lib/firmware
 
 
 #cleanup
