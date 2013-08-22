@@ -205,4 +205,5 @@ rm -rf /tmp/*
 userdel -r -f ubuntu
 
 #cleanup home
-find /home/ -type d -not -name rov -and -not -name . | xargs rm -rf
+cd /home
+find . -type d -not -name rov -and -not -name . | xargs rm -rf
