@@ -46,7 +46,7 @@ make
 sudo make install
 
 #fix user
-useradd rov -m -s /bin/bash -g ubuntu -G admin
+useradd rov -m -s /bin/bash -g admin
 echo rov:OpenROV | chpasswd
 
 # set the openrov startup
