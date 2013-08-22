@@ -141,7 +141,7 @@ cat > OPENROV-RESET-00A0.dts << __EOF__
 dtc -O dtb -o OPENROV-RESET-00A0.dtbo -b 0 -@ OPENROV-RESET-00A0.dts  
 cp OPENROV-RESET-00A0.dtbo /lib/firmware
 
-echo BB-RESET > /sys/devices/bone_capemgr.*/slots
+echo OPENROV-RESET > /sys/devices/bone_capemgr.*/slots
 
 export SLOTS=/sys/devices/bone_capemgr.*/slots
 export PINS=/sys/kernel/debug/pinctrl/44e10800.pinmux/pins
@@ -163,7 +163,7 @@ export PINS=/sys/kernel/debug/pinctrl/44e10800.pinmux/pins
                   pinctrl_test: openrov_reset_pin {
             pinctrl-single,pins = <
 
-                0x064 0x07  /* P8_25 */
+                0x000 0x07  /* P8_25 is the first GPIO pin, therefore offset 0x000 */
 
                    /* OUTPUT  GPIO(mode7) 0x07 pulldown, 0x17 pullup, 0x?f no pullup/down */
                    /* INPUT   GPIO(mode7) 0x27 pulldown, 0x37 pullup, 0x?f no pullup/down */
