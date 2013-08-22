@@ -10,27 +10,33 @@ sudo apt-get -y upgrade
 # apache gets updated and then started, so we need to stop it again
 apache2ctl stop
 
+echo Installing additional packages
 sudo apt-get -y install linux-firmware devmem2 python-software-properties python-configobj python-jinja2 python-serial gcc g++ make libjpeg-dev picocom zip unzip dhcpd vim ethtool arduino-core avr-libc avrdude binutils-avr bison flex autoconf libftdi-dev libusb-dev
 
+echo Rebuilding node modules
 cd /opt/openrov
 /opt/node/bin/npm rebuild
 
 # ino
+echo Builing ino
 cd /tmp/work/ino
 python ez_setup.py
 make install
 
 #mjg-streamer
+echo Building mjg-streamer
 cd /tmp/work/mjpg-streamer/mjpg-streamer
 make install
 
 # dtc
+echo Building dtc
 cd /tmp/work/dtc/
 make PREFIX=/usr/ CC=gcc CROSS_COMPILE= all
 echo "Installing dtc into: /usr/bin/"
 sudo make PREFIX=/usr/ install
 
 # avrdude
+echo Building avrdude
 cd /tmp/work/avrdude
 PATH=/usr/:$PATH
 cd avrdude
@@ -78,18 +84,19 @@ cat > /etc/network/interfaces << __EOF__
 auto lo
 iface lo inet loopback
 
-auto eth0
-iface eth0 inet static
+auto eht0
+iface eth0 inet dhcp
+
+auto eth0:0
+iface eth0:0 inet static
 name Ethernet alias LAN card
 address 192.168.254.1
 netmask 255.255.255.0
 broadcast 192.168.254.255
 network 192.168.254.0
+
 # Example to keep MAC address between reboots
 #hwaddress ether DE:AD:BE:EF:CA:FE
-
-auto eht0:0
-iface eth0:0 inet dhcp
 
 # WiFi Example
 #auto wlan0
@@ -122,11 +129,11 @@ cat > /etc/rc.local << __EOF__
 # bits.
 #
 
-# setup the 'reset' GPIO configuration
-/opt/openrov/linux/reset.sh
-
 # load the device tree overlay for pin 25 (RESET)
 echo OPENROV-RESET > /sys/devices/bone_capemgr.7/slots
+
+# setup the 'reset' GPIO configuration
+/opt/openrov/linux/reset.sh
 
 exit 0
 
@@ -141,9 +148,9 @@ cat > OPENROV-RESET-00A0.dts << __EOF__
 dtc -O dtb -o OPENROV-RESET-00A0.dtbo -b 0 -@ OPENROV-RESET-00A0.dts  
 cp OPENROV-RESET-00A0.dtbo /lib/firmware
 
-echo OPENROV-RESET > /sys/devices/bone_capemgr.*/slots
+echo OPENROV-RESET > /sys/devices/bone_capemgr.7/slots
 
-export SLOTS=/sys/devices/bone_capemgr.*/slots
+export SLOTS=/sys/devices/bone_capemgr.7/slots
 export PINS=/sys/kernel/debug/pinctrl/44e10800.pinmux/pins
 
 
@@ -194,3 +201,8 @@ cp OPENROV-RESET-00A0.dtbo /lib/firmware
 #cleanup
 rm -rf /tmp/*
 
+#remove ubuntu user
+userdel -r -f ubuntu
+
+#cleanup home
+find /home/ -type d -not -name rov -and -not -name . | xargs rm -rf

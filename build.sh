@@ -2,7 +2,7 @@
 
 export IMAGE=$1
 export NODEGIT=https://github.com/joyent/node.git
-export NODEVERSION=v0.10.15
+export NODEVERSION=v0.10.17
 export MJPG_STREAMERGIT=https://github.com/codewithpassion/mjpg-streamer.git
 export INOGIT=https://github.com/amperka/ino.git
 
