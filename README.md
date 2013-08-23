@@ -13,21 +13,25 @@ To download, get the file from:
 
 The image is compressed with _7Zip_ so you have to unzip it first.
 
-	*Linux:*
+*Linux:*
+
 	p7zip -d OpenROV-DD-MM-YYY.img.7z
 
-	*Windows:*
+*Windows:*
+
 	Use 7Zip. 
 
 Write the image onto you SD card:
 
-	*Linux:*
+*Linux:*
+
 	Find the right /dev/sdX device. The easiest way is to have a look at the output of _dmesg_ after you plugged in the sd-card.
 
 	dd if=OpenROV-DD-MM-YYYY.img of=/dev/sdX
 
 
-	*Windows:*
+*Windows:*
+
 	1. Get the latest version of *Win32DiskImager* from https://launchpad.net/win32-image-writer/+download
 	2. Point the Win32DiskImager to the image file 'OpenROV-DD-MM-Y theYYY.img' and the SD card
 	3. Press 'Write' and wait till its written to the SD card
@@ -45,7 +49,7 @@ http://192.168.254.1:8080/
 
 You can as well connect the BeagleBone via USB to your computer for testing.
 In this case, given you have installed the latest drivers (http://beagleboard.org/static/beaglebone/latest/README.htm), you will see a new drive in showing in your Explorer or Linux Desktop. Open that drive and you will see a _START.htm_ file. Open that in Chrome and you will be redirected to:
-htt://192.168.7.2:8080
+http://192.168.7.2:8080
 
 
 
