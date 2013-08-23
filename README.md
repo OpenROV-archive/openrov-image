@@ -9,7 +9,7 @@ To get the latest version of the OpenROV disk image for your ROV, you will need 
 
 To download, get the file from:
 
-	########### URL ##############
+	https://docs.google.com/uc?id=0B-NH5UNY7g7jRUNkbUd4ek5SWUU&export=download
 
 The image is compressed with _7Zip_ so you have to unzip it first.
 
