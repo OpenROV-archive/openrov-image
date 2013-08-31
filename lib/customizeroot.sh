@@ -41,7 +41,7 @@ cd /tmp/work/avrdude
 PATH=/usr/:$PATH
 cd avrdude
 ./bootstrap
-./configure --prefix=/usr/ --localstatedir=/var/ --sysconfdir=/etc/
+./configure --prefix=/usr/ --localstatedir=/var/ --sysconfdir=/etc/ --enable-linuxgpio
 make
 sudo make install
 
