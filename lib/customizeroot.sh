@@ -129,8 +129,9 @@ cat > /etc/rc.local << __EOF__
 # bits.
 #
 
-# load the device tree overlay for pin 25 (RESET)
-echo OPENROV-RESET > /sys/devices/bone_capemgr.7/slots
+# load the device tree overlay for pin 25 (RESET) and SPI
+echo OPENROV-RESET > /sys/devices/bone_capemgr.*/slots
+echo BB-SPI0DEV > /sys/devices/bone_capemgr.*/slots
 
 # setup the 'reset' GPIO configuration
 /opt/openrov/linux/reset.sh
@@ -139,64 +140,20 @@ exit 0
 
 __EOF__
 
-# create device tree overlay
-cd /home/rov/
-cat > OPENROV-RESET-00A0.dts << __EOF__
-/* 
 
-#compile 
-dtc -O dtb -o OPENROV-RESET-00A0.dtbo -b 0 -@ OPENROV-RESET-00A0.dts  
-cp OPENROV-RESET-00A0.dtbo /lib/firmware
-
-echo OPENROV-RESET > /sys/devices/bone_capemgr.7/slots
-
-export SLOTS=/sys/devices/bone_capemgr.7/slots
-export PINS=/sys/kernel/debug/pinctrl/44e10800.pinmux/pins
-
-
-*/
-/dts-v1/;
-/plugin/;
-
-/{
-       compatible = "ti,beaglebone", "ti,beaglebone-black";
-       part-number = "OPENROV-RESET";
-       version = "00A0";
-
-       fragment@0 {
-             target = <&am33xx_pinmux>;
-            
-             __overlay__ {
-                  pinctrl_test: openrov_reset_pin {
-            pinctrl-single,pins = <
-
-                0x000 0x07  /* P8_25 is the first GPIO pin, therefore offset 0x000 */
-
-                   /* OUTPUT  GPIO(mode7) 0x07 pulldown, 0x17 pullup, 0x?f no pullup/down */
-                   /* INPUT   GPIO(mode7) 0x27 pulldown, 0x37 pullup, 0x?f no pullup/down */
-
-            >;
-          };
-             };
-       };
-
-       fragment@1 {
-        target = <&ocp>;
-        __overlay__ {
-            test_helper: helper {
-                compatible = "bone-pinmux-helper";
-                pinctrl-names = "default";
-                pinctrl-0 = <&pinctrl_test>;
-                status = "okay";
-            };
-        };
-    };
-};
+#setup SPI device for avrdude
+cat > /etc/avrdude.conf << __EOF__
+programmer
+  id = "linuxspi";
+  desc = "Use Linux SPI device in /dev/spidev*";
+  type = "linuxspi";
+  reset = 25; //Change this from 25 to 30 in the image
+;
 
 __EOF__
-dtc -O dtb -o OPENROV-RESET-00A0.dtbo -b 0 -@ OPENROV-RESET-00A0.dts  
-cp OPENROV-RESET-00A0.dtbo /lib/firmware
 
+# compile the device tree files
+/opt/openrov/linux/update-devicetree-oberlays.sh
 
 #cleanup
 rm -rf /tmp/*
