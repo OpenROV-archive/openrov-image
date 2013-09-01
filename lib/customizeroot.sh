@@ -84,7 +84,7 @@ cat > /etc/network/interfaces << __EOF__
 auto lo
 iface lo inet loopback
 
-auto eht0
+auto eth0
 iface eth0 inet dhcp
 
 auto eth0:0
