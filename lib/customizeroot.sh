@@ -152,6 +152,9 @@ programmer
 
 __EOF__
 
+#fix arduino version
+echo 1.0.5 > /usr/share/arduino/lib/version.txt
+
 # compile the device tree files
 /opt/openrov/linux/update-devicetree-oberlays.sh
 
