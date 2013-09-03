@@ -3,6 +3,7 @@ openrov-image Changelog
 
 ## 03-09-2013 
 
+- Updated Cockpit and Arduino code from OpenROV/openrov-software
 - Change the default reset pin for the linuxspi in avrdude (OpenROV/openrov-image#22)
 - The SPI device is not showing up on the BBB image (OpenROV/openrov-image#21)
 - ino tools fails to parse arduino version number in image (OpenROV/openrov-image#20)
