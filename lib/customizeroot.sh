@@ -130,9 +130,9 @@ cat > /etc/rc.local << __EOF__
 #
 
 # load the device tree overlay for pin 25 (RESET) and SPI
-CAPEMGR=$( find /sys/devices/ -name bone_capemgr* | head -n 1 )
-echo OPENROV-RESET > $CAPEMGR/slots
-echo BB-SPI0DEV > $CAPEMGR/slots
+CAPEMGR=\$( find /sys/devices/ -name bone_capemgr* | head -n 1 )
+echo OPENROV-RESET > \$CAPEMGR/slots
+echo BB-SPI0DEV > \$CAPEMGR/slots
 
 # setup the 'reset' GPIO configuration
 /opt/openrov/linux/reset.sh
@@ -142,16 +142,8 @@ exit 0
 __EOF__
 
 
-#setup SPI device for avrdude
-cat > /etc/avrdude.conf << __EOF__
-programmer
-  id = "linuxspi";
-  desc = "Use Linux SPI device in /dev/spidev*";
-  type = "linuxspi";
-  reset = 25; //Change this from 25 to 30 in the image
-;
-
-__EOF__
+#change the SPI reset pin for acrdude
+sed -i 's/reset = 25/reset = 30/' $DIR/root/etc/avrdude.conf
 
 #fix arduino version
 echo 1.0.5 > /usr/share/arduino/lib/version.txt
