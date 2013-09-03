@@ -1,10 +1,11 @@
 #!/bin/bash
 
 export IMAGE=$1
-export NODEGIT=https://github.com/joyent/node.git
+export NODEGIT=git://github.com/joyent/node.git
 export NODEVERSION=v0.10.17
-export MJPG_STREAMERGIT=https://github.com/codewithpassion/mjpg-streamer.git
-export INOGIT=https://github.com/amperka/ino.git
+export MJPG_STREAMERGIT=git://github.com/codewithpassion/mjpg-streamer.git
+export INOGIT=git://github.com/amperka/ino.git
+export OPENROV_GIT=git://github.com/OpenROV/openrov-software.git
 
 export DIR=${PWD#}
 
@@ -63,6 +64,8 @@ chroot_mount
 # copy qemu for chrooting
 cp /usr/bin/qemu-arm-static $ROOT/usr/bin/
 
+mkdir $ROOT/tmp/work/
+
 # build node
 sh $DIR/lib/nodejs.sh $DIR/work $NODEGIT $NODEVERSION $ROOT/tmp/work/node/
 
@@ -90,7 +93,7 @@ cd $ROOT/tmp/work
 git clone https://github.com/kcuzner/avrdude.git
 
 cd $ROOT/opt
-git clone https://github.com/OpenROV/openrov-software.git openrov
+git clone $OPENROV_GIT openrov
 cd openrov
 npm install --arch=arm
 cd $ROOT
