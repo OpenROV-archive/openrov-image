@@ -130,8 +130,9 @@ cat > /etc/rc.local << __EOF__
 #
 
 # load the device tree overlay for pin 25 (RESET) and SPI
-echo OPENROV-RESET > /sys/devices/bone_capemgr.*/slots
-echo BB-SPI0DEV > /sys/devices/bone_capemgr.*/slots
+CAPEMGR=$( find /sys/devices/ -name bone_capemgr* | head -n 1 )
+echo OPENROV-RESET > $CAPEMGR/slots
+echo BB-SPI0DEV > $CAPEMGR/slots
 
 # setup the 'reset' GPIO configuration
 /opt/openrov/linux/reset.sh
