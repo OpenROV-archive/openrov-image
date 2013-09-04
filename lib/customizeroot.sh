@@ -152,6 +152,11 @@ sed -i 's/-c arduino/-c arduino-openrov -b 57600/' /opt/openrov/linux/arduino/fi
 
 #fix arduino version
 echo 1.0.5 > /usr/share/arduino/lib/version.txt
+#fix arduino library source
+cd /usr/share/arduino/
+rm -r libraries
+tar zxf /tmp/Arduino-1.0.4-libraries.tgz
+cd /tmp/
 
 # compile the device tree files
 /opt/openrov/linux/update-devicetree-oberlays.sh
