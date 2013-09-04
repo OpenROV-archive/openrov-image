@@ -6,10 +6,13 @@ Get and install the OpenROV disk image
 
 To get the latest version of the OpenROV disk image for your ROV, you will need a micro-sd card with at least 2 GB.
 
+The latest disk image is:
+
+**OpenROV-05-09-2013.img.7z**
 
 To download, get the file from:
 
-https://docs.google.com/uc?id=0B-NH5UNY7g7jRUNkbUd4ek5SWUU&export=download
+https://docs.google.com/uc?id=0B-NH5UNY7g7jTGoyN1BBQ09DbVE&export=download
 
 The image is compressed with _7Zip_ so you have to unzip it first.
 
