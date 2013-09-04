@@ -1,0 +1,331 @@
+From 886d0d8eb1349c7377987802602ea6e5e6875402 Mon Sep 17 00:00:00 2001
+From: Dominik Fretz <dominik.fretz@gmail.com>
+Date: Wed, 4 Sep 2013 12:26:20 +1000
+Subject: [PATCH] Adding openrov specific arduino programmer
+
+---
+ avrdude/Makefile.am       |   2 +
+ avrdude/arduino-openrov.c | 183 ++++++++++++++++++++++++++++++++++++++++++++++
+ avrdude/arduino-openrov.h |  29 ++++++++
+ avrdude/arduino.c         |   4 +-
+ avrdude/arduino.h         |   2 +
+ avrdude/avrdude.conf.in   |   8 ++
+ avrdude/pgm_type.c        |   2 +
+ 7 files changed, 228 insertions(+), 2 deletions(-)
+ create mode 100644 avrdude/arduino-openrov.c
+ create mode 100644 avrdude/arduino-openrov.h
+
+diff --git a/avrdude/Makefile.am b/avrdude/Makefile.am
+index f40a1de..3191341 100644
+--- a/avrdude/Makefile.am
++++ b/avrdude/Makefile.am
+@@ -89,6 +89,8 @@ libavrdude_a_SOURCES = \
+ 	lexer.l \
+ 	arduino.h \
+ 	arduino.c \
++	arduino-openrov.h \
++	arduino-openrov.c \
+ 	avr.c \
+ 	avr.h \
+ 	avr910.c \
+diff --git a/avrdude/arduino-openrov.c b/avrdude/arduino-openrov.c
+new file mode 100644
+index 0000000..1cb0164
+--- /dev/null
++++ b/avrdude/arduino-openrov.c
+@@ -0,0 +1,183 @@
++/*
++ * avrdude - A Downloader/Uploader for AVR device programmers
++ * Copyright (C) 2009 Lars Immisch
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program. If not, see <http://www.gnu.org/licenses/>.
++ */
++
++/* $Id$ */
++
++/*
++ * avrdude interface for Arduino programmer
++ *
++ * The Arduino programmer is mostly a STK500v1, just the signature bytes
++ * are read differently.
++ */
++
++#include "ac_cfg.h"
++
++#include <stdio.h>
++#include <string.h>
++#include <unistd.h>
++#include <stdlib.h>
++
++#include "avrdude.h"
++#include "pgm.h"
++#include "stk500_private.h"
++#include "stk500.h"
++#include "serial.h"
++#include "arduino.h"
++#include "arduino-openrov.h"
++
++/*
++ * Private data for this programmer.
++ */
++struct pdata
++{
++    int reset_timeout;
++    int reset_wait;
++    int retry;
++};
++
++#define PDATA(pgm) ((struct pdata *)(pgm->cookie))
++
++
++const char arduino_openrov_desc[] = "Arduino OpenROV programmer";
++
++static int arduino_openrov_open(PROGRAMMER * pgm, char * port)
++{
++  int reset_timeout = 300;
++  int reset_wait = 50;
++  int retry = 1;
++  if (PDATA(pgm)->reset_timeout)
++    reset_timeout = PDATA(pgm)->reset_timeout;
++  if (PDATA(pgm)->reset_wait)
++    reset_wait = PDATA(pgm)->reset_wait;
++  if (PDATA(pgm)->retry)
++    retry = PDATA(pgm)->retry;
++
++  strcpy(pgm->port, port);
++  if (serial_open(port, pgm->baudrate? pgm->baudrate: 115200, &pgm->fd)==-1) {
++    return -1;
++  }
++
++  int counter=0;
++  for(counter=0;counter < retry;counter++)
++  {
++  if (fork()) {
++    usleep(reset_wait*1000);
++  }
++  else {
++    system("/bin/echo \"low\" > /sys/class/gpio/gpio32/direction");
++    stk500_drain(pgm, 0);
++    usleep(reset_timeout*1000);
++    system("/bin/echo \"high\" > /sys/class/gpio/gpio32/direction");
++    exit(0);
++  }
++
++  /*
++   * drain any extraneous input
++   */
++    stk500_drain(pgm, 0);
++
++    if (stk500_getsync(pgm) >= 0)
++    return 0;
++  }
++
++  return -1;
++}
++
++static int arduino_openrov_parse(PROGRAMMER * pgm, LISTID extparms)
++{
++    LNODEID ln;
++    const char *extended_param;
++    int rv = 0;
++
++    for (ln = lfirst(extparms); ln; ln = lnext(ln))
++    {
++        extended_param = ldata(ln);
++
++        if (strncmp(extended_param, "reset=", strlen("reset=")) == 0)
++        {
++            int timeout;
++            if (sscanf(extended_param, "reset=%i", &timeout) != 1 || timeout <= 0)
++            {
++                fprintf(stderr,
++                        "%s: arduino_openrov_parse(): invalid reset timeout'%s'\n",
++                        progname, extended_param);
++                rv = -1;
++                continue;
++            }
++	    PDATA(pgm)->reset_timeout = timeout;
++
++            continue;
++	}
++        if (strncmp(extended_param, "wait=", strlen("wait=")) == 0)
++        {
++            int timeout;
++            if (sscanf(extended_param, "wait=%i", &timeout) != 1 || timeout <= 0)
++            {
++                fprintf(stderr,
++                        "%s: arduino_openrov_parse(): invalid wait timeout'%s'\n",
++                        progname, extended_param);
++                rv = -1;
++                continue;
++            }
++	    PDATA(pgm)->reset_wait = timeout;
++
++            continue;
++        }
++        if (strncmp(extended_param, "retry=", strlen("retry=")) == 0)
++        {
++            int retry;
++            if (sscanf(extended_param, "retry=%i", &retry) != 1 || retry <= 0)
++            {
++                fprintf(stderr,
++                        "%s: arduino_openrov_parse(): invalid retry count'%s'\n",
++                        progname, extended_param);
++                rv = -1;
++                continue;
++            }
++	    PDATA(pgm)->retry = retry;
++
++            continue;
++        }
++     }
++     return rv;
++}
++
++void arduino_openrov_initpgm(PROGRAMMER * pgm)
++{
++  /* This is mostly a STK500; just the signature is read
++     differently than on real STK500v1 
++     and the DTR signal is set when opening the serial port
++     for the Auto-Reset feature */
++  stk500_initpgm(pgm);
++
++  strcpy(pgm->type, "Arduino-OpenROV");
++  pgm->read_sig_bytes = arduino_read_sig_bytes;
++  pgm->open = arduino_openrov_open;
++  pgm->close = arduino_close;
++  pgm->parseextparams = arduino_openrov_parse;
++
++  if ((pgm->cookie = malloc(sizeof(struct pdata))) == 0)
++    {
++        fprintf(stderr,
++                "%s: pickit2_setup(): Out of memory allocating private data\n",
++                progname);
++        exit(1);
++    }
++    memset(pgm->cookie, 0, sizeof(struct pdata));
++
++}
+diff --git a/avrdude/arduino-openrov.h b/avrdude/arduino-openrov.h
+new file mode 100644
+index 0000000..158c686
+--- /dev/null
++++ b/avrdude/arduino-openrov.h
+@@ -0,0 +1,29 @@
++/*
++ * avrdude - A Downloader/Uploader for AVR device programmers
++ * Copyright (C) 2009 Lars Immisch
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program. If not, see <http://www.gnu.org/licenses/>.
++ */
++
++/* $Id$ */
++
++#ifndef arduino_openrov_h__
++#define arduino_openrov_h__
++
++extern const char arduino_openrov_desc[];
++void arduino_openrov_initpgm (PROGRAMMER * pgm);
++
++#endif
++
++
+diff --git a/avrdude/arduino.c b/avrdude/arduino.c
+index cc4afb0..12fc382 100644
+--- a/avrdude/arduino.c
++++ b/avrdude/arduino.c
+@@ -39,7 +39,7 @@
+ #include "arduino.h"
+ 
+ /* read signature bytes - arduino version */
+-static int arduino_read_sig_bytes(PROGRAMMER * pgm, AVRPART * p, AVRMEM * m)
++int arduino_read_sig_bytes(PROGRAMMER * pgm, AVRPART * p, AVRMEM * m)
+ {
+   unsigned char buf[32];
+ 
+@@ -109,7 +109,7 @@ static int arduino_open(PROGRAMMER * pgm, char * port)
+   return 0;
+ }
+ 
+-static void arduino_close(PROGRAMMER * pgm)
++void arduino_close(PROGRAMMER * pgm)
+ {
+   serial_set_dtr_rts(&pgm->fd, 0);
+   serial_close(&pgm->fd);
+diff --git a/avrdude/arduino.h b/avrdude/arduino.h
+index 024d711..d77d73e 100644
+--- a/avrdude/arduino.h
++++ b/avrdude/arduino.h
+@@ -23,6 +23,8 @@
+ 
+ extern const char arduino_desc[];
+ void arduino_initpgm (PROGRAMMER * pgm);
++int arduino_read_sig_bytes(PROGRAMMER * pgm, AVRPART * p, AVRMEM * m);
++void arduino_close(PROGRAMMER * pgm);
+ 
+ #endif
+ 
+diff --git a/avrdude/avrdude.conf.in b/avrdude/avrdude.conf.in
+index 325bd95..8d8ff54 100644
+--- a/avrdude/avrdude.conf.in
++++ b/avrdude/avrdude.conf.in
+@@ -352,6 +352,14 @@ programmer
+   type  = "arduino";
+   connection_type = serial;
+ ;
++
++programmer
++  id    = "arduino-openrov";
++  desc  = "Arduino OpenROV";
++  type  = "arduino_openrov";
++  connection_type = serial;
++;
++
+ # this will interface with the chips on these programmers:
+ #
+ # http://real.kiev.ua/old/avreal/en/adapters
+diff --git a/avrdude/pgm_type.c b/avrdude/pgm_type.c
+index 2b25486..4d448c9 100644
+--- a/avrdude/pgm_type.c
++++ b/avrdude/pgm_type.c
+@@ -29,6 +29,7 @@
+ #include "pgm_type.h"
+ 
+ #include "arduino.h"
++#include "arduino-openrov.h"
+ #include "avr.h"
+ #include "avr910.h"
+ #include "avrftdi.h"
+@@ -54,6 +55,7 @@
+ 
+ const PROGRAMMER_TYPE const programmers_types[] = {
+         {"arduino", arduino_initpgm, arduino_desc},
++        {"arduino_openrov", arduino_openrov_initpgm, arduino_openrov_desc},
+         {"avr910", avr910_initpgm, avr910_desc},
+         {"avrftdi", avrftdi_initpgm, avrftdi_desc},
+         {"buspirate", buspirate_initpgm, buspirate_desc},
+-- 
+1.8.1.2
+

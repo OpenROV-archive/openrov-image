@@ -4,7 +4,7 @@ export IMAGE=$1
 export NODEGIT=git://github.com/joyent/node.git
 export NODEVERSION=v0.10.17
 export MJPG_STREAMERGIT=git://github.com/codewithpassion/mjpg-streamer.git
-export INOGIT=git://github.com/amperka/ino.git
+export INOGIT=https://github.com/amperka/ino.git
 export OPENROV_GIT=git://github.com/OpenROV/openrov-software.git
 
 export DIR=${PWD#}
@@ -65,7 +65,6 @@ chroot_mount
 cp /usr/bin/qemu-arm-static $ROOT/usr/bin/
 
 mkdir $ROOT/tmp/work/
-
 # build node
 sh $DIR/lib/nodejs.sh $DIR/work $NODEGIT $NODEVERSION $ROOT/tmp/work/node/
 
@@ -75,7 +74,7 @@ git clone $MJPG_STREAMERGIT mjpg-streamer
 
 # get ino
 cd $ROOT/tmp/work
-git clone https://github.com/amperka/ino.git ino
+git clone $INOGIT
 cd ino
 wget http://peak.telecommunity.com/dist/ez_setup.py
 
@@ -91,6 +90,8 @@ git pull git://github.com/RobertCNelson/dtc.git dtc-fixup-65cc4d2
 # avrdude
 cd $ROOT/tmp/work
 git clone https://github.com/kcuzner/avrdude.git
+cd avrdude/avrdude
+git apply $DIR/contrib/avrdude.patch
 
 cd $ROOT/opt
 git clone $OPENROV_GIT openrov
@@ -99,6 +100,7 @@ npm install --arch=arm
 cd $ROOT
 
 cp $DIR/lib/customizeroot.sh ./tmp/
+cp $DIR/contrib/Arduino-1.0.4-libraries.tgz ./tmp/
 chroot . /tmp/customizeroot.sh
 
 cd $DIR 
