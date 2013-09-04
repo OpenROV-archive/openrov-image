@@ -144,11 +144,10 @@ __EOF__
 
 
 #change the SPI reset pin for acrdude
-sed -i 's/reset = 25/reset = 30/' $DIR/root/etc/avrdude.conf
+sed -i 's/reset = 25/reset = 30/' /etc/avrdude.conf
 
 #change the SPI reset pin for acrdude
-sed -i 's/-c arduino/-c arduino-openrov -b 57600/' $DIR/root/opt/openrov/linux/arduino/firmware-upload.sh
-
+sed -i 's/-c arduino/-c arduino-openrov -b 57600/' /opt/openrov/linux/arduino/firmware-upload.sh
 
 
 #fix arduino version
