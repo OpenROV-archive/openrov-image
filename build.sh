@@ -91,6 +91,8 @@ git pull git://github.com/RobertCNelson/dtc.git dtc-fixup-65cc4d2
 # avrdude
 cd $ROOT/tmp/work
 git clone https://github.com/kcuzner/avrdude.git
+cd avrdude/avrdude
+git apply $DIR/avrdude.patch
 
 cd $ROOT/opt
 git clone $OPENROV_GIT openrov
