@@ -4,7 +4,8 @@ export IMAGE=$1
 export NODEGIT=git://github.com/joyent/node.git
 export NODEVERSION=v0.10.17
 export MJPG_STREAMERGIT=git://github.com/codewithpassion/mjpg-streamer.git
-github.com/amperka/ino.gitlexport OPENROV_GIT=git://github.com/OpenROV/openrov-software.git
+export INOGIT=https://github.com/amperka/ino.git
+export OPENROV_GIT=git://github.com/OpenROV/openrov-software.git
 
 export DIR=${PWD#}
 
@@ -73,7 +74,7 @@ git clone $MJPG_STREAMERGIT mjpg-streamer
 
 # get ino
 cd $ROOT/tmp/work
-git clone https://github.com/amperka/ino.git ino
+git clone $INOGIT
 cd ino
 wget http://peak.telecommunity.com/dist/ez_setup.py
 
