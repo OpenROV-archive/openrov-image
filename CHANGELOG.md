@@ -1,6 +1,12 @@
 openrov-image Changelog
 =============
 
+## 05-09-2013
+
+- Improve arduino reset when uploading firmware by extending avrdude with a patch
+- fix arduino library (for the compilation of the openrov arduino code) by using arduino library code from 1.0.4
+
+
 ## 03-09-2013 
 
 - Updated Cockpit and Arduino code from OpenROV/openrov-software
