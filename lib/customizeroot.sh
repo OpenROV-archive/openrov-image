@@ -45,6 +45,7 @@ cd avrdude
 make
 sudo make install
 
+
 #fix user
 useradd rov -m -s /bin/bash -g admin
 echo rov:OpenROV | chpasswd
@@ -144,6 +145,11 @@ __EOF__
 
 #change the SPI reset pin for acrdude
 sed -i 's/reset = 25/reset = 30/' $DIR/root/etc/avrdude.conf
+
+#change the SPI reset pin for acrdude
+sed -i 's/-c arduino/-c arduino-openrov -b 57600/' $DIR/root/opt/openrov/linux/arduino/firmware-upload.sh
+
+
 
 #fix arduino version
 echo 1.0.5 > /usr/share/arduino/lib/version.txt
