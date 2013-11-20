@@ -22,7 +22,10 @@ then
 fi
 cd $DIR
 
-git clone $2 || { echo >&2 "git clone $NODEGIT failed.  Aborting."; exit 1; }
+if [ ! -d node ] #we don't have node yet, clone it
+then
+	git clone $2 || { echo >&2 "git clone $NODEGIT failed.  Aborting."; exit 1; }
+fi
 cd node
 git checkout $NODEVERSION
 

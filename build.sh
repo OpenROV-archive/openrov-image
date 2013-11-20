@@ -6,6 +6,7 @@ export NODEVERSION=v0.10.17
 export MJPG_STREAMERGIT=git://github.com/codewithpassion/mjpg-streamer.git
 export INOGIT=https://github.com/amperka/ino.git
 export OPENROV_GIT=git://github.com/OpenROV/openrov-software.git
+export OPENROV_BRANCH=controlboard25
 
 export DIR=${PWD#}
 
@@ -67,6 +68,8 @@ cp /usr/bin/qemu-arm-static $ROOT/usr/bin/
 mkdir $ROOT/tmp/work/
 # build node
 sh $DIR/lib/nodejs.sh $DIR/work $NODEGIT $NODEVERSION $ROOT/tmp/work/node/
+#build node 0.8.22 for cloud9
+sh $DIR/lib/nodejs.sh $DIR/work $NODEGIT v0.8.22 $ROOT/tmp/work/node08/
 
 # get mjpeg-streamer
 cd $ROOT/tmp/work
@@ -93,8 +96,15 @@ git clone https://github.com/kcuzner/avrdude.git
 cd avrdude/avrdude
 git apply $DIR/contrib/avrdude.patch
 
+#cloud9
+cd $ROOT/tmp/work
+wget https://github.com/ajaxorg/cloud9/archive/v2.0.93.zip
+unzip v2.0.93.zip
+mv cloud9-2.0.93
+
 cd $ROOT/opt
 git clone $OPENROV_GIT openrov
+git checkout $OPENROV_BRANCH
 cd openrov
 npm install --arch=arm
 cd $ROOT
