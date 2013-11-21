@@ -6,6 +6,7 @@ export NODEVERSION=v0.10.17
 export MJPG_STREAMERGIT=git://github.com/codewithpassion/mjpg-streamer.git
 export INOGIT=https://github.com/amperka/ino.git
 export OPENROV_GIT=git://github.com/OpenROV/openrov-software.git
+export OPENROV_BRANCH=controlboard25
 
 export DIR=${PWD#}
 
@@ -44,10 +45,10 @@ if which pv > /dev/null ; then
 			tar xvf "${IMAGE}"
 		fi
 
-cd $IMAGE_NAME
+cd $IMAGE_NAME*
 
 # fix the size of the image file
-sed -i 's/\[1024\*800\]/\[1024*1500]/' setup_sdcard.sh
+sed -i 's/\[1024\*800\]/\[1024*1700]/' setup_sdcard.sh
 
 echo "Building image file!"
 sleep 1
@@ -55,7 +56,7 @@ sleep 1
 
 # mounting
 cd ..
-mount_image $IMAGE_NAME/image.img
+mount_image $IMAGE_NAME*/image.img
 
 export ROOT=${PWD#}/root
 
@@ -67,6 +68,8 @@ cp /usr/bin/qemu-arm-static $ROOT/usr/bin/
 mkdir $ROOT/tmp/work/
 # build node
 sh $DIR/lib/nodejs.sh $DIR/work $NODEGIT $NODEVERSION $ROOT/tmp/work/node/
+#build node 0.8.22 for cloud9
+#sh $DIR/lib/nodejs.sh $DIR/work $NODEGIT v0.8.22 $ROOT/tmp/work/node08/
 
 # get mjpeg-streamer
 cd $ROOT/tmp/work
@@ -88,14 +91,27 @@ git checkout 65cc4d2748a2c2e6f27f1cf39e07a5dbabd80ebf -b 65cc4d2748a2c2e6f27f1cf
 git pull git://github.com/RobertCNelson/dtc.git dtc-fixup-65cc4d2
 
 # avrdude
-cd $ROOT/tmp/work
-git clone https://github.com/kcuzner/avrdude.git
-cd avrdude/avrdude
-git apply $DIR/contrib/avrdude.patch
+if [ ! -d $DIR/work/avrdude ] 
+then
+	cd $ROOT/tmp/work
+	git clone https://github.com/kcuzner/avrdude.git
+	cd avrdude/avrdude
+	git apply $DIR/contrib/avrdude.patch
+else
+	cp -r $DIR/work/avrdude $ROOT/tmp/work
+	touch $ROOT/tmp/work/avrdude/_BUILT
+fi
+
+#cloud9
+#cd $ROOT/tmp/work
+#wget https://github.com/ajaxorg/cloud9/archive/v2.0.93.zip
+#unzip v2.0.93.zip
+#mv cloud9-2.0.93
 
 cd $ROOT/opt
 git clone $OPENROV_GIT openrov
 cd openrov
+git checkout $OPENROV_BRANCH
 npm install --arch=arm
 cd $ROOT
 
@@ -104,6 +120,11 @@ cp $DIR/contrib/Arduino-1.0.4-libraries.tgz ./tmp/
 chroot . /tmp/customizeroot.sh
 
 cd $DIR 
+
+if [ ! -d $DIR/work/avrdude ] 
+then
+	cp -r $ROOT/tmp/work/avrdude $DIR/work/avrdude
+fi
 
 # change boot script for uart
 sed -i '/#optargs/a optargs=capemgr.enable_partno=BB-UART1' $DIR/boot/uEnv.txt
@@ -121,10 +142,13 @@ cd $DIR
 sync
 sleep 1
 
+#cleanup
+rm -rf $ROOT/tmp/*
+
 chroot_umount
 
 unmount_image
 
-cp $DIR/$IMAGE_NAME/image.img $DIR/OpenROV${image_suffix}.img
+cp $DIR/$IMAGE_NAME*/image.img $DIR/OpenROV${image_suffix}.img
 
 echo Image file: OpenROV${image_suffix}.img

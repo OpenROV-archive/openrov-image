@@ -2,6 +2,7 @@
 
 # install node
 cp -r /tmp/work/node /opt/
+cp -r /tmp/work/node08 /opt/
 
 # update
 sudo apt-get -y update
@@ -40,9 +41,12 @@ echo Building avrdude
 cd /tmp/work/avrdude
 PATH=/usr/:$PATH
 cd avrdude
-./bootstrap
-./configure --prefix=/usr/ --localstatedir=/var/ --sysconfdir=/etc/ --enable-linuxgpio
-make
+if [ ! -f /tmp/work/avrdude/_BUILT ] 
+then
+	./bootstrap
+	./configure --prefix=/usr/ --localstatedir=/var/ --sysconfdir=/etc/ --enable-linuxgpio
+	make
+fi
 sudo make install
 
 
@@ -147,8 +151,14 @@ __EOF__
 sed -i 's/reset = 25/reset = 30/' /etc/avrdude.conf
 
 #change the SPI reset pin for acrdude
-sed -i 's/-c arduino/-c arduino-openrov -b 57600/' /opt/openrov/linux/arduino/firmware-upload.sh
+sed -i 's/-c arduino/-c arduino-openrov -b 115200/' /opt/openrov/linux/arduino/firmware-upload.sh
 
+# Include node in PATH
+echo "PATH=\$PATH:/opt/node/bin" >> /home/rov/.profile
+
+# add swap file
+bash /opt/openrov/linux/addswapfile.sh
+swapoff /var/swapfile
 
 #fix arduino version
 echo 1.0.5 > /usr/share/arduino/lib/version.txt
@@ -160,9 +170,6 @@ cd /tmp/
 
 # compile the device tree files
 /opt/openrov/linux/update-devicetree-oberlays.sh
-
-#cleanup
-rm -rf /tmp/*
 
 #remove ubuntu user
 userdel -r -f ubuntu

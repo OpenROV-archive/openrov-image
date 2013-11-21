@@ -22,13 +22,21 @@ then
 fi
 cd $DIR
 
-git clone $2 || { echo >&2 "git clone $NODEGIT failed.  Aborting."; exit 1; }
+if [ ! -d node ] #we don't have node yet, clone it
+then
+	git clone $2 || { echo >&2 "git clone $NODEGIT failed.  Aborting."; exit 1; }
+fi
 cd node
-git checkout $NODEVERSION
+if [ ! -f node ] #we don't have node compiled
+then
 
-./configure --without-snapshot --dest-cpu=arm --dest-os=linux --with-arm-float-abi=hard --prefix=$NODEDIR || { echo >&2 "Tried to configure NodeJS but it failed.  Aborting."; exit 1; }
+	git checkout $NODEVERSION
 
-GYP_DEFINES="armv7=0" CXXFLAGS='-mfpu=vfp -mfloat-abi=hard -DUSE_EABI_HARDFLOAT' CCFLAGS='-mfpu=vfp -mfloat-abi=hard -DUSE_EABI_HARDFLOAT' make --jobs=8
+	./configure --without-snapshot --dest-cpu=arm --dest-os=linux --with-arm-float-abi=hard --prefix=$NODEDIR || { echo >&2 "Tried to configure NodeJS but it failed.  Aborting."; exit 1; }
+
+	GYP_DEFINES="armv7=0" CXXFLAGS='-mfpu=vfp -mfloat-abi=hard -DUSE_EABI_HARDFLOAT' CCFLAGS='-mfpu=vfp -mfloat-abi=hard -DUSE_EABI_HARDFLOAT' make --jobs=8
+fi
+
 GYP_DEFINES="armv7=0" CXXFLAGS='-mfpu=vfp -mfloat-abi=hard -DUSE_EABI_HARDFLOAT' CCFLAGS='-mfpu=vfp -mfloat-abi=hard -DUSE_EABI_HARDFLOAT' make install
 
 # fix the path to node in the npm script
