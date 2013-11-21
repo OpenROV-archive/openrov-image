@@ -158,6 +158,7 @@ echo "PATH=\$PATH:/opt/node/bin" >> /home/rov/.profile
 
 # add swap file
 bash /opt/openrov/linux/addswapfile.sh
+swapoff /var/swapfile
 
 #fix arduino version
 echo 1.0.5 > /usr/share/arduino/lib/version.txt
