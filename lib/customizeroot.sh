@@ -41,9 +41,12 @@ echo Building avrdude
 cd /tmp/work/avrdude
 PATH=/usr/:$PATH
 cd avrdude
-./bootstrap
-./configure --prefix=/usr/ --localstatedir=/var/ --sysconfdir=/etc/ --enable-linuxgpio
-make
+if [ ! -f /tmp/work/avrdude/_BUILT ] 
+then
+	./bootstrap
+	./configure --prefix=/usr/ --localstatedir=/var/ --sysconfdir=/etc/ --enable-linuxgpio
+	make
+fi
 sudo make install
 
 
@@ -151,7 +154,7 @@ sed -i 's/reset = 25/reset = 30/' /etc/avrdude.conf
 sed -i 's/-c arduino/-c arduino-openrov -b 115200/' /opt/openrov/linux/arduino/firmware-upload.sh
 
 # Include node in PATH
-echo "PATH=\$PATH:/opt/node/bin/" >> /home/rov/.profile
+echo "PATH=\$PATH:/opt/node/bin" >> /home/rov/.profile
 
 # add swap file
 bash /opt/openrov/linux/addswapfile.sh
@@ -166,9 +169,6 @@ cd /tmp/
 
 # compile the device tree files
 /opt/openrov/linux/update-devicetree-oberlays.sh
-
-#cleanup
-rm -rf /tmp/*
 
 #remove ubuntu user
 userdel -r -f ubuntu
