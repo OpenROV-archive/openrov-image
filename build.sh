@@ -1,4 +1,4 @@
-#!/bin/bash
+	#!/bin/bash
 
 export IMAGE=$1
 export NODEGIT=git://github.com/joyent/node.git
