@@ -48,8 +48,13 @@ __EOF__
 chmod +x $ROOT/tmp/build_avrdude.sh
 chroot $ROOT /tmp/build_avrdude.sh
 
-cp -r $ROOT/tmp/avrdude_install $AVRDUDE_PACKAGE_DIR
+if [ ! -d $AVRDUDE_PACKAGE_DIR ];
+then
+	mkdir -p $AVRDUDE_PACKAGE_DIR
+fi
+cp -r $ROOT/tmp/avrdude_install/* $AVRDUDE_PACKAGE_DIR
 
+cd $DIR
 sync
 sleep 2
 chroot_umount
@@ -57,4 +62,6 @@ unmount_image
 
 
 cd $DIR/work/packages/
-fpm -s dir -t deb -a armhf -n openrov-avrdude -v 6.0.1-0 -C $AVRDUDE_PACKAGE_DIR .
+fpm -f -m info@openrov.com -s dir -t deb -a armhf -n openrov-avrdude -v 6.0.1-0 --after-install=$DIR/steps/step_03/openrov-avrdude-afterinstall.sh -C $AVRDUDE_PACKAGE_DIR .
+
+

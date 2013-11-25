@@ -50,8 +50,9 @@ __EOF__
 chmod +x $ROOT/tmp/build_dtc.sh
 chroot $ROOT /tmp/build_dtc.sh
 
-cp -r $ROOT/tmp/dtc_install $DTC_PACKAGE_DIR
+cp -r $ROOT/tmp/dtc_install/* $DTC_PACKAGE_DIR
 
+cd $DIR
 sync
 sleep 2
 chroot_umount
@@ -59,4 +60,4 @@ unmount_image
 
 
 cd $DIR/work/packages/
-fpm -s dir -t deb -a armhf -n openrov-dtc -v 1.4-0 -C $DTC_PACKAGE_DIR .
+fpm -f -m info@openrov.com -s dir -t deb -a armhf -n openrov-dtc -v 1.4-0 -C $DTC_PACKAGE_DIR .

@@ -1,58 +1,32 @@
 #!/bin/sh
 
-export DIR=${PWD#}
+# compile the device tree files
+/opt/openrov/linux/update-devicetree-oberlays.sh
 
-export OPENROV_GIT=git://github.com/OpenROV/openrov-software.git
-export OPENROV_BRANCH=controlboard25
-export OPENROV_PACKAGE_DIR=$DIR/work/step_03/openrov
+# set the openrov startup
+ln -s /opt/openrov/linux/openrov.service /etc/init.d/openrov
+chmod +x /opt/openrov/linux/openrov.service
+update-rc.d openrov defaults
 
-if [ ! "$1" = "" ];
-then
-	STEP_03_IMAGE=$1	
-fi
+chmod +x /opt/openrov/linux/rc.local
 
-if [ "$STEP_03_IMAGE" = "" ] || [ ! -f "$STEP_03_IMAGE" ];
-then
-	echo "Please pass the name the Step 3 image in the environment variable STEP_03_IMAGE"
-	exit 1
-fi
+# setup reset and uart for non black BB
+cp /etc/rc.local /etc/rc.local_orig
+cat > /etc/rc.local << __EOF__
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
 
-. $DIR/lib/libtools.sh
-. $DIR/lib/libmount.sh
+/opt/openrov/linux/rc.local
 
-checkroot
-cp $DIR/contrib/Arduino-1.0.4-libraries.tgz ./tmp/
-
-mount_image $STEP_03_IMAGE
-chroot_mount
-
-export ROOT=${PWD#}/root
-
-cd $ROOT/opt
-git clone $OPENROV_GIT openrov
-cd openrov
-git checkout $OPENROV_BRANCH
-npm install --arch=arm
-
-cat > $ROOT/tmp/build_cockpit.sh << __EOF__
-#!/bin/sh
-
-cd /opt/openrov
-/opt/node/bin/npm rebuild
+exit 0
 
 __EOF__
-
-chmod +x $ROOT/tmp/build_cockpit.sh
-chroot $ROOT /tmp/build_cockpit.sh
-
-mkdir -p $OPENROV_PACKAGE_DIR/opt/openrov
-
-cp -r $ROOT/opt/openrov $OPENROV_PACKAGE_DIR/opt/openrov
-
-sync
-sleep 2
-chroot_umount
-unmount_image
-
-cd $DIR/work/packages/
-fpm -s dir -t deb -a armhf -n openrov-cockpit -v 2.5.0-0 -C $OPENROV_PACKAGE_DIR .

@@ -54,11 +54,11 @@ cd $DIR
 
 rm $ROOT/tmp/build_mjpeg_streamer.sh
 
-cp -r $ROOT/tmp/mjpg-streamer_install $MJPG_STREAMER_PACKAGE_DIR
+cp -r $ROOT/tmp/mjpg-streamer_install/usr $MJPG_STREAMER_PACKAGE_DIR/usr
 
 sleep 2
 chroot_umount
 unmount_image
 
 cd $DIR/work/packages/
-fpm -s dir -t deb -a armhf -n openrov-mjpeg-streamer -v 2.0-0 -C $MJPG_STREAMER_PACKAGE_DIR .
+fpm -f -m info@openrov.com -s dir -t deb -a armhf -n openrov-mjpeg-streamer -v 2.0-0 -C $MJPG_STREAMER_PACKAGE_DIR .

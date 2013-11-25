@@ -15,4 +15,4 @@ $DIR/lib/nodejs.sh $DIR/work $NODEGIT $NODEVERSION /opt/node $NODE_PACKAGE_DIR
 
 mkdir -p $DIR/work/packages 
 cd $DIR/work/packages
-fpm -s dir -t deb -a armhf -n openrov-nodejs -v 0.10.17-0 -C $NODE_PACKAGE_DIR .
+fpm -f -m info@openrov.com -s dir -t deb -a armhf -n openrov-nodejs -v 0.10.17-0 -C $NODE_PACKAGE_DIR .

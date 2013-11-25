@@ -46,7 +46,13 @@ __EOF__
 chmod +x $ROOT/tmp/build_ino.sh
 chroot $ROOT /tmp/build_ino.sh
 
-cp -r $ROOT/tmp/ino_install $INO_PACKAGE_DIR
+
+if [ ! -d $INO_PACKAGE_DIR/usr ]; then
+	mkdir -p $INO_PACKAGE_DIR/usr
+fi
+cp -r $ROOT/tmp/ino_install/usr $INO_PACKAGE_DIR
+
+cd $DIR 
 
 sync
 sleep 2
@@ -55,4 +61,4 @@ unmount_image
 
 
 cd $DIR/work/packages/
-fpm -s dir -t deb -a armhf -n openrov-ino -v 0.3.6-0 -C $INO_PACKAGE_DIR .
+fpm -f -m info@openrov.com -s dir -t deb -a armhf -n openrov-ino -v 0.3.6-0 -C $INO_PACKAGE_DIR .
