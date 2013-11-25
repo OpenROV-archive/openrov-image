@@ -5,8 +5,12 @@
 		
 		media_loop=$(losetup -f || true)
 		
-		mkdir root
-		mkdir boot
+		if [ ! -d root ]; then 
+			mkdir root
+		fi
+		if [ ! -d boot ]; then
+			mkdir boot
+		fi
 
 		if [ ! "${media_loop}" ] ; then
 			echo "losetup -f failed"

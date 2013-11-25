@@ -25,7 +25,7 @@ if [ ! -d $IMAGE_DIR_NAME ]
 then
 	mkdir -p "$IMAGE_DIR_NAME"
 fi
-#cp $STEP_02_IMAGE $STEP_03_IMAGE
+cp $STEP_02_IMAGE $STEP_03_IMAGE
 echo -----------------------------
 echo done
 echo -----------------------------
@@ -36,6 +36,10 @@ $DIR/steps/step_03/01_build_nodejs.sh
 $DIR/steps/step_03/02_build_openrov-cockpit.sh $STEP_03_IMAGE
 $DIR/steps/step_03/03_build_mjpegstreamer.sh $STEP_03_IMAGE
 $DIR/steps/step_03/04_build_ino.sh $STEP_03_IMAGE
-$DIR/steps/step_03/04_build_dtc.sh $STEP_03_IMAGE
-$DIR/steps/step_03/05_build_avrdude.sh $STEP_03_IMAGE
+$DIR/steps/step_03/05_build_dtc.sh $STEP_03_IMAGE
+$DIR/steps/step_03/06_build_avrdude.sh $STEP_03_IMAGE
 
+
+echo -----------------------------
+echo Done step 3
+echo -----------------------------
