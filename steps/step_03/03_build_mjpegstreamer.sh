@@ -54,7 +54,11 @@ cd $DIR
 
 rm $ROOT/tmp/build_mjpeg_streamer.sh
 
-cp -r $ROOT/tmp/mjpg-streamer_install/usr $MJPG_STREAMER_PACKAGE_DIR/usr
+if [ ! -d $MJPG_STREAMER_PACKAGE_DIR ]; then
+	mkdir -p $MJPG_STREAMER_PACKAGE_DIR
+fi
+
+cp -r $ROOT/tmp/mjpg-streamer_install/usr $MJPG_STREAMER_PACKAGE_DIR
 
 sleep 2
 chroot_umount
