@@ -65,12 +65,7 @@ userdel -r -f ubuntu
 echo -----------------------------
 echo Installing packages
 echo -----------------------------
-dpkg -i /tmp/packages/openrov-dtc*.deb
-dpkg -i /tmp/packages/openrov-ino*.deb
-dpkg -i /tmp/packages/openrov-mjpeg-streamer*.deb
-dpkg -i /tmp/packages/openrov-nodejs*.deb
-dpkg -i --force-overwrite /tmp/packages/openrov-avrdude*.deb
-dpkg -i /tmp/packages/openrov-cockpit*.deb
+dpkg -i --force-overwrite /tmp/packages/openrov-*.deb
 
 echo -----------------------------
 echo Add swapfile

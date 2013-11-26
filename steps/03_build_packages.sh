@@ -32,6 +32,7 @@ echo -----------------------------
 echo Compiling packages
 echo -----------------------------
 
+$DIR/steps/step_03/00_openrov-image.sh
 $DIR/steps/step_03/01_build_nodejs.sh
 $DIR/steps/step_03/02_build_openrov-cockpit.sh $STEP_03_IMAGE
 $DIR/steps/step_03/03_build_mjpegstreamer.sh $STEP_03_IMAGE
