@@ -30,6 +30,7 @@ export ROOT=${PWD#}/root
 cd $ROOT/opt
 git clone $OPENROV_GIT openrov
 cd openrov
+git pull origin
 git checkout $OPENROV_BRANCH
 npm install --arch=arm
 

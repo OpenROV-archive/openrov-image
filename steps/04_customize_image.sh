@@ -157,6 +157,8 @@ chroot $ROOT /tmp/update.sh
 
 rm $ROOT/tmp/update.sh
 
+echo Setting up auto resize on first boot
+touch $ROOT/var/.RESIZE_ROOT_PARTITION
 
 echo ------------------------------
 echo Customizing boot partition
