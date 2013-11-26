@@ -11,7 +11,7 @@ then
 	mkdir -p $NODE_PACKAGE_DIR
 fi
 
-$DIR/lib/nodejs.sh $DIR/work $NODEGIT $NODEVERSION /opt/node $NODE_PACKAGE_DIR
+$DIR/steps/step_03/nodejs.sh $DIR/work $NODEGIT $NODEVERSION /opt/node $NODE_PACKAGE_DIR
 
 mkdir -p $DIR/work/packages 
 cd $DIR/work/packages

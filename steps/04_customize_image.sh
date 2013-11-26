@@ -173,7 +173,7 @@ sed -i 's/icon=Docs\\beagle.ico/icon=Docs\\openrov.ico/' $DIR/boot/autorun.inf
 sed -i 's/label=BeagleBone Getting Started/label=OpenROV Cockpit/' $DIR/boot/autorun.inf
 sed -i 's/action=Open BeagleBone Getting Started Guide/action=Open the OpenROV Cockpit/' $DIR/boot/autorun.inf
 
-cp $DIR/lib/openrov.ico $DIR/boot/Docs/
+cp $DIR/contrib/openrov.ico $DIR/boot/Docs/
 echo ------------------------------
 echo done
 echo ------------------------------
