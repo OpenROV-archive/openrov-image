@@ -70,7 +70,6 @@ sudo apt-get -y install \
 	picocom \
 	zip \
 	unzip \
-	dhcpd \
 	vim \
 	ethtool \
 	arduino-core \
@@ -81,7 +80,8 @@ sudo apt-get -y install \
 	flex \
 	autoconf \
 	libftdi-dev \
-	libusb-dev
+	libusb-dev \
+	samba
 
 apache2ctl stop
 
@@ -94,8 +94,7 @@ rm $ROOT/tmp/update.sh
 
 chroot_umount
 unmount_image
-
-
+ 
 echo -----------------------------
 echo Done step 2
 echo -----------------------------
