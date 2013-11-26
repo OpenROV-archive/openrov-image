@@ -84,6 +84,7 @@ sudo apt-get -y install \
 	samba
 
 apache2ctl stop
+/etc/init.d/samba stop
 
 __EOF__
 chmod +x $ROOT/tmp/update.sh
