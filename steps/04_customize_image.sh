@@ -184,7 +184,6 @@ echo "> $OUTPUT_IMAGE"
 cp $STEP_04_IMAGE $OUTPUT_IMAGE
 echo calculating md5sum 
 cd $OUTPUT_DIR_NAME
-md5sum OpenROV.img > OpenROV.img.md5 
 cd $DIR 
 
 echo -----------------------------
