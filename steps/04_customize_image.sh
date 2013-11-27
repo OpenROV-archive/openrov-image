@@ -62,16 +62,12 @@ echo "PATH=\$PATH:/opt/node/bin" >> /home/rov/.profile
 echo remove ubuntu user
 userdel -r -f ubuntu
 
+echo "rov ALL=NOPASSWD: /opt/openrov/linux/" >> /etc/sudoers
+
 echo -----------------------------
 echo Installing packages
 echo -----------------------------
 dpkg -i --force-overwrite /tmp/packages/openrov-*.deb
-
-echo -----------------------------
-echo Add swapfile
-echo -----------------------------
-bash /opt/openrov/linux/addswapfile.sh
-swapoff /var/swapfile
 
 echo -----------------------------
 echo Cleanup home directory

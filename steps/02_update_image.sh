@@ -81,9 +81,12 @@ sudo apt-get -y install \
 	autoconf \
 	libftdi-dev \
 	libusb-dev \
-	samba
+	samba \
+	mercurial #needed for cloud9
 
-apache2ctl stop
+#remove apache
+dpkg -r apache2
+
 /etc/init.d/samba stop
 
 __EOF__

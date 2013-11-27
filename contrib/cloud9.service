@@ -15,11 +15,11 @@
 # Do NOT "set -e"
 
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
-PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin
+PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/opt/node/bin
 DESC="Cloud9 NodeJs server"
 NAME=Cloud9
 DAEMON=/opt/cloud9/bin/cloud9.sh
-DAEMON_ARGS="-w /opt/openrov/ --username rov --password OpenROV"
+DAEMON_ARGS="-w /opt/openrov/ --username rov --password OpenROV -l 0.0.0.0"
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 

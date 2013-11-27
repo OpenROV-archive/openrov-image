@@ -31,7 +31,7 @@ cd $ROOT/opt
 git clone $OPENROV_GIT openrov
 cd openrov
 git pull origin
-g#t checkout $OPENROV_BRANCH
+git checkout $OPENROV_BRANCH
 npm install --arch=armhf
 
 cat > $ROOT/tmp/build_cockpit.sh << __EOF__
@@ -41,7 +41,7 @@ cat > $ROOT/tmp/build_cockpit.sh << __EOF__
 dpkg -i /tmp/openrov-nodejs*.deb
 
 cd /opt/openrov
-#opt/node/bin/npm rebuild
+/opt/node/bin/npm rebuild
 
 __EOF__
 

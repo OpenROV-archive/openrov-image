@@ -40,6 +40,7 @@ $DIR/steps/step_03/04_build_ino.sh $STEP_03_IMAGE
 $DIR/steps/step_03/05_build_dtc.sh $STEP_03_IMAGE
 $DIR/steps/step_03/06_build_avrdude.sh $STEP_03_IMAGE
 $DIR/steps/step_03/07_build_cloud9.sh
+$DIR/steps/step_03/08_setup_samba.sh
 
 echo -----------------------------
 echo Done step 3

@@ -10,6 +10,9 @@ update-rc.d openrov defaults
 
 chmod +x /opt/openrov/linux/rc.local
 
+chown -R rov /opt/openrov
+chgrp -R admin /opt/openrov
+
 # setup reset and uart for non black BB
 cp /etc/rc.local /etc/rc.local_orig
 cat > /etc/rc.local << __EOF__

@@ -348,8 +348,8 @@ cat > $SAMBA_PACKAGE_DIR/etc/samba/smb.conf.openrov << __EOF__
 [OpenROV]
 comment = OpenROV Cockpit
 path = /opt/openrov
-force user = root
-force group = root
+force user = rov
+force group = admin
 read only = No
 guest ok = Yes
 
