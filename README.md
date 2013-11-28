@@ -197,29 +197,28 @@ What happens?
 
 The demo images come with a script to build an SD card or a disk image.
 
-First of all, _build.sh_ creates disk image with the demo image scripts.
+__First of all__, _build.sh_ creates disk image with the demo image scripts. (steps/01_build_image.sh). The output of this is saved in _work/steps/step_01/_
 
-Step two is to get all the other tools we need from their source. 
+__Step 2__ is to update the image to the latest ubuntu packages and install all the needed additional packages (steps/02_update_image.sh). The output is saved in _work/steps/step_02/_
+
+__Step 3__ is to get all the other tools we need from their source and compile them.
 This is: 
 	- NodeJS
+	- OpenROV Cockpit
 	- mjpeg-streamer
 	- ino (command line arduino)
 	- dtc (device tree compiler)
 	- avrdude
-	- OpenROV
+	- Cloud9
+ 	- Samba configuration (network sharing)
 
-NodeJS is cross compiled on your machine. The other tools will be compiled in a chroot environment.
+Some of these packages are built via a cross compiler on the host machine. Where this is not possible, a chroot environment is used. For this, the image from _Step 2_ is copied and the software is built and installed on the image.
+After compilation/installation the relevent files are packaged in .deb files .
 
-After NodeJS is compiled we mount the OpenROV.img file that was created by the demo image script via the loopback device and _kpartx_ (to mount the two partitions of the image).
-
-A chroot environment is setup (have a look at ./lib/chroot.sh for more details) and the _lib/customizeroot.sh_ is executed with the new root.
-
-
-## Root customisation
-
-We update all ubuntu packages that are out of date and install the packages we need for OpenROV.
-We compile and install mjpeg-streamer, ino, dtc and avrdude, setup OpenROV and do changes to the system configuration files for networking, dhcp and getting OpenROV Cockpit started when the BB starts.
+All the scripts to built the softare are to be found in: _steps/step_03/*.sh_)
 
 
+__Step 4__ is to customize the root environment. In this step we install the .deb packages and setup the hostname, ip address/network configuration, users and other things. Script: _steps/04_customize_image.sh_.
 
+__Step 5__ is to compress the image and calculate the md5 of the image. 
 

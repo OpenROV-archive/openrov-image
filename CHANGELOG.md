@@ -1,14 +1,14 @@
 openrov-image Changelog
 =============
 
-## 26-11-2013
+## 26/28-11-2013
 
 - Move to staged approach to create image
 	- Step 1: build the image from the elinux base image
 	- Step 2: Update the image with the latest Ubuntu packages and the needed additional packages
-	- Step 3: Build all the software that we need and package them in .DEB packages with the Effing Package manage FPM. The image that is used to compile the pcakages is a copy of the image above. It is not distributed
+	- Step 3: Build all the software that we need and package them in .DEB packages with the Effing Package manage FPM. The image that is used to compile the pcakages is a copy of the image above. It image will be not distributed
 	- Step 4: Customiz the image: Install the packages, modify hostname, network config and users. Create the output image and create a md5 hash
-	- Step 5: compress the image together with the md5 hash
+	- Step 5: compress the image and create the md5 hash
 
 
 ## 05-09-2013

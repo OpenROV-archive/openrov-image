@@ -13,7 +13,7 @@ checkroot
 
 cd $OUTPUT_DIR
 
-mv OpenROV.img OpenROV-$(VERSION).img
-md5sum OpenROV-$(VERSION).img > OpenROV-$(VERSION).img.md5 
+mv OpenROV.img OpenROV-${VERSION}.img
+md5sum OpenROV-${VERSION}.img > OpenROV-${VERSION}.img.md5 
 
-7zr a -t7z -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on OpenROV-$(VERSION).img.7z OpenROV-$(VERSION).img
+7zr a -t7z -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on OpenROV-${VERSION}.img.7z OpenROV-${VERSION}.img
