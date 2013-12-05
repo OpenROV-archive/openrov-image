@@ -152,10 +152,21 @@ echo Setting up auto resize on first boot
 touch $ROOT/var/.RESIZE_ROOT_PARTITION
 
 echo ------------------------------
+echo Fixing ardiono
+
+#fix arduino version
+echo 1.0.5 > $ROOT/usr/share/arduino/lib/version.txt
+#fix arduino library source
+cd $ROOT/usr/share/arduino/
+rm -r libraries
+tar zxf $DIR/contrib/Arduino-1.0.4-libraries.tgz
+cd $DIR
+
+echo ------------------------------
 echo Customizing boot partition
 
 # change boot script for uart
-sed -i '/#optargs/a optargs=capemgr.enable_partno=BB-UART1,OPENROV-RESET,BB-SPI0DEV' $DIR/boot/uEnv.txt
+sed -i '/#optargs/a optargs=capemgr.enable_partno=BB-UART1' $DIR/boot/uEnv.txt
 
 # change Start.html and autorun.inf file for OpenROV
 sed -i 's/192.168.7.2/192.168.7.2:8080/' $DIR/boot/START.htm

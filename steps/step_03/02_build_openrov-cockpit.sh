@@ -65,7 +65,7 @@ unmount_image
 cd $DIR/work/packages/
 fpm -f -m info@openrov.com -s dir -t deb -a armhf \
 	-n openrov-cockpit \
-	-v 2.5.0-0 \
+	-v 2.5.0-1 \
 	-d 'openrov-nodejs' \
 	--after-install=$DIR/steps/step_03/openrov-cockpit-afterinstall.sh \
 	--before-remove=$DIR/steps/step_03/openrov-cockpit-beforeremove.sh \
