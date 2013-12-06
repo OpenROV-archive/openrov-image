@@ -33,6 +33,7 @@ cd openrov
 git pull origin
 git checkout $OPENROV_BRANCH
 npm install --arch=armhf
+git clean -d -x -f -e node_modules
 
 cat > $ROOT/tmp/build_cockpit.sh << __EOF__
 #!/bin/sh
@@ -50,6 +51,8 @@ cp $DIR/work/packages/openrov-nodejs* $ROOT/tmp/
 chmod +x $ROOT/tmp/build_cockpit.sh
 chroot $ROOT /tmp/build_cockpit.sh
 
+rm -rf $OPENROV_PACKAGE_DIR/opt
+
 mkdir -p $OPENROV_PACKAGE_DIR/opt/openrov
 
 cp -r $ROOT/opt/openrov $OPENROV_PACKAGE_DIR/opt
@@ -65,8 +68,9 @@ unmount_image
 cd $DIR/work/packages/
 fpm -f -m info@openrov.com -s dir -t deb -a armhf \
 	-n openrov-cockpit \
-	-v 2.5.0-0 \
+	-v 2.5.0-3 \
 	-d 'openrov-nodejs' \
 	--after-install=$DIR/steps/step_03/openrov-cockpit-afterinstall.sh \
 	--before-remove=$DIR/steps/step_03/openrov-cockpit-beforeremove.sh \
+	--after-remove=$DIR/steps/step_03/openrov-cockpit-afterremove.sh \
 	-C $OPENROV_PACKAGE_DIR .
