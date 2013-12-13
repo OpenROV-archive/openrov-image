@@ -8,17 +8,17 @@ To get the latest version of the OpenROV disk image for your ROV, you will need 
 
 The latest disk image is:
 
-**OpenROV-05-09-2013.img.7z**
+**OpenROV-2.5-05.img.7z**
 
 To download, get the file from:
 
-https://docs.google.com/uc?id=0B-NH5UNY7g7jTGoyN1BBQ09DbVE&export=download
+https://github.com/OpenROV/openrov-software/releases/download/v2.5.0-Beta-2/OpenROV-2.5-05.img.7z
 
 The image is compressed with _7Zip_ so you have to unzip it first.
 
 *Linux:*
 
-	p7zip -d OpenROV-DD-MM-YYY.img.7z
+	p7zip -d OpenROV-2.5-05.img.7z
 
 *Windows:*
 
@@ -30,13 +30,13 @@ Write the image onto you SD card:
 
 	Find the right /dev/sdX device. The easiest way is to have a look at the output of _dmesg_ after you plugged in the sd-card.
 
-	dd if=OpenROV-DD-MM-YYYY.img of=/dev/sdX
+	dd if=OpenROV-2.5-05.img.7z of=/dev/sdX
 
 
 *Windows:*
 
 	1. Get the latest version of *Win32DiskImager* from https://launchpad.net/win32-image-writer/+download
-	2. Point the Win32DiskImager to the image file 'OpenROV-DD-MM-Y theYYY.img' and the SD card
+	2. Point the Win32DiskImager to the image file 'OpenROV-2.5-05.img.7z' and the SD card
 	3. Press 'Write' and wait till its written to the SD card
 
 
@@ -44,6 +44,8 @@ Starting the OpenROV
 --------------------
 
 Just put the newly created sd-card into your BeagleBone.
+
+**Hint:** The first boot will take a bit longer (the ROV will actually restart) as the root partition is extended to the available SD card size.
 
 Once its fully started, you should be able to browse to: http://<IP.OF.THE.ROV>:8080.
 
@@ -55,21 +57,16 @@ In this case, given you have installed the latest drivers (http://beagleboard.or
 http://192.168.7.2:8080
 
 
+Cloud9
+------
 
-Uploading Arduino Firmware
---------------------------
+The OpenROV image comes with *Cloud9*, a web based IDE. You can access Cloud9 via:
 
-**Right now there is no error reporting on the firmware upload! You always see it seccessful. To check for errors, please look in the OpenROV logfile as explained below.**
+http://192.168.254.1:3131
 
-If you have a OpenROV cape connected to your BeagleBone (if you build your own, make sure you use UART1 and GPIO1_0), you can upload a firmware to Arduino directly from the browser.
-In the OpenROV Cockpit there is a Settings page (top right corner). From there you can upload a .ZIP or .tar.gz file containing your Arduino sketch (.ino files with additional .c/h files).
+Or the IP address assigned to the OpenROV by your router.
 
-The Arduino upload needs the reset.sh script that is part of the cockpit branch of openrov-software.
-https://github.com/OpenROV/openrov-software/blob/cockpit/linux/reset.sh
-This script is laid out to use GPIO1_0 in a mode where the GPIO0_1 is on high in the beginning and therefore there is 5V on pin 1 (RESET) on the ATMEGA chip.
-On reset, pin1 is pulled to low and the Arduino will reset once pin 1 goes on high again.
-**If you built your own cape, make sure you have implement the same behavior! Otherwise you have to change
-the reset script accordingly!**
+The **Username/Password** is: *rov* and *OpenROV*
 
 
 Debuging and being in control
