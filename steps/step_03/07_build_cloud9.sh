@@ -26,7 +26,7 @@ cp $DIR/contrib/cloud9.service $CLOUD9_DIR
 cd $DIR/work/packages/
 fpm -f -m info@openrov.com -s dir -t deb -a armhf \
 	-n openrov-cloud9 \
-	-v 0.7.0-0 \
+	-v 0.7.0-1 \
 	--after-install=$DIR/steps/step_03/openrov-cloud9-afterinstall.sh \
 	--before-remove=$DIR/steps/step_03/openrov-cloud9-beforeremove.sh \
 	-C $CLOUD9_PACKAGE_DIR .
