@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. $DIR/versions.sh
+
 export DIR=${PWD#}
 
 export OPENROV_GIT=git://github.com/OpenROV/openrov-software.git
@@ -68,7 +70,7 @@ unmount_image
 cd $DIR/work/packages/
 fpm -f -m info@openrov.com -s dir -t deb -a armhf \
 	-n openrov-cockpit \
-	-v 2.5.0-4 \
+	-v $COCKPIT_VERSION \
 	-d 'openrov-nodejs' \
 	--after-install=$DIR/steps/step_03/openrov-cockpit-afterinstall.sh \
 	--before-remove=$DIR/steps/step_03/openrov-cockpit-beforeremove.sh \

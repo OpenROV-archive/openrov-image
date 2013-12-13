@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. $DIR/versions.sh
+
 export DIR=${PWD#}
 
 export DTCGIT=git://git.kernel.org/pub/scm/linux/kernel/git/jdl/dtc.git
@@ -60,4 +62,4 @@ unmount_image
 
 
 cd $DIR/work/packages/
-fpm -f -m info@openrov.com -s dir -t deb -a armhf -n openrov-dtc -v 1.4-0 -C $DTC_PACKAGE_DIR .
+fpm -f -m info@openrov.com -s dir -t deb -a armhf -n openrov-dtc -v $DTC_VERSION -C $DTC_PACKAGE_DIR .

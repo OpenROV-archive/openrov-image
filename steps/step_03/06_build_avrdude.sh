@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. $DIR/versions.sh
+
 export DIR=${PWD#}
 
 export AVRDUDEGIT=https://github.com/kcuzner/avrdude.git
@@ -62,6 +64,6 @@ unmount_image
 
 
 cd $DIR/work/packages/
-fpm -f -m info@openrov.com -s dir -t deb -a armhf -n openrov-avrdude -v 6.0.1-0 --after-install=$DIR/steps/step_03/openrov-avrdude-afterinstall.sh -C $AVRDUDE_PACKAGE_DIR .
+fpm -f -m info@openrov.com -s dir -t deb -a armhf -n openrov-avrdude -v $AVRDUDE_VERSION --after-install=$DIR/steps/step_03/openrov-avrdude-afterinstall.sh -C $AVRDUDE_PACKAGE_DIR .
 
 

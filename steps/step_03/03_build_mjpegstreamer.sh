@@ -1,4 +1,7 @@
 #!/bin/sh
+
+. $DIR/versions.sh
+
 export DIR=${PWD#}
 
 export MJPG_STREAMERGIT=git://github.com/codewithpassion/mjpg-streamer.git
@@ -65,4 +68,4 @@ chroot_umount
 unmount_image
 
 cd $DIR/work/packages/
-fpm -f -m info@openrov.com -s dir -t deb -a armhf -n openrov-mjpeg-streamer -v 2.0-0 -C $MJPG_STREAMER_PACKAGE_DIR .
+fpm -f -m info@openrov.com -s dir -t deb -a armhf -n openrov-mjpeg-streamer -v $MJPG_VERSION -C $MJPG_STREAMER_PACKAGE_DIR .

@@ -9,7 +9,11 @@ export STEP_03_IMAGE=$DIR/work/step_03/image.step_03.img
 
 checkroot
 
-if [ "$1" = "" ] && [ ! -f $STEP_02_IMAGE ]; then
+if [ "$1" = "-r" ]; then
+
+	export REUSE=1
+
+elif [ "$1" = "" ] && [ ! -f $STEP_02_IMAGE ]; then
 	echo "Please pass the name of the Step 2 image file or make sure it exists in: $STEP_02_IMAGE"
 	exit 1
 fi
@@ -25,7 +29,9 @@ if [ ! -d $IMAGE_DIR_NAME ]
 then
 	mkdir -p "$IMAGE_DIR_NAME"
 fi
-cp $STEP_02_IMAGE $STEP_03_IMAGE
+if [ ! "$REUSE" = "1" ]; then
+	cp $STEP_02_IMAGE $STEP_03_IMAGE
+fi
 echo -----------------------------
 echo done
 echo -----------------------------
