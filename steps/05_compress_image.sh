@@ -2,7 +2,7 @@
 export DIR=${PWD#}
 export IMAGE=$1	
 export OUTPUT_DIR=$DIR/output
-export VERSION=2.5-04
+export VERSION=2.5-05
 
 
 . $DIR/lib/libtools.sh
