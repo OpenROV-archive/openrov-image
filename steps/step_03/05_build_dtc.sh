@@ -65,5 +65,5 @@ cd $DIR/work/packages/
 fpm -f -m info@openrov.com -s dir -t deb -a armhf \
 	-n openrov-dtc \
 	-v $DTC_VERSION \
-	-- description "OpenROV dtc (device tree compiler)" \
+	--description "OpenROV dtc (device tree compiler)" \
 	-C $DTC_PACKAGE_DIR .

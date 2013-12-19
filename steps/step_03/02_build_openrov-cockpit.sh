@@ -33,22 +33,22 @@ export ROOT=${PWD#}/root
 
 
 cd $ROOT/opt
-#rm openrov -rf
-#git clone $OPENROV_GIT openrov
+rm openrov -rf
+git clone $OPENROV_GIT openrov
 cd openrov
 git pull origin
 git checkout $OPENROV_BRANCH
-#npm install --arch=armhf
-#git clean -d -x -f -e node_modules
+npm install --arch=armhf
+git clean -d -x -f -e node_modules
 
 cat > $ROOT/tmp/build_cockpit.sh << __EOF__
 #!/bin/sh
 
 #install nodejs
-#dpkg -i /tmp/openrov-nodejs*.deb
+dpkg -i /tmp/openrov-nodejs*.deb
 
 cd /opt/openrov
-#/opt/node/bin/npm rebuild
+/opt/node/bin/npm rebuild
 
 __EOF__
 
