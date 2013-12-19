@@ -8,6 +8,10 @@ ln -s /opt/openrov/linux/openrov.service /etc/init.d/openrov
 chmod +x /opt/openrov/linux/openrov.service
 update-rc.d openrov defaults
 
+# set the openrov dashboard startup
+ln -s /opt/openrov/linux/dashboard.service /etc/init.d/openrov.dashboard
+update-rc.d openrov.dashboard defaults
+
 chmod +x /opt/openrov/linux/rc.local
 
 chown -R rov /opt/openrov

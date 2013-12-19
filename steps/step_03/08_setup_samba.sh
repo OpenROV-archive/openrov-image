@@ -1,8 +1,8 @@
 #!/bin/sh
 
-. $DIR/versions.sh
-
 export DIR=${PWD#}
+
+. $DIR/versions.sh
 
 export SAMBA_PACKAGE_DIR=$DIR/work/step_03/samba
 
@@ -365,4 +365,5 @@ fpm -f -m info@openrov.com -s dir -t deb -a armhf \
 	-v $SAMBA_CONFIG_VERSION \
 	-d 'samba' \
 	--after-install=$DIR/steps/step_03/openrov-samba-afterinstall.sh \
+   --description "OpeROV Samba configuration package" \
 	-C $SAMBA_PACKAGE_DIR .

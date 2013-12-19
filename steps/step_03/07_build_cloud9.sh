@@ -1,8 +1,8 @@
 #!/bin/sh
 
-. $DIR/versions.sh
-
 export DIR=${PWD#}
+
+. $DIR/versions.sh
 
 export CLOUD9_PACKAGE_DIR=$DIR/work/step_03/cloud9
 export CLOUD9_DIR=$CLOUD9_PACKAGE_DIR/opt/cloud9
@@ -31,4 +31,5 @@ fpm -f -m info@openrov.com -s dir -t deb -a armhf \
 	-v $CLOUD9_VERSION \
 	--after-install=$DIR/steps/step_03/openrov-cloud9-afterinstall.sh \
 	--before-remove=$DIR/steps/step_03/openrov-cloud9-beforeremove.sh \
+	--description "OpenROV Cloud9 IDE package" \
 	-C $CLOUD9_PACKAGE_DIR .

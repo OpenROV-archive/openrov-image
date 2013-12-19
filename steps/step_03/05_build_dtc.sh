@@ -1,8 +1,8 @@
 #!/bin/sh
 
-. $DIR/versions.sh
-
 export DIR=${PWD#}
+
+. $DIR/versions.sh
 
 export DTCGIT=git://git.kernel.org/pub/scm/linux/kernel/git/jdl/dtc.git
 export DTC_PACKAGE_DIR=$DIR/work/step_03/dtc
@@ -62,4 +62,8 @@ unmount_image
 
 
 cd $DIR/work/packages/
-fpm -f -m info@openrov.com -s dir -t deb -a armhf -n openrov-dtc -v $DTC_VERSION -C $DTC_PACKAGE_DIR .
+fpm -f -m info@openrov.com -s dir -t deb -a armhf \
+	-n openrov-dtc \
+	-v $DTC_VERSION \
+	-- description "OpenROV dtc (device tree compiler)" \
+	-C $DTC_PACKAGE_DIR .

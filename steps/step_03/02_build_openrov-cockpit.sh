@@ -1,11 +1,13 @@
 #!/bin/sh
 
-. $DIR/versions.sh
-
 export DIR=${PWD#}
 
-export OPENROV_GIT=git://github.com/OpenROV/openrov-software.git
-export OPENROV_BRANCH=controlboard25
+. $DIR/versions.sh
+
+#export OPENROV_GIT=git://github.com/OpenROV/openrov-software.git
+export OPENROV_GIT=git://github.com/codewithpassion/openrov-software.git
+#export OPENROV_BRANCH=controlboard25
+export OPENROV_BRANCH=bbb25-dashboard
 export OPENROV_PACKAGE_DIR=$DIR/work/step_03/openrov
 
 if [ ! "$1" = "" ];
@@ -29,22 +31,24 @@ chroot_mount
 
 export ROOT=${PWD#}/root
 
+
 cd $ROOT/opt
-git clone $OPENROV_GIT openrov
+#rm openrov -rf
+#git clone $OPENROV_GIT openrov
 cd openrov
 git pull origin
 git checkout $OPENROV_BRANCH
-npm install --arch=armhf
-git clean -d -x -f -e node_modules
+#npm install --arch=armhf
+#git clean -d -x -f -e node_modules
 
 cat > $ROOT/tmp/build_cockpit.sh << __EOF__
 #!/bin/sh
 
 #install nodejs
-dpkg -i /tmp/openrov-nodejs*.deb
+#dpkg -i /tmp/openrov-nodejs*.deb
 
 cd /opt/openrov
-/opt/node/bin/npm rebuild
+#/opt/node/bin/npm rebuild
 
 __EOF__
 
@@ -75,4 +79,5 @@ fpm -f -m info@openrov.com -s dir -t deb -a armhf \
 	--after-install=$DIR/steps/step_03/openrov-cockpit-afterinstall.sh \
 	--before-remove=$DIR/steps/step_03/openrov-cockpit-beforeremove.sh \
 	--after-remove=$DIR/steps/step_03/openrov-cockpit-afterremove.sh \
-	-C $OPENROV_PACKAGE_DIR .
+	--description "OpenROV Cockpit and Dashboard" \
+	-C $OPENROV_PACKAGE_DIR . 
