@@ -9,8 +9,8 @@ chmod +x /opt/openrov/linux/openrov.service
 update-rc.d openrov defaults
 
 # set the openrov dashboard startup
-ln -s /opt/openrov/linux/dashboard.service /etc/init.d/openrov.dashboard
-update-rc.d openrov.dashboard defaults
+ln -s /opt/openrov/linux/dashboard.service /etc/init.d/dashboard
+update-rc.d dashboard defaults 21
 
 chmod +x /opt/openrov/linux/rc.local
 

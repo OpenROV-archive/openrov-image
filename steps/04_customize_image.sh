@@ -67,7 +67,7 @@ echo "rov ALL=NOPASSWD: /opt/openrov/linux/" >> /etc/sudoers
 echo -----------------------------
 echo Installing packages
 echo -----------------------------
-dpkg -i --force-overwrite /tmp/packages/openrov-*.deb
+ls -1 /tmp/packages/openrov-*.deb | grep -viw "openrov-emmc*" | xa | dpkg -i --force-overwrite 
 
 echo -----------------------------
 echo Cleanup home directory
