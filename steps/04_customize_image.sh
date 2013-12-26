@@ -67,7 +67,7 @@ echo "rov ALL=NOPASSWD: /opt/openrov/linux/" >> /etc/sudoers
 echo -----------------------------
 echo Installing packages
 echo -----------------------------
-ls -1 /tmp/packages/openrov-*.deb | grep -viw "openrov-emmc*" | xa | dpkg -i --force-overwrite 
+ls -1 /tmp/packages/openrov-*.deb | grep -viw "openrov-emmc*" | xargs dpkg -i --force-overwrite 
 
 echo -----------------------------
 echo Cleanup home directory
@@ -193,7 +193,7 @@ echo -----------------------------
 echo Copying image
 echo "> $OUTPUT_IMAGE"
 cp $STEP_04_IMAGE $OUTPUT_IMAGE
-echo calculating md5sum 
+
 cd $OUTPUT_DIR_NAME
 cd $DIR 
 
