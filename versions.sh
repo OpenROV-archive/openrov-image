@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export IMAGE_VERSION=2.5-6
+export IMAGE_VERSION=2.5-7
 export COCKPIT_VERSION=2.5.0-6
 
 
