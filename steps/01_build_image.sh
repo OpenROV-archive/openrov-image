@@ -53,7 +53,13 @@ then
 	mkdir -p "$IMAGE_DIR_NAME"
 fi
 
-cp image.img $STEP_01_IMAGE
+if [ -f image.img ]
+then
+	cp image.img $STEP_01_IMAGE
+elif [ -f image-2gb.img ]
+then
+	cp image-2gb.img $STEP_01_IMAGE
+fi
 
 echo ------------------------------
 echo step_01 done, written image to: $STEP_01_IMAGE

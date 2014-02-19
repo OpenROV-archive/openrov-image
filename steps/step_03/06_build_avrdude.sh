@@ -31,8 +31,13 @@ export ROOT=${PWD#}/root
 cd $ROOT/tmp
 git clone $AVRDUDEGIT
 
+
+echo Current dir:
+pwd
 cd avrdude/avrdude
-git apply $DIR/contrib/avrdude.patch
+pwd
+echo ###
+#git apply $DIR/contrib/avrdude.patch
 
 cat > $ROOT/tmp/build_avrdude.sh << __EOF__
 #!/bin/sh

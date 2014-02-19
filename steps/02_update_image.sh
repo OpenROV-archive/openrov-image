@@ -72,9 +72,10 @@ sudo apt-get -y install \
 	unzip \
 	vim \
 	ethtool \
-	arduino-core \
 	avr-libc \
-	avrdude \
+        arduino-core \
+	automake \
+	byacc \
 	binutils-avr \
 	bison \
 	flex \

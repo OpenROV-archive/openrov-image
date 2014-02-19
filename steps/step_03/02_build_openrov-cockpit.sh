@@ -5,7 +5,7 @@ export DIR=${PWD#}
 . $DIR/versions.sh
 
 export OPENROV_GIT=git://github.com/OpenROV/openrov-software.git
-export OPENROV_BRANCH=controlboard25
+export OPENROV_BRANCH=master
 #export OPENROV_BRANCH=bbb25-dashboard
 #export OPENROV_GIT=git://github.com/codewithpassion/openrov-software.git
 export OPENROV_PACKAGE_DIR=$DIR/work/step_03/openrov
