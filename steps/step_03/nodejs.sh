@@ -2,9 +2,9 @@
 # call with: nodejs.sh ~/work/ https://github.com/joyent/node.git v0.8.11 ~/node_deploy/
 
 export AR=arm-linux-gnueabihf-ar
-export CC=arm-linux-gnueabihf-gcc-4.6
-export CXX=arm-linux-gnueabihf-g++-4.6
-export LINK=arm-linux-gnueabihf-g++-4.6
+export CC=arm-linux-gnueabihf-gcc-4.8
+export CXX=arm-linux-gnueabihf-g++-4.8
+export LINK=arm-linux-gnueabihf-g++-4.8
 
 type $AR >/dev/null 2>&1 || { echo >&2 "I require $AR but it's not installed.  Aborting."; exit 1; }
 type $CC >/dev/null 2>&1 || { echo >&2 "I require $CC but it's not installed.  Aborting."; exit 1; }
