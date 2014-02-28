@@ -1,11 +1,12 @@
 image: codewithpassion/openrov-image
 env:
   - GOPATH=/var/cache/drone
-  - FOO=true
+  - DOCKER_OPTS=-lxc-conf="lxc.cgroup.devices.allow = b 7:* rwm" -lxc-conf="lxc.cgroup.devices.allow = c 10:237 rwm"
 script:
-  - wget https://rcn-ee.net/deb/rootfs/saucy/ubuntu-13.10-console-armhf-2014-02-16.tar.xz
-  - sudo ./steps/01_build_image.sh ubuntu-13.10-console-armhf-2014-02-16.tar.xz
-  - sudo ./steps/02_update_image.sh
+   - losetup -f
+#  - wget https://rcn-ee.net/deb/rootfs/saucy/ubuntu-13.10-console-armhf-2014-02-16.tar.xz
+#  - sudo ./steps/01_build_image.sh ubuntu-13.10-console-armhf-2014-02-16.tar.xz
+#  - sudo ./steps/02_update_image.sh
 notify:
   email:
     recipients:
