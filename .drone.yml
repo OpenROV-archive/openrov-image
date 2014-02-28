@@ -1,6 +1,7 @@
 image: codewithpassion/openrov-image
 env:
   - GOPATH=/var/cache/drone
+  - FOO=true
 script:
   - wget https://rcn-ee.net/deb/rootfs/saucy/ubuntu-13.10-console-armhf-2014-02-16.tar.xz
   - sudo ./steps/01_build_image.sh ubuntu-13.10-console-armhf-2014-02-16.tar.xz
