@@ -1,0 +1,9 @@
+[Autorun]
+shellexecute=START.htm
+icon=Docs\openrov.ico
+label=OpenROV Cockpit
+action=Open the OpenROV Cockpit
+
+[DeviceInstall]
+DriverPath=Drivers\Windows\FTDI
+DriverPath=Drivers\Windows\RNDIS
