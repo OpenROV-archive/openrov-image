@@ -62,9 +62,9 @@ then
 	./configure --without-snapshot --dest-cpu=arm --dest-os=linux --with-arm-float-abi=hard --prefix=$NODEDIR || { echo >&2 "Tried to configure NodeJS but it failed.  Aborting."; exit 1; }
 
 	#GYP_DEFINES="armv7=0" CXXFLAGS='-mfpu=vfp -mfloat-abi=hard -DUSE_EABI_HARDFLOAT' CCFLAGS='-mfpu=vfp -mfloat-abi=hard -DUSE_EABI_HARDFLOAT' make --jobs=8
-	make --jobs=8
+	make 
 fi
-make install --jobs=8 DESTDIR=$NODETEMPDIR
+make install DESTDIR=$NODETEMPDIR
 
 # fix the path to node in the npm script
 #sed '1 c #!/opt/node/bin/node' $NODEDIR/bin/npm > /tmp/npm
