@@ -4,15 +4,22 @@ export DIR=${PWD#}
 
 . $DIR/versions.sh
 
-export OPENROV_GIT=git://github.com/OpenROV/openrov-software.git
-export OPENROV_BRANCH=master
-#export OPENROV_BRANCH=bbb25-dashboard
-#export OPENROV_GIT=git://github.com/codewithpassion/openrov-software.git
+if [ "$OPENROV_GIT" = "" ]; then 
+	export OPENROV_GIT=git://github.com/OpenROV/openrov-software.git
+fi
+if [ "$OPENROV_BRANCH" = "" ]; then
+	export OPENROV_BRANCH=master
+]
 export OPENROV_PACKAGE_DIR=$DIR/work/step_03/openrov
 
 if [ ! "$1" = "" ];
 then
 	STEP_03_IMAGE=$1	
+fi
+
+if [ "$2" = "--local-cockpit-source" ];
+then
+	export LOCAL_COCKPIT_SOURCE=$3	
 fi
 
 if [ "$STEP_03_IMAGE" = "" ] || [ ! -f "$STEP_03_IMAGE" ];
@@ -34,10 +41,15 @@ export ROOT=${PWD#}/root
 
 cd $ROOT/opt
 rm openrov -rf
-git clone $OPENROV_GIT openrov
-cd openrov
-git pull origin
-git checkout $OPENROV_BRANCH
+if [ "$LOCAL_COCKPIT_SOURCE" = "" ]; 
+then
+	git clone $OPENROV_GIT openrov
+	cd openrov
+	git pull origin
+	git checkout $OPENROV_BRANCH
+else
+	cp "$LOCAL_COCKPIT_SOURCE" openrov
+fi
 npm install --arch=armhf
 git clean -d -x -f -e node_modules
 
