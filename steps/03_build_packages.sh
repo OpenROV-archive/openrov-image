@@ -9,8 +9,10 @@ export STEP_03_IMAGE=$DIR/work/step_03/image.step_03.img
 
 checkroot
 
-if [ "$1" = "-r" ]; then
-
+if [ "$1" = "--no-cockpit" ]; then
+	export NO_COCKPIT=1
+ 	
+elif [ "$1" = "-r" ]; then
 	export REUSE=1
 
 elif [ "$1" = "" ] && [ ! -f $STEP_02_IMAGE ]; then
@@ -40,7 +42,9 @@ echo -----------------------------
 
 $DIR/steps/step_03/00_openrov-image.sh
 $DIR/steps/step_03/01_build_nodejs.sh
-$DIR/steps/step_03/02_build_openrov-cockpit.sh $STEP_03_IMAGE
+if [ ! "$NO_COCKPIT" = "1" ]; then
+	$DIR/steps/step_03/02_build_openrov-cockpit.sh $STEP_03_IMAGE
+fi
 $DIR/steps/step_03/03_build_mjpegstreamer.sh $STEP_03_IMAGE
 $DIR/steps/step_03/04_build_ino.sh $STEP_03_IMAGE
 $DIR/steps/step_03/05_build_dtc.sh $STEP_03_IMAGE
