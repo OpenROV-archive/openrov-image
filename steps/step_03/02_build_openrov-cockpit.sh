@@ -9,7 +9,7 @@ if [ "$OPENROV_GIT" = "" ]; then
 fi
 if [ "$OPENROV_BRANCH" = "" ]; then
 	export OPENROV_BRANCH=master
-]
+fi
 export OPENROV_PACKAGE_DIR=$DIR/work/step_03/openrov
 
 if [ ! "$1" = "" ];
