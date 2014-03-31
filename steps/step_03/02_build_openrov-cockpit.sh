@@ -48,7 +48,7 @@ then
 	git pull origin
 	git checkout $OPENROV_BRANCH
 else
-	cp "$LOCAL_COCKPIT_SOURCE" openrov
+	cp -r "$LOCAL_COCKPIT_SOURCE" openrov
 fi
 npm install --arch=armhf
 git clean -d -x -f -e node_modules
