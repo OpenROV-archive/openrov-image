@@ -1,6 +1,8 @@
 #!/bin/sh
 
 export DIR=${PWD#}
+echo !!!! $COCKPIT_VERSION
+env
 
 . $DIR/versions.sh
 
