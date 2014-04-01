@@ -1,7 +1,10 @@
 #!/bin/sh
 
 export IMAGE_VERSION=2.5-7
-export COCKPIT_VERSION=2.5.0-6
+
+if [ "$COCKPIT_VERSION" = "" ]; then
+	export COCKPIT_VERSION=2.5.0-6
+fi
 
 
 export NODE_VERSION=0.10.17
