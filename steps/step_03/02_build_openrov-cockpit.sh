@@ -32,6 +32,7 @@ fi
 . $DIR/lib/libmount.sh
 
 function onerror() {
+  cd $DIR
   sleep 2
   chroot_umount
   sleep 2
