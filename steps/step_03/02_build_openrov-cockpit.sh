@@ -31,6 +31,18 @@ fi
 . $DIR/lib/libtools.sh
 . $DIR/lib/libmount.sh
 
+function onerror() {
+  sleep 2
+  chroot_umount
+  sleep 2
+  chroot_umount
+  unmount_image
+  sleep 2
+  unmount_image
+  echo There was a problem with the script!
+  exit 1
+}
+
 checkroot
 
 mount_image $STEP_03_IMAGE
@@ -81,6 +93,10 @@ cd $DIR
 sync
 sleep 2
 chroot_umount
+sleep 2
+chroot_umount
+unmount_image
+sleep 2
 unmount_image
 
 
