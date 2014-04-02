@@ -63,7 +63,7 @@ else
 	cp -r "$LOCAL_COCKPIT_SOURCE" openrov
 	cd openrov
 fi
-npm install --arch=armhf || exit 1
+npm install --arch=armhf || onerror
 git clean -d -x -f -e node_modules
 
 cat > $ROOT/tmp/build_cockpit.sh << __EOF__
