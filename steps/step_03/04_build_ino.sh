@@ -2,6 +2,8 @@
 
 export DIR=${PWD#}
 
+. $DIR/versions.sh
+
 export INOGIT=https://github.com/amperka/ino.git
 export INO_PACKAGE_DIR=$DIR/work/step_03/ino
 
@@ -61,4 +63,8 @@ unmount_image
 
 
 cd $DIR/work/packages/
-fpm -f -m info@openrov.com -s dir -t deb -a armhf -n openrov-ino -v 0.3.6-0 -C $INO_PACKAGE_DIR .
+fpm -f -m info@openrov.com -s dir -t deb -a armhf \
+	-n openrov-ino \
+	-v $INO_VERSION \
+	--description "OpenROV ino package" \
+	-C $INO_PACKAGE_DIR .

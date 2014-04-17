@@ -2,9 +2,9 @@
 # call with: nodejs.sh ~/work/ https://github.com/joyent/node.git v0.8.11 ~/node_deploy/
 
 export AR=arm-linux-gnueabihf-ar
-export CC=arm-linux-gnueabihf-gcc-4.6
-export CXX=arm-linux-gnueabihf-g++-4.6
-export LINK=arm-linux-gnueabihf-g++-4.6
+export CC=arm-linux-gnueabihf-gcc-4.8
+export CXX=arm-linux-gnueabihf-g++-4.8
+export LINK=arm-linux-gnueabihf-g++-4.8
 
 type $AR >/dev/null 2>&1 || { echo >&2 "I require $AR but it's not installed.  Aborting."; exit 1; }
 type $CC >/dev/null 2>&1 || { echo >&2 "I require $CC but it's not installed.  Aborting."; exit 1; }
@@ -62,9 +62,9 @@ then
 	./configure --without-snapshot --dest-cpu=arm --dest-os=linux --with-arm-float-abi=hard --prefix=$NODEDIR || { echo >&2 "Tried to configure NodeJS but it failed.  Aborting."; exit 1; }
 
 	#GYP_DEFINES="armv7=0" CXXFLAGS='-mfpu=vfp -mfloat-abi=hard -DUSE_EABI_HARDFLOAT' CCFLAGS='-mfpu=vfp -mfloat-abi=hard -DUSE_EABI_HARDFLOAT' make --jobs=8
-	make --jobs=8
+	make 
 fi
-make install --jobs=8 DESTDIR=$NODETEMPDIR
+make install DESTDIR=$NODETEMPDIR
 
 # fix the path to node in the npm script
 #sed '1 c #!/opt/node/bin/node' $NODEDIR/bin/npm > /tmp/npm

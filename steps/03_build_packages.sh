@@ -9,7 +9,13 @@ export STEP_03_IMAGE=$DIR/work/step_03/image.step_03.img
 
 checkroot
 
-if [ "$1" = "" ] && [ ! -f $STEP_02_IMAGE ]; then
+if [ "$1" = "--no-cockpit" ]; then
+	export NO_COCKPIT=1
+ 	
+elif [ "$1" = "-r" ]; then
+	export REUSE=1
+
+elif [ "$1" = "" ] && [ ! -f $STEP_02_IMAGE ]; then
 	echo "Please pass the name of the Step 2 image file or make sure it exists in: $STEP_02_IMAGE"
 	exit 1
 fi
@@ -25,7 +31,9 @@ if [ ! -d $IMAGE_DIR_NAME ]
 then
 	mkdir -p "$IMAGE_DIR_NAME"
 fi
-cp $STEP_02_IMAGE $STEP_03_IMAGE
+if [ ! "$REUSE" = "1" ]; then
+	cp $STEP_02_IMAGE $STEP_03_IMAGE
+fi
 echo -----------------------------
 echo done
 echo -----------------------------
@@ -34,13 +42,16 @@ echo -----------------------------
 
 $DIR/steps/step_03/00_openrov-image.sh
 $DIR/steps/step_03/01_build_nodejs.sh
-$DIR/steps/step_03/02_build_openrov-cockpit.sh $STEP_03_IMAGE
+if [ ! "$NO_COCKPIT" = "1" ]; then
+	$DIR/steps/step_03/02_build_openrov-cockpit.sh $STEP_03_IMAGE
+fi
 $DIR/steps/step_03/03_build_mjpegstreamer.sh $STEP_03_IMAGE
 $DIR/steps/step_03/04_build_ino.sh $STEP_03_IMAGE
 $DIR/steps/step_03/05_build_dtc.sh $STEP_03_IMAGE
 $DIR/steps/step_03/06_build_avrdude.sh $STEP_03_IMAGE
 $DIR/steps/step_03/07_build_cloud9.sh
 $DIR/steps/step_03/08_setup_samba.sh
+$DIR/steps/step_03/09_emmc-copy.sh
 
 echo -----------------------------
 echo Done step 3

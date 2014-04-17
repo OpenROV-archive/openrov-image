@@ -2,13 +2,24 @@
 
 export DIR=${PWD#}
 
-export OPENROV_GIT=git://github.com/OpenROV/openrov-software.git
-export OPENROV_BRANCH=controlboard25
+. $DIR/versions.sh
+
+if [ "$OPENROV_GIT" = "" ]; then 
+	export OPENROV_GIT=git://github.com/OpenROV/openrov-software.git
+fi
+if [ "$OPENROV_BRANCH" = "" ]; then
+	export OPENROV_BRANCH=master
+fi
 export OPENROV_PACKAGE_DIR=$DIR/work/step_03/openrov
 
 if [ ! "$1" = "" ];
 then
 	STEP_03_IMAGE=$1	
+fi
+
+if [ "$2" = "--local-cockpit-source" ];
+then
+	export LOCAL_COCKPIT_SOURCE=$3	
 fi
 
 if [ "$STEP_03_IMAGE" = "" ] || [ ! -f "$STEP_03_IMAGE" ];
@@ -20,6 +31,19 @@ fi
 . $DIR/lib/libtools.sh
 . $DIR/lib/libmount.sh
 
+function onerror() {
+  cd $DIR
+  sleep 2
+  chroot_umount
+  sleep 2
+  chroot_umount
+  unmount_image
+  sleep 2
+  unmount_image
+  echo There was a problem with the script!
+  exit 1
+}
+
 checkroot
 
 mount_image $STEP_03_IMAGE
@@ -27,12 +51,20 @@ chroot_mount
 
 export ROOT=${PWD#}/root
 
+
 cd $ROOT/opt
-git clone $OPENROV_GIT openrov
-cd openrov
-git pull origin
-git checkout $OPENROV_BRANCH
-npm install --arch=armhf
+rm openrov -rf
+if [ "$LOCAL_COCKPIT_SOURCE" = "" ]; 
+then
+	git clone $OPENROV_GIT openrov
+	cd openrov
+	git pull origin
+	git checkout $OPENROV_BRANCH
+else
+	cp -r "$LOCAL_COCKPIT_SOURCE" openrov
+	cd openrov
+fi
+npm install --arch=armhf || onerror
 git clean -d -x -f -e node_modules
 
 cat > $ROOT/tmp/build_cockpit.sh << __EOF__
@@ -62,15 +94,20 @@ cd $DIR
 sync
 sleep 2
 chroot_umount
+sleep 2
+chroot_umount
+unmount_image
+sleep 2
 unmount_image
 
 
 cd $DIR/work/packages/
 fpm -f -m info@openrov.com -s dir -t deb -a armhf \
 	-n openrov-cockpit \
-	-v 2.5.0-4 \
+	-v $COCKPIT_VERSION \
 	-d 'openrov-nodejs' \
 	--after-install=$DIR/steps/step_03/openrov-cockpit-afterinstall.sh \
 	--before-remove=$DIR/steps/step_03/openrov-cockpit-beforeremove.sh \
 	--after-remove=$DIR/steps/step_03/openrov-cockpit-afterremove.sh \
-	-C $OPENROV_PACKAGE_DIR .
+	--description "OpenROV Cockpit and Dashboard" \
+	-C $OPENROV_PACKAGE_DIR . 
