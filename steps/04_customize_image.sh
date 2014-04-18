@@ -10,26 +10,38 @@ export OUTPUT_IMAGE=$DIR/output/OpenROV.img
 
 checkroot
 
-if [ "$1" = "" ] && [ ! -f $STEP_02_IMAGE ]; then
+if [ "$1" = "--reuse-step4" ] && [ ! -f $STEP_04_IMAGE ]; then
+	echo "You specified --reuse-step4 but the Step 4 image does not exists in: $STEP_04_IMAGE"
+	exit 1
+
+elif [ "$1" = "" ] && [ ! -f $STEP_02_IMAGE ]; then
 	echo "Please pass the name of the Step 2 image file or make sure it exists in: $STEP_02_IMAGE"
 	exit 1
 fi
 
-echo -----------------------------
-echo Step 4: creating copy of image file:
-echo "> $STEP_04_IMAGE"
-echo -----------------------------
 
-IMAGE_DIR_NAME=$( dirname $STEP_04_IMAGE )
+if [ ! "$1" = "--reuse-step4" ]; then
+	echo -----------------------------
+	echo Step 4: creating copy of image file:
+	echo "> $STEP_04_IMAGE"
+	echo -----------------------------
 
-if [ ! -d $IMAGE_DIR_NAME ] 
-then
-	mkdir -p "$IMAGE_DIR_NAME"
+	IMAGE_DIR_NAME=$( dirname $STEP_04_IMAGE )
+
+	if [ ! -d $IMAGE_DIR_NAME ] 
+	then
+		mkdir -p "$IMAGE_DIR_NAME"
+	fi
+	cp $STEP_02_IMAGE $STEP_04_IMAGE
+	echo -----------------------------
+	echo done
+	echo -----------------------------
+else
+
+	echo -----------------------------
+	echo using $STEP_04_IMAGE
+	echo -----------------------------
 fi
-cp $STEP_02_IMAGE $STEP_04_IMAGE
-echo -----------------------------
-echo done
-echo -----------------------------
 echo Preparing image
 echo -----------------------------
 
