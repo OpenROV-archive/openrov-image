@@ -1,5 +1,3 @@
 #!/bin/sh
 
-if [ -d /opt/openrov ]; then
-	rm -rf /opt/openrov
-fi
+rm -rf /opt/openrov
