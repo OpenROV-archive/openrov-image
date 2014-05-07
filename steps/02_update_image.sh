@@ -44,7 +44,7 @@ chroot_mount
 cp /usr/bin/qemu-arm-static $ROOT/usr/bin/
 
 echo -----------------------------
-echo Updating ubuntu packages
+echo Updating packages
 echo -----------------------------
 
 cat > $ROOT/tmp/update.sh << __EOF__
@@ -57,8 +57,6 @@ sudo apt-get -y upgrade
 
 echo Installing additional packages
 sudo apt-get -y install \
-	linux-firmware \
-	devmem2 \
 	python-software-properties \
 	python-configobj \
 	python-jinja2 \
@@ -66,7 +64,7 @@ sudo apt-get -y install \
 	gcc \
 	g++ \
 	make \
-	libjpeg-dev \
+	libjpeg8-dev \
 	picocom \
 	zip \
 	unzip \
