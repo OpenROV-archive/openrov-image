@@ -105,7 +105,6 @@ cd $DIR/work/packages/
 fpm -f -m info@openrov.com -s dir -t deb -a armhf \
 	-n openrov-cockpit \
 	-v $COCKPIT_VERSION \
-	-d 'openrov-nodejs' \
 	--before-install=$DIR/steps/step_03/openrov-cockpit-beforeinstall.sh \
 	--after-install=$DIR/steps/step_03/openrov-cockpit-afterinstall.sh \
 	--before-remove=$DIR/steps/step_03/openrov-cockpit-beforeremove.sh \

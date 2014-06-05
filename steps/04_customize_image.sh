@@ -71,8 +71,8 @@ echo rov:OpenROV | chpasswd
 # Include node in PATH
 echo "PATH=\$PATH:/opt/node/bin" >> /home/rov/.profile
 
-echo remove ubuntu user
-userdel -r -f ubuntu
+echo remove default user
+userdel -r -f debian
 
 echo "rov ALL=NOPASSWD: /opt/openrov/linux/" >> /etc/sudoers
 
@@ -80,6 +80,9 @@ echo -----------------------------
 echo Installing packages
 echo -----------------------------
 ls -1 /tmp/packages/openrov-*.deb | grep -viw "openrov-emmc*" | xargs dpkg -i --force-overwrite 
+echo "deb http://ftp.debian.org/debian wheezy-backports main" >> /etc/apt/sources.list
+apt-get update
+apt-get -t wheezy-backports install nodejs libc-ares2 libv8
 
 echo -----------------------------
 echo Cleanup home directory
