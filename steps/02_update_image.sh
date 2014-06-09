@@ -93,7 +93,7 @@ apt-get -y remove apache2
 
 echo "deb http://ftp.debian.org/debian wheezy-backports main" >> /etc/apt/sources.list
 apt-get update
-apt-get -y -t wheezy-backports install nodejs 
+apt-get -y -t wheezy-backports install nodejs npm
 
 
 update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
