@@ -70,11 +70,11 @@ git clean -d -x -f -e node_modules
 cat > $ROOT/tmp/build_cockpit.sh << __EOF__
 #!/bin/sh
 
-#install nodejs
-dpkg -i /tmp/openrov-nodejs*.deb
+apt-get install -y nodejs npm
+update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
 
 cd /opt/openrov
-/opt/node/bin/npm rebuild
+npm rebuild
 
 __EOF__
 

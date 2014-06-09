@@ -81,12 +81,22 @@ sudo apt-get -y install \
 	libftdi-dev \
 	libusb-dev \
 	samba \
+	nodejs \
+	npm \
 	mercurial #needed for cloud9
 
 #remove apache
-dpkg -r apache2
+apt-get -y remove apache2
 
 /etc/init.d/samba stop
+/etc/init.d/sshd stop
+
+echo "deb http://ftp.debian.org/debian wheezy-backports main" >> /etc/apt/sources.list
+apt-get update
+apt-get -y -t wheezy-backports install nodejs 
+
+
+update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
 
 __EOF__
 chmod +x $ROOT/tmp/update.sh
