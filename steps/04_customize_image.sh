@@ -62,16 +62,6 @@ echo -----------------------------
 cat > $ROOT/tmp/update.sh << __EOF_UPDATE__
 #!/bin/bash
 
-echo Setting up users
-echo -----------------------------
-
-echo Adding user 'rov'
-useradd rov -m -s /bin/bash -g admin
-echo rov:OpenROV | chpasswd
-
-echo remove default user
-userdel -r -f debian
-
 echo "rov ALL=NOPASSWD: /opt/openrov/linux/" >> /etc/sudoers
 
 echo -----------------------------
@@ -101,6 +91,7 @@ __EOF__
 
 ## fix dhcp
 cat >> /etc/dhcp/dhclient.conf << __EOF__
+timeout 5
 lease {
 interface "eth0";
 fixed-address 192.168.254.1;
@@ -177,7 +168,7 @@ echo ------------------------------
 echo Customizing boot partition
 
 # change boot script for uart
-sed -i '/#optargs/a optargs=capemgr.enable_partno=BB-UART1' $DIR/boot/uEnv.txt
+sed -i '3ioptargs=capemgr.enable_partno=BB-UART1' $DIR/boot/uEnv.txt
 
 mkdir $DIR/boot/Docs
 cp $DIR/contrib/openrov.ico $DIR/boot/Docs/

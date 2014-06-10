@@ -90,11 +90,11 @@ apt-get -y remove apache2
 /etc/init.d/samba stop
 /etc/init.d/sshd stop
 
-echo "deb http://ftp.debian.org/debian wheezy-backports main" >> /etc/apt/sources.list
-apt-get update
-apt-get -y -t wheezy-backports install nodejs 
-update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
-curl https://www.npmjs.org/install.sh | sudo sh
+#echo "deb http://ftp.debian.org/debian wheezy-backports main" >> /etc/apt/sources.list
+#apt-get update
+#apt-get -y -t wheezy-backports install nodejs 
+#update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
+#curl https://www.npmjs.org/install.sh | sudo sh
 
 
 

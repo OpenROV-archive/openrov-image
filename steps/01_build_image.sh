@@ -12,18 +12,6 @@ if [ "$1" = "" ]; then
 	exit 1
 fi
 
-if [ "$2" = "" ] || [ "$2" = "--bone" ]; then
-	uboot=bone
-	image_suffix=
-
-elif [ "$2" = "--black" ]; then
-	uboot=bone_dtb
-	image_suffix=-black
-else
-	echo "Currently only --bone and --black are supported as targets!"
-	exit 1
-fi
-
 IMAGE_FULLNAME=$(basename "$IMAGE")
 IMAGE_NAME=$( basename $IMAGE_FULLNAME .tar.xz )
 
@@ -44,7 +32,7 @@ sed -i 's/\[1024\*800\]/\[1024*1700]/' setup_sdcard.sh
 
 echo "Building image file!"
 sleep 1
-./setup_sdcard.sh --uboot $uboot --img || exit 1
+./setup_sdcard.sh --dtb beaglebone --img || exit 1
 
 IMAGE_DIR_NAME=$( dirname $STEP_01_IMAGE )
 
