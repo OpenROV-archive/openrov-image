@@ -43,6 +43,13 @@ cd /tmp/ino
 python ez_setup.py
 make install DESTDIR=/tmp/ino_install
 
+cd /tmp
+# install glob2, doesn't come with debian
+git clone https://github.com/miracle2k/python-glob2.git
+cd python-glob2
+python setup.py build
+python setup.py install
+
 __EOF__
 
 chmod +x $ROOT/tmp/build_ino.sh
