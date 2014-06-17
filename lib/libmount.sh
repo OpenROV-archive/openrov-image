@@ -40,6 +40,7 @@
 		fi
 		mount $ROOT_media root
 		mount $BOOT_media boot
+		mount $BOOT_media root/boot
 
 		echo Mounted ROOT partition at ${PWD#}/root
 		echo Mounted BOOT partition at ${PWD#}/boot
@@ -52,6 +53,8 @@ function unmount_image {
 	# try to find the mapped dir
 	loop_device=$(mount | grep $root_dir | grep -o '/dev/mapper/loop.' | grep -o 'loop.')
 
+
+	umount $root_dir/boot
 	umount $root_dir
 	umount $boot_dir
 
