@@ -76,6 +76,9 @@ update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
 cd /opt/openrov
 npm rebuild
 
+cd /opt/openrov/src/static
+npm run bower
+
 __EOF__
 
 cp $DIR/work/packages/openrov-nodejs* $ROOT/tmp/
