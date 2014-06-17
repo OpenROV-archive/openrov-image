@@ -48,7 +48,7 @@ cd /tmp
 git clone https://github.com/miracle2k/python-glob2.git
 cd python-glob2
 python setup.py build
-python setup.py install
+python setup.py install --root=/tmp/ino_install
 
 __EOF__
 
