@@ -142,6 +142,11 @@ iface usb0 inet static
 
 __EOF__
 
+echo -------------------------
+echo Installing new kernel
+cd /tmp/
+wget http://rcn-ee.net/deb/wheezy-armhf/v3.15.0-bone1/install-me.sh
+bash install-me.sh
 
 __EOF_UPDATE__
 chmod +x $ROOT/tmp/update.sh
@@ -154,7 +159,7 @@ echo Setting up auto resize on first boot
 touch $ROOT/var/.RESIZE_ROOT_PARTITION
 
 echo ------------------------------
-echo Fixing ardiono
+echo Fixing arduino 
 
 #fix arduino version
 echo 1.0.5 > $ROOT/usr/share/arduino/lib/version.txt
