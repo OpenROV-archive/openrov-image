@@ -77,6 +77,7 @@ cd /opt/openrov
 npm rebuild
 
 cd /opt/openrov/src/static
+npm install
 npm run bower
 
 __EOF__
