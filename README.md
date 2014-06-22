@@ -35,7 +35,7 @@ Write the image onto you SD card:
 
 *Windows:*
 
-	1. Get the latest version of *Win32DiskImager* from https://launchpad.net/win32-image-writer/+download
+	1. Get the latest version of *Win32DiskImager* from http://sourceforge.net/projects/win32diskimager/files/latest/download
 	2. Point the Win32DiskImager to the image file 'OpenROV-2.5-05.img.7z' and the SD card
 	3. Press 'Write' and wait till its written to the SD card
 
