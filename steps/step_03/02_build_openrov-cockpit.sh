@@ -1,4 +1,4 @@
-#!/bin/sh
+!/bin/sh
 
 export DIR=${PWD#}
 
@@ -67,6 +67,10 @@ fi
 npm install --arch=armhf || onerror
 git clean -d -x -f -e node_modules
 
+cd src/static
+npm install
+npm run bower
+
 cat > $ROOT/tmp/build_cockpit.sh << __EOF__
 #!/bin/sh
 
@@ -75,10 +79,6 @@ update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
 
 cd /opt/openrov
 npm rebuild
-
-cd /opt/openrov/src/static
-npm install
-npm run bower
 
 __EOF__
 
