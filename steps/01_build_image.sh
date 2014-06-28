@@ -27,11 +27,11 @@ fi
 IMAGE_FULLNAME=$(basename "$IMAGE")
 IMAGE_NAME=$( basename $IMAGE_FULLNAME .tar.xz )
 
-# 
+#
 echo Extract the image: $IMAGE${IMAGE}
 if which pv > /dev/null ; then
-		echo Image ${IMAGE} 
-			pv "${IMAGE}" | tar -xJf - 
+		echo Image ${IMAGE}
+			pv "${IMAGE}" | tar -xJf -
 		else
 			echo "pv: not installed, using tar verbose to show progress"
 			tar xvf "${IMAGE}"
@@ -44,11 +44,11 @@ sed -i 's/\[1024\*800\]/\[1024*1700]/' setup_sdcard.sh
 
 echo "Building image file!"
 sleep 1
-./setup_sdcard.sh --uboot $uboot --img || exit 1
+./setup_sdcard.sh --dtb beaglebone --img || exit 1
 
 IMAGE_DIR_NAME=$( dirname $STEP_01_IMAGE )
 
-if [ ! -d $IMAGE_DIR_NAME ] 
+if [ ! -d $IMAGE_DIR_NAME ]
 then
 	mkdir -p "$IMAGE_DIR_NAME"
 fi
