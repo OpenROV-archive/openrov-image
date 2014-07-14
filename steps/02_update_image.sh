@@ -90,13 +90,8 @@ apt-get -y remove apache2
 /etc/init.d/samba stop
 /etc/init.d/sshd stop
 
-#echo "deb http://ftp.debian.org/debian wheezy-backports main" >> /etc/apt/sources.list
-#apt-get update
-#apt-get -y -t wheezy-backports install nodejs 
-#update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
-#curl https://www.npmjs.org/install.sh | sudo sh
-
-
+echo Adding setting to auto check filesystem on boot in case there is an error
+echo FSCKFIX=yes >> /etc/default/rcS 
 
 __EOF__
 chmod +x $ROOT/tmp/update.sh
@@ -104,6 +99,9 @@ chmod +x $ROOT/tmp/update.sh
 chroot $ROOT /tmp/update.sh
 
 rm $ROOT/tmp/update.sh
+
+echo Setting the root fs mode to data=writeback to minimise impact of suddenly loosing power
+tune2fs -o journal_data_writeback  $ROOT_media
 
 chroot_umount
 unmount_image
