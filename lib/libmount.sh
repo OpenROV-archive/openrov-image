@@ -71,12 +71,14 @@ function chroot_mount {
 	mount --bind /sys/ $root_dir/sys/
 	mount --bind /run/ $root_dir/run/
 	mount --bind /etc/resolv.conf $root_dir/etc/resolv.conf
+        mount devpts $root_dir/dev/pts -t devpts
 
 }
 
 function chroot_umount {
 	echo Unmounting system directories
 	root_dir=${PWD#}/root
+	umount $root_dir/dev/pts
 	umount $root_dir/etc/resolv.conf
 	umount $root_dir/run
 	umount $root_dir/sys
