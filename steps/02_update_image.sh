@@ -87,6 +87,12 @@ sudo apt-get -y install \
 #remove apache
 apt-get -y remove apache2
 
+# Samba doesn't start on the chroot, we need to add an config section and reconfigure it, otherwise the openrov-samba-config packages failes to install
+
+sed  '/interfaces =/a interfaces = lo' /etc/samba/smb.conf
+sed -i '0,/interfaces =/{//d;}' /etc/samba/smb.conf
+dpkg --configure samba
+
 /etc/init.d/samba stop
 /etc/init.d/sshd stop
 
