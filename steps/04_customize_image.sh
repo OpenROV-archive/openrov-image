@@ -145,7 +145,7 @@ __EOF__
 echo -------------------------
 echo Installing new kernel
 cd /tmp/
-wget http://rcn-ee.net/deb/wheezy-armhf/v3.15.0-bone1/install-me.sh
+wget http://rcn-ee.net/deb/wheezy-armhf/v3.15.5-bone4/install-me.sh
 bash install-me.sh
 
 __EOF_UPDATE__
