@@ -4,21 +4,21 @@ openrov-image
 Get and install the OpenROV disk image
 ======================================
 
-To get the latest version of the OpenROV disk image for your ROV, you will need a micro-sd card with at least 2 GB.
+To get the latest stable release version of the OpenROV disk image for your ROV, you will need a micro-sd card with at least 2 GB.
 
 The latest disk image is:
 
-**OpenROV-2.5-05.img.7z**
+**OpenROV-2.5-29.img.7z** 
 
 To download, get the file from:
 
-https://github.com/OpenROV/openrov-software/releases/download/v2.5.0-Beta-2/OpenROV-2.5-05.img.7z
+https://github.com/OpenROV/openrov-software/releases/tag/v2.5.0
 
 The image is compressed with _7Zip_ so you have to unzip it first.
 
 *Linux:*
 
-	p7zip -d OpenROV-2.5-05.img.7z
+	p7zip -d OpenROV-2.5-29.img.7z
 
 *Windows:*
 
@@ -30,7 +30,7 @@ Write the image onto you SD card:
 
 	Find the right /dev/sdX device. The easiest way is to have a look at the output of _dmesg_ after you plugged in the sd-card.
 
-	dd if=OpenROV-2.5-05.img.7z of=/dev/sdX
+	dd if=OpenROV-2.5-29.img.7z of=/dev/sdX
 
 
 *Windows:*
