@@ -96,9 +96,6 @@ dpkg --configure samba
 /etc/init.d/samba stop
 /etc/init.d/sshd stop
 
-echo Adding setting to auto check filesystem on boot in case there is an error
-echo FSCKFIX=yes >> /etc/default/rcS 
-
 __EOF__
 chmod +x $ROOT/tmp/update.sh
 
