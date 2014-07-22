@@ -7,6 +7,7 @@ export OUTPUT_IMAGE=$DIR/output/OpenROV.img
 
 . $DIR/lib/libtools.sh
 . $DIR/lib/libmount.sh
+. $DIR/versions.sh
 
 checkroot
 
@@ -28,7 +29,7 @@ if [ ! "$1" = "--reuse-step4" ]; then
 
 	IMAGE_DIR_NAME=$( dirname $STEP_04_IMAGE )
 
-	if [ ! -d $IMAGE_DIR_NAME ] 
+	if [ ! -d $IMAGE_DIR_NAME ]
 	then
 		mkdir -p "$IMAGE_DIR_NAME"
 	fi
@@ -77,9 +78,14 @@ userdel -r -f ubuntu
 echo "rov ALL=NOPASSWD: /opt/openrov/linux/" >> /etc/sudoers
 
 echo -----------------------------
+echo Get pre-packaged deb packages
+echo -----------------------------
+wget -P /tmp/packages/ http://openrov-software-nightlies.s3-us-west-2.amazonaws.com/arduino-firmware/openrov-arduino-firmware_${OROV_ARDUINO_FIRMWARE_VERSION}_all.deb /tmp/packages/
+
+echo -----------------------------
 echo Installing packages
 echo -----------------------------
-ls -1 /tmp/packages/openrov-*.deb | grep -viw "openrov-emmc*" | xargs dpkg -i --force-overwrite 
+ls -1 /tmp/packages/openrov-*.deb | grep -viw "openrov-emmc*" | xargs dpkg -i --force-overwrite
 
 echo -----------------------------
 echo Cleanup home directory
@@ -88,7 +94,7 @@ cd /home
 find . -type d -not -name rov -and -not -name . | xargs rm -rf
 
 echo -----------------------------
-echo Setting up network 
+echo Setting up network
 echo -----------------------------
 
 #fix hostname
@@ -202,7 +208,7 @@ echo "> $OUTPUT_IMAGE"
 cp $STEP_04_IMAGE $OUTPUT_IMAGE
 
 cd $OUTPUT_DIR_NAME
-cd $DIR 
+cd $DIR
 
 echo -----------------------------
 echo Copying packages
