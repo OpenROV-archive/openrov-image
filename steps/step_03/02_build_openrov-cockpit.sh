@@ -4,7 +4,7 @@ export DIR=${PWD#}
 
 . $DIR/versions.sh
 
-if [ "$OPENROV_GIT" = "" ]; then 
+if [ "$OPENROV_GIT" = "" ]; then
 	export OPENROV_GIT=git://github.com/OpenROV/openrov-software.git
 fi
 if [ "$OPENROV_BRANCH" = "" ]; then
@@ -14,12 +14,12 @@ export OPENROV_PACKAGE_DIR=$DIR/work/step_03/openrov
 
 if [ ! "$1" = "" ];
 then
-	STEP_03_IMAGE=$1	
+	STEP_03_IMAGE=$1
 fi
 
 if [ "$2" = "--local-cockpit-source" ];
 then
-	export LOCAL_COCKPIT_SOURCE=$3	
+	export LOCAL_COCKPIT_SOURCE=$3
 fi
 
 if [ "$STEP_03_IMAGE" = "" ] || [ ! -f "$STEP_03_IMAGE" ];
@@ -54,7 +54,7 @@ export ROOT=${PWD#}/root
 
 cd $ROOT/opt
 rm openrov -rf
-if [ "$LOCAL_COCKPIT_SOURCE" = "" ]; 
+if [ "$LOCAL_COCKPIT_SOURCE" = "" ];
 then
 	git clone $OPENROV_GIT openrov
 	cd openrov
@@ -110,4 +110,4 @@ fpm -f -m info@openrov.com -s dir -t deb -a armhf \
 	--after-install=$DIR/steps/step_03/openrov-cockpit-afterinstall.sh \
 	--before-remove=$DIR/steps/step_03/openrov-cockpit-beforeremove.sh \
 	--description "OpenROV Cockpit and Dashboard" \
-	-C $OPENROV_PACKAGE_DIR . 
+	-C $OPENROV_PACKAGE_DIR .=/opt/openrov/cockpit

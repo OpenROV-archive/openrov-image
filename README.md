@@ -8,7 +8,7 @@ To get the latest stable release version of the OpenROV disk image for your ROV,
 
 The latest disk image is:
 
-**OpenROV-2.5-29.img.7z** 
+**OpenROV-2.5-29.img.7z**
 
 To download, get the file from:
 
@@ -22,7 +22,7 @@ The image is compressed with _7Zip_ so you have to unzip it first.
 
 *Windows:*
 
-	Use 7Zip. 
+	Use 7Zip.
 
 Write the image onto you SD card:
 
@@ -73,13 +73,13 @@ Debuging and being in control
 -----------------------------
 
 If you wan't to log on to your BB, either connect a USB cable and use (from a Linux machine):
-	
+
 	picocom -b 115200 /dev/ttyUSB1
-	
+
 Otherwise, from a Mac you have to use:
-	
+
 	screen `ls /dev/{tty.usb*B,beaglebone-serial}` 115200
-	
+
 From Windows you can use any terminal application and connect to the USB port.
 
 Or SSH:
@@ -97,7 +97,7 @@ Once you see the logon screen, use:
 	password: OpenROV
 
 The OpenROV cockpit service writes a logfile to:
-	
+
 	/var/log/openrov.log
 
 To Start/Stop the cockpit service use:
@@ -109,8 +109,8 @@ To manually start the cockpit service use:
 
 	sudo /etc/init.d/openrov stop
 	sudo bash
-	/opt/node/bin/node /opt/openrov/src/app.js
-	
+	/opt/node/bin/node /opt/openrov/cockpit/src/app.js
+
 
 Customize the disk image
 ========================
@@ -199,7 +199,7 @@ __First of all__, _build.sh_ creates disk image with the demo image scripts. (st
 __Step 2__ is to update the image to the latest ubuntu packages and install all the needed additional packages (steps/02_update_image.sh). The output is saved in _work/steps/step_02/_
 
 __Step 3__ is to get all the other tools we need from their source and compile them.
-This is: 
+This is:
 	- NodeJS
 	- OpenROV Cockpit
 	- mjpeg-streamer
@@ -217,5 +217,4 @@ All the scripts to built the softare are to be found in: _steps/step_03/*.sh_)
 
 __Step 4__ is to customize the root environment. In this step we install the .deb packages and setup the hostname, ip address/network configuration, users and other things. Script: _steps/04_customize_image.sh_.
 
-__Step 5__ is to compress the image and calculate the md5 of the image. 
-
+__Step 5__ is to compress the image and calculate the md5 of the image.

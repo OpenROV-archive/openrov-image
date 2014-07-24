@@ -7,4 +7,3 @@ update-rc.d openrov remove
 update-rc.d dashboard remove
 
 cp /etc/rc.local_orig /etc/rc.local
-
