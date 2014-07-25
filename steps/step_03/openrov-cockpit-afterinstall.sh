@@ -8,11 +8,7 @@ ln -s /opt/openrov/cockpit/linux/openrov.service /etc/init.d/openrov
 chmod +x /opt/openrov/cockpit/linux/openrov.service
 update-rc.d openrov defaults
 
-# set the openrov dashboard startup
-ln -s /opt/openrov/cockpit/linux/dashboard.service /etc/init.d/dashboard
-update-rc.d dashboard defaults 21
-
-chmod +x /opt/openrov/linux/rc.local
+chmod +x /opt/openrov/cockpit/linux/rc.local
 
 chown -R rov /opt/openrov/cockpit
 chgrp -R admin /opt/openrov/cockpit

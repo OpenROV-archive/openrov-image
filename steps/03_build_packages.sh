@@ -11,7 +11,10 @@ checkroot
 
 if [ "$1" = "--no-cockpit" ]; then
 	export NO_COCKPIT=1
- 	
+
+if [ "$1" = "--no-dashboard" ]; then
+	export NO_DASHBOARD=1	
+
 elif [ "$1" = "-r" ]; then
 	export REUSE=1
 
@@ -27,7 +30,7 @@ echo -----------------------------
 
 IMAGE_DIR_NAME=$( dirname $STEP_03_IMAGE )
 
-if [ ! -d $IMAGE_DIR_NAME ] 
+if [ ! -d $IMAGE_DIR_NAME ]
 then
 	mkdir -p "$IMAGE_DIR_NAME"
 fi
@@ -44,6 +47,9 @@ $DIR/steps/step_03/00_openrov-image.sh
 $DIR/steps/step_03/01_build_nodejs.sh
 if [ ! "$NO_COCKPIT" = "1" ]; then
 	$DIR/steps/step_03/02_build_openrov-cockpit.sh $STEP_03_IMAGE
+fi
+if [ ! "$NO_DASHBOARD" = "1" ]; then
+	$DIR/steps/step_03/02_build_openrov-dashboard.sh $STEP_03_IMAGE
 fi
 $DIR/steps/step_03/03_build_mjpegstreamer.sh $STEP_03_IMAGE
 $DIR/steps/step_03/04_build_ino.sh $STEP_03_IMAGE
