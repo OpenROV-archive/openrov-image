@@ -12,8 +12,8 @@ checkroot
 if [ "$1" = "--no-cockpit" ]; then
 	export NO_COCKPIT=1
 
-if [ "$1" = "--no-dashboard" ]; then
-	export NO_DASHBOARD=1	
+elif [ "$1" = "--no-dashboard" ]; then
+	export NO_DASHBOARD=1
 
 elif [ "$1" = "-r" ]; then
 	export REUSE=1
@@ -21,6 +21,13 @@ elif [ "$1" = "-r" ]; then
 elif [ "$1" = "" ] && [ ! -f $STEP_02_IMAGE ]; then
 	echo "Please pass the name of the Step 2 image file or make sure it exists in: $STEP_02_IMAGE"
 	exit 1
+fi
+
+if [ "$2" = "--no-cockpit" ]; then
+	export NO_COCKPIT=1
+
+elif [ "$2" = "--no-dashboard" ]; then
+	export NO_DASHBOARD=1
 fi
 
 echo -----------------------------
