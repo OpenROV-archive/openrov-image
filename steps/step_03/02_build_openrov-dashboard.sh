@@ -103,11 +103,11 @@ unmount_image
 
 cd $DIR/work/packages/
 fpm -f -m info@openrov.com -s dir -t deb -a armhf \
-	-n openrov-cockpit \
+	-n openrov-dashboard \
 	-v $DASHBOARD_VERSION \
 	-d 'openrov-nodejs' \
-	--before-install=$DIR/steps/step_03/openrov-cockpit-beforeinstall.sh \
-	--after-install=$DIR/steps/step_03/openrov-cockpit-afterinstall.sh \
-	--before-remove=$DIR/steps/step_03/openrov-cockpit-beforeremove.sh \
+	--before-install=$DIR/steps/step_03/openrov-dashboard-beforeinstall.sh \
+	--after-install=$DIR/steps/step_03/openrov-dashboard-afterinstall.sh \
+	--before-remove=$DIR/steps/step_03/openrov-dashboard-beforeremove.sh \
 	--description "OpenROV Dashboard" \
 	-C $OPENROV_PACKAGE_DIR/opt/openrov/dashboard .=/opt/openrov/dashboard
