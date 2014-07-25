@@ -110,4 +110,4 @@ fpm -f -m info@openrov.com -s dir -t deb -a armhf \
 	--after-install=$DIR/steps/step_03/openrov-cockpit-afterinstall.sh \
 	--before-remove=$DIR/steps/step_03/openrov-cockpit-beforeremove.sh \
 	--description "OpenROV Cockpit and Dashboard" \
-	-C $OPENROV_PACKAGE_DIR .=/opt/openrov/cockpit
+	-C $OPENROV_PACKAGE_DIR/opt/openrov .=/opt/openrov/cockpit
