@@ -87,7 +87,7 @@ rm -rf $OPENROV_PACKAGE_DIR/opt/openrov/dashboard
 
 mkdir -p $OPENROV_PACKAGE_DIR/opt/openrov/dashboard
 
-cp -r $ROOT/opt/openrov/dashboard $OPENROV_PACKAGE_DIR/opt/openrov/dashboard
+cp -r $ROOT/opt/openrov/dashboard/ $OPENROV_PACKAGE_DIR/opt/openrov/dashboard
 
 cd $DIR
 
