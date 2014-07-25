@@ -53,16 +53,18 @@ export ROOT=${PWD#}/root
 
 
 cd $ROOT/opt
-rm openrov/dashboard -rf
+mkdir -d openrov
+cd openrov
+rm dashboard -rf
 if [ "$LOCAL_COCKPIT_SOURCE" = "" ];
 then
-	git clone $OPENROV_GIT openrov/dashboard
-	cd openrov/dashboard
+	git clone $OPENROV_GIT dashboard
+	cd dashboard
 	git pull origin
 	git checkout $OPENROV_BRANCH
 else
-	cp -r "$LOCAL_COCKPIT_SOURCE" openrov/dashboard
-	cd openrov/dashboard
+	cp -r "$LOCAL_COCKPIT_SOURCE" dashboard
+	cd dashboard
 fi
 npm install --arch=armhf || onerror
 git clean -d -x -f -e node_modules
@@ -110,4 +112,4 @@ fpm -f -m info@openrov.com -s dir -t deb -a armhf \
 	--after-install=$DIR/steps/step_03/openrov-dashboard-afterinstall.sh \
 	--before-remove=$DIR/steps/step_03/openrov-dashboard-beforeremove.sh \
 	--description "OpenROV Dashboard" \
-	-C $OPENROV_PACKAGE_DIR/opt/openrov/dashboard/dashboard .=/opt/openrov/dashboard
+	-C $OPENROV_PACKAGE_DIR/opt/openrov/dashboard .=/opt/openrov/dashboard
