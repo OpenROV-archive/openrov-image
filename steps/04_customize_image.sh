@@ -75,7 +75,7 @@ echo "PATH=\$PATH:/opt/node/bin" >> /home/rov/.profile
 echo remove ubuntu user
 userdel -r -f ubuntu
 
-echo "rov ALL=NOPASSWD: /opt/openrov/linux/" >> /etc/sudoers
+echo "rov ALL=NOPASSWD: /opt/openrov/cockpit/linux/" >> /etc/sudoers
 
 echo -----------------------------
 echo Get pre-packaged deb packages

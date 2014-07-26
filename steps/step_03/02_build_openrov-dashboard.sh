@@ -5,21 +5,21 @@ export DIR=${PWD#}
 . $DIR/versions.sh
 
 if [ "$OPENROV_GIT" = "" ]; then
-	export OPENROV_GIT=git://github.com/OpenROV/openrov-software.git
+	export OPENROV_GIT=git://github.com/OpenROV/openrov-dashboard.git
 fi
 if [ "$OPENROV_BRANCH" = "" ]; then
 	export OPENROV_BRANCH=master
 fi
-export OPENROV_PACKAGE_DIR=$DIR/work/step_03/openrov
+export OPENROV_PACKAGE_DIR=$DIR/work/step_03/dashboard
 
 if [ ! "$1" = "" ];
 then
 	STEP_03_IMAGE=$1
 fi
 
-if [ "$2" = "--local-cockpit-source" ];
+if [ "$2" = "--local-dashboard-source" ];
 then
-	export LOCAL_COCKPIT_SOURCE=$3
+	export LOCAL_DASHBOARD_SOURCE=$3
 fi
 
 if [ "$STEP_03_IMAGE" = "" ] || [ ! -f "$STEP_03_IMAGE" ];
@@ -53,41 +53,43 @@ export ROOT=${PWD#}/root
 
 
 cd $ROOT/opt
-rm openrov -rf
+mkdir -d openrov
+cd openrov
+rm dashboard -rf
 if [ "$LOCAL_COCKPIT_SOURCE" = "" ];
 then
-	git clone $OPENROV_GIT openrov
-	cd openrov
+	git clone $OPENROV_GIT dashboard
+	cd dashboard
 	git pull origin
 	git checkout $OPENROV_BRANCH
 else
-	cp -r "$LOCAL_COCKPIT_SOURCE" openrov
-	cd openrov
+	cp -r "$LOCAL_COCKPIT_SOURCE" dashboard
+	cd openrov/dashboard
 fi
 npm install --arch=armhf || onerror
 git clean -d -x -f -e node_modules
 
-cat > $ROOT/tmp/build_cockpit.sh << __EOF__
+cat > $ROOT/tmp/build_dashboard.sh << __EOF__
 #!/bin/sh
 
 #install nodejs
 dpkg -i /tmp/openrov-nodejs*.deb
 
-cd /opt/openrov
+cd /opt/openrov/dashboard
 /opt/node/bin/npm rebuild
 
 __EOF__
 
 cp $DIR/work/packages/openrov-nodejs* $ROOT/tmp/
 
-chmod +x $ROOT/tmp/build_cockpit.sh
-chroot $ROOT /tmp/build_cockpit.sh
+chmod +x $ROOT/tmp/build_dashboard.sh
+chroot $ROOT /tmp/build_dashboard.sh
 
-rm -rf $OPENROV_PACKAGE_DIR/opt
+rm -rf $OPENROV_PACKAGE_DIR/opt/openrov/dashboard
 
-mkdir -p $OPENROV_PACKAGE_DIR/opt/openrov
+mkdir -p $OPENROV_PACKAGE_DIR/opt/openrov/dashboard
 
-cp -r $ROOT/opt/openrov $OPENROV_PACKAGE_DIR/opt
+cp -r $ROOT/opt/openrov/ $OPENROV_PACKAGE_DIR/opt/openrov/dashboard
 
 cd $DIR
 
@@ -103,11 +105,11 @@ unmount_image
 
 cd $DIR/work/packages/
 fpm -f -m info@openrov.com -s dir -t deb -a armhf \
-	-n openrov-cockpit \
-	-v $COCKPIT_VERSION \
+	-n openrov-dashboard \
+	-v $DASHBOARD_VERSION \
 	-d 'openrov-nodejs' \
-	--before-install=$DIR/steps/step_03/openrov-cockpit-beforeinstall.sh \
-	--after-install=$DIR/steps/step_03/openrov-cockpit-afterinstall.sh \
-	--before-remove=$DIR/steps/step_03/openrov-cockpit-beforeremove.sh \
-	--description "OpenROV Cockpit and Dashboard" \
-	-C $OPENROV_PACKAGE_DIR/opt/openrov .=/opt/openrov/cockpit
+	--before-install=$DIR/steps/step_03/openrov-dashboard-beforeinstall.sh \
+	--after-install=$DIR/steps/step_03/openrov-dashboard-afterinstall.sh \
+	--before-remove=$DIR/steps/step_03/openrov-dashboard-beforeremove.sh \
+	--description "OpenROV Dashboard" \
+	-C $OPENROV_PACKAGE_DIR/opt/openrov/dashboard .=/opt/openrov/dashboard

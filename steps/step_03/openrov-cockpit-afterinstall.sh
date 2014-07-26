@@ -1,21 +1,17 @@
 #!/bin/sh
 
 # compile the device tree files
-/opt/openrov/linux/update-devicetree-oberlays.sh
+/opt/openrov/cockpit/linux/update-devicetree-oberlays.sh
 
 # set the openrov startup
-ln -s /opt/openrov/linux/openrov.service /etc/init.d/openrov
-chmod +x /opt/openrov/linux/openrov.service
+ln -s /opt/openrov/cockpit/linux/openrov.service /etc/init.d/openrov
+chmod +x /opt/openrov/cockpit/linux/openrov.service
 update-rc.d openrov defaults
 
-# set the openrov dashboard startup
-ln -s /opt/openrov/linux/dashboard.service /etc/init.d/dashboard
-update-rc.d dashboard defaults 21
+chmod +x /opt/openrov/cockpit/linux/rc.local
 
-chmod +x /opt/openrov/linux/rc.local
-
-chown -R rov /opt/openrov
-chgrp -R admin /opt/openrov
+chown -R rov /opt/openrov/cockpit
+chgrp -R admin /opt/openrov/cockpit
 
 # setup reset and uart for non black BB
 cp /etc/rc.local /etc/rc.local_orig
@@ -32,7 +28,7 @@ cat > /etc/rc.local << __EOF__
 # bits.
 #
 
-/opt/openrov/linux/rc.local
+/opt/openrov/cockpit/linux/rc.local
 
 exit 0
 

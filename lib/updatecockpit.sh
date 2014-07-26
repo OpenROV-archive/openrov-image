@@ -17,7 +17,7 @@ fi
 cat > $commandfile << __EOF__
 #!/bin/bash
 
-cd /opt/openrov
+cd /opt/openrov/cockpit
 
 echo Rebuilding node modules
 /opt/node/bin/npm rebuild
@@ -26,7 +26,7 @@ __EOF__
 
 
 $DIR/mount.sh $1
-cd root/opt/openrov
+cd root/opt/openrov/cockpit
 rm -rf node_modules
 npm install --arch=arm
 
