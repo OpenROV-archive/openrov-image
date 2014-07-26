@@ -10,7 +10,7 @@ fi
 if [ "$OPENROV_BRANCH" = "" ]; then
 	export OPENROV_BRANCH=master
 fi
-export OPENROV_PACKAGE_DIR=$DIR/work/step_03/openrov/dashboard
+export OPENROV_PACKAGE_DIR=$DIR/work/step_03/dashboard
 
 if [ ! "$1" = "" ];
 then
@@ -64,7 +64,7 @@ then
 	git checkout $OPENROV_BRANCH
 else
 	cp -r "$LOCAL_COCKPIT_SOURCE" dashboard
-	cd dashboard
+	cd openrov/dashboard
 fi
 npm install --arch=armhf || onerror
 git clean -d -x -f -e node_modules
@@ -89,7 +89,7 @@ rm -rf $OPENROV_PACKAGE_DIR/opt/openrov/dashboard
 
 mkdir -p $OPENROV_PACKAGE_DIR/opt/openrov/dashboard
 
-cp -r $ROOT/opt/openrov/dashboard/ $OPENROV_PACKAGE_DIR/opt/openrov/dashboard
+cp -r $ROOT/opt/openrov/ $OPENROV_PACKAGE_DIR/opt/openrov/dashboard
 
 cd $DIR
 
