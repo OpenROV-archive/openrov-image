@@ -1,5 +1,5 @@
 #!/bin/sh
-
+set -o verbose
 export DIR=${PWD#}
 
 . $DIR/versions.sh
@@ -53,7 +53,8 @@ export ROOT=${PWD#}/root
 
 
 cd $ROOT/opt
-mkdir -d openrov
+rm -rf openrov
+mkdir -p openrov
 cd openrov
 rm dashboard -rf
 if [ "$LOCAL_COCKPIT_SOURCE" = "" ];
@@ -97,7 +98,7 @@ echo $ROOT/opt/openrov/dashboard/
 echo $OPENROV_PACKAGE_DIR/opt/openrov/dashboard
 ls $OPENROV_PACKAGE_DIR/opt/openrov/dashboard
 
-cp -r $ROOT/opt/openrov/dashboard/ $OPENROV_PACKAGE_DIR/opt/openrov/dashboard
+cp -rv $ROOT/opt/openrov/dashboard/ $OPENROV_PACKAGE_DIR/opt/openrov/dashboard
 
 cd $DIR
 echo 5
