@@ -1,5 +1,4 @@
 #!/bin/sh
-set -o verbose
 export DIR=${PWD#}
 
 . $DIR/versions.sh
@@ -122,4 +121,4 @@ fpm -f -m info@openrov.com -s dir -t deb -a armhf \
 	--after-install=$DIR/steps/step_03/openrov-dashboard-afterinstall.sh \
 	--before-remove=$DIR/steps/step_03/openrov-dashboard-beforeremove.sh \
 	--description "OpenROV Dashboard" \
-	-C $OPENROV_PACKAGE_DIR/opt/openrov/dashboard .
+	-C $OPENROV_PACKAGE_DIR/opt/openrov/dashboard .=/opt/openrov
