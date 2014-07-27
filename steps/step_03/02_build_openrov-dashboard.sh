@@ -91,11 +91,17 @@ chroot $ROOT /tmp/build_dashboard.sh
 rm -rf $OPENROV_PACKAGE_DIR/opt/openrov/dashboard
 
 mkdir -p $OPENROV_PACKAGE_DIR/opt/openrov/dashboard
+echo 4
+pwd
+echo $ROOT/opt/openrov/dashboard/
+echo $OPENROV_PACKAGE_DIR/opt/openrov/dashboard
+ls $OPENROV_PACKAGE_DIR/opt/openrov/dashboard
 
-cp -r $ROOT/opt/openrov/ $OPENROV_PACKAGE_DIR/opt/openrov/dashboard
+cp -r $ROOT/opt/openrov/dashboard/ $OPENROV_PACKAGE_DIR/opt/openrov/dashboard
 
 cd $DIR
-
+echo 5
+pwd
 sync
 sleep 2
 chroot_umount
@@ -115,4 +121,4 @@ fpm -f -m info@openrov.com -s dir -t deb -a armhf \
 	--after-install=$DIR/steps/step_03/openrov-dashboard-afterinstall.sh \
 	--before-remove=$DIR/steps/step_03/openrov-dashboard-beforeremove.sh \
 	--description "OpenROV Dashboard" \
-	-C $OPENROV_PACKAGE_DIR/opt/openrov/dashboard .=/opt/openrov/dashboard
+	-C $OPENROV_PACKAGE_DIR/opt/openrov/dashboard .
