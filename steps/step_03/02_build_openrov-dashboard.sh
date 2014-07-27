@@ -59,7 +59,9 @@ rm dashboard -rf
 if [ "$LOCAL_COCKPIT_SOURCE" = "" ];
 then
 	git clone $OPENROV_GIT dashboard
+	ls .
 	cd dashboard
+	ls .
 	git pull origin
 	git checkout $OPENROV_BRANCH
 else
@@ -76,6 +78,7 @@ cat > $ROOT/tmp/build_dashboard.sh << __EOF__
 dpkg -i /tmp/openrov-nodejs*.deb
 
 cd /opt/openrov/dashboard
+ls .
 /opt/node/bin/npm rebuild
 
 __EOF__
