@@ -67,10 +67,6 @@ fi
 npm install --arch=armhf || onerror
 git clean -d -x -f -e node_modules
 
-cd src/static
-npm install
-npm run bower
-
 cat > $ROOT/tmp/build_cockpit.sh << __EOF__
 #!/bin/sh
 
@@ -79,6 +75,7 @@ dpkg -i /tmp/openrov-nodejs*.deb
 
 cd /opt/openrov
 /opt/node/bin/npm rebuild
+/opt/node/bin/npm run bower
 
 __EOF__
 
