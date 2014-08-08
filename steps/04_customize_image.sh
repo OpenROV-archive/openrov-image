@@ -7,6 +7,7 @@ export OUTPUT_IMAGE=$DIR/output/OpenROV.img
 
 . $DIR/lib/libtools.sh
 . $DIR/lib/libmount.sh
+. $DIR/versions.sh
 
 checkroot
 
@@ -28,7 +29,7 @@ if [ ! "$1" = "--reuse-step4" ]; then
 
 	IMAGE_DIR_NAME=$( dirname $STEP_04_IMAGE )
 
-	if [ ! -d $IMAGE_DIR_NAME ] 
+	if [ ! -d $IMAGE_DIR_NAME ]
 	then
 		mkdir -p "$IMAGE_DIR_NAME"
 	fi
@@ -62,7 +63,25 @@ echo -----------------------------
 cat > $ROOT/tmp/update.sh << __EOF_UPDATE__
 #!/bin/bash
 
-echo "rov ALL=NOPASSWD: /opt/openrov/linux/" >> /etc/sudoers
+echo Setting up users
+echo -----------------------------
+
+echo Adding user 'rov'
+useradd rov -m -s /bin/bash -g admin
+echo rov:OpenROV | chpasswd
+# Include node in PATH
+echo "PATH=\$PATH:/opt/node/bin" >> /home/rov/.profile
+
+echo remove ubuntu user
+userdel -r -f ubuntu
+
+echo "rov ALL=NOPASSWD: /opt/openrov/cockpit/linux/" >> /etc/sudoers
+echo "rov ALL=NOPASSWD: /opt/openrov/dashboard/linux/" >> /etc/sudoers
+
+echo -----------------------------
+echo Get pre-packaged deb packages
+echo -----------------------------
+wget -P /tmp/packages/ http://openrov-software-nightlies.s3-us-west-2.amazonaws.com/arduino-firmware/openrov-arduino-firmware_${OROV_ARDUINO_FIRMWARE_VERSION}_all.deb /tmp/packages/
 
 echo -----------------------------
 echo Installing packages
@@ -77,7 +96,7 @@ cd /home
 find . -type d -not -name rov -and -not -name . | xargs rm -rf
 
 echo -----------------------------
-echo Setting up network 
+echo Setting up network
 echo -----------------------------
 
 #fix hostname
@@ -197,7 +216,7 @@ echo "> $OUTPUT_IMAGE"
 cp $STEP_04_IMAGE $OUTPUT_IMAGE
 
 cd $OUTPUT_DIR_NAME
-cd $DIR 
+cd $DIR
 
 echo -----------------------------
 echo Copying packages

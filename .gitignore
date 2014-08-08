@@ -1,2 +1,6 @@
 work
 node_modules
+
+.vagrant
+
+*.img

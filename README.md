@@ -4,25 +4,25 @@ openrov-image
 Get and install the OpenROV disk image
 ======================================
 
-To get the latest version of the OpenROV disk image for your ROV, you will need a micro-sd card with at least 2 GB.
+To get the latest stable release version of the OpenROV disk image for your ROV, you will need a micro-sd card with at least 2 GB.
 
 The latest disk image is:
 
-**OpenROV-2.5-05.img.7z**
+**OpenROV-2.5-29.img.7z**
 
 To download, get the file from:
 
-https://github.com/OpenROV/openrov-software/releases/download/v2.5.0-Beta-2/OpenROV-2.5-05.img.7z
+https://github.com/OpenROV/openrov-software/releases/tag/v2.5.0
 
 The image is compressed with _7Zip_ so you have to unzip it first.
 
 *Linux:*
 
-	p7zip -d OpenROV-2.5-05.img.7z
+	p7zip -d OpenROV-2.5-29.img.7z
 
 *Windows:*
 
-	Use 7Zip. 
+	Use 7Zip.
 
 Write the image onto you SD card:
 
@@ -30,12 +30,12 @@ Write the image onto you SD card:
 
 	Find the right /dev/sdX device. The easiest way is to have a look at the output of _dmesg_ after you plugged in the sd-card.
 
-	dd if=OpenROV-2.5-05.img.7z of=/dev/sdX
+	dd if=OpenROV-2.5-29.img.7z of=/dev/sdX
 
 
 *Windows:*
 
-	1. Get the latest version of *Win32DiskImager* from https://launchpad.net/win32-image-writer/+download
+	1. Get the latest version of *Win32DiskImager* from http://sourceforge.net/projects/win32diskimager/files/latest/download
 	2. Point the Win32DiskImager to the image file 'OpenROV-2.5-05.img.7z' and the SD card
 	3. Press 'Write' and wait till its written to the SD card
 
@@ -73,13 +73,13 @@ Debuging and being in control
 -----------------------------
 
 If you wan't to log on to your BB, either connect a USB cable and use (from a Linux machine):
-	
+
 	picocom -b 115200 /dev/ttyUSB1
-	
+
 Otherwise, from a Mac you have to use:
-	
+
 	screen `ls /dev/{tty.usb*B,beaglebone-serial}` 115200
-	
+
 From Windows you can use any terminal application and connect to the USB port.
 
 Or SSH:
@@ -97,7 +97,7 @@ Once you see the logon screen, use:
 	password: OpenROV
 
 The OpenROV cockpit service writes a logfile to:
-	
+
 	/var/log/openrov.log
 
 To Start/Stop the cockpit service use:
@@ -109,8 +109,8 @@ To manually start the cockpit service use:
 
 	sudo /etc/init.d/openrov stop
 	sudo bash
-	/opt/node/bin/node /opt/openrov/src/app.js
-	
+	/opt/node/bin/node /opt/openrov/cockpit/src/app.js
+
 
 Customize the disk image
 ========================
@@ -199,7 +199,7 @@ __First of all__, _build.sh_ creates disk image with the demo image scripts. (st
 __Step 2__ is to update the image to the latest ubuntu packages and install all the needed additional packages (steps/02_update_image.sh). The output is saved in _work/steps/step_02/_
 
 __Step 3__ is to get all the other tools we need from their source and compile them.
-This is: 
+This is:
 	- NodeJS
 	- OpenROV Cockpit
 	- mjpeg-streamer
@@ -217,5 +217,4 @@ All the scripts to built the softare are to be found in: _steps/step_03/*.sh_)
 
 __Step 4__ is to customize the root environment. In this step we install the .deb packages and setup the hostname, ip address/network configuration, users and other things. Script: _steps/04_customize_image.sh_.
 
-__Step 5__ is to compress the image and calculate the md5 of the image. 
-
+__Step 5__ is to compress the image and calculate the md5 of the image.
