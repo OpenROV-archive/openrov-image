@@ -65,8 +65,8 @@ then
 	git pull origin
 	git checkout $OPENROV_BRANCH
 else
-	echo Copying "$LOCAL_DASBOARD_SOURCE" to dashboard 
-	cp -r "$LOCAL_DASBOARD_SOURCE" dashboard
+	echo Copying "$LOCAL_DASHBOARD_SOURCE" to dashboard 
+	cp -r "$LOCAL_DASHBOARD_SOURCE" dashboard
 	cd dashboard
 fi
 npm install --arch=armhf || onerror
