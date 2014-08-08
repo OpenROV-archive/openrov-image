@@ -68,10 +68,6 @@ npm install --arch=armhf || onerror
 git clean -d -x -f -e node_modules
 
 cd src/static
-<<<<<<< HEAD
-npm install
-npm run bower
-=======
 npm install -g bower
 bower --allow-root --config.interactive=false install
 
