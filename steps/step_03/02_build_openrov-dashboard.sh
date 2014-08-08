@@ -66,7 +66,7 @@ then
 	git checkout $OPENROV_BRANCH
 else
 	cp -r "$LOCAL_DASBOARD_SOURCE" dashboard
-	cd openrov/dashboard
+	cd dashboard
 fi
 npm install --arch=armhf || onerror
 git clean -d -x -f -e node_modules
