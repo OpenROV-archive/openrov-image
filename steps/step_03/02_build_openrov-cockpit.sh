@@ -76,8 +76,8 @@ cat > $ROOT/tmp/build_cockpit.sh << __EOF__
 
 #install nodejs
 dpkg -i /tmp/openrov-nodejs*.deb
-a
-cd /opt/openrovdd
+
+cd /opt/openrov
 /opt/node/bin/npm rebuild
 
 __EOF__
