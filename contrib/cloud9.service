@@ -57,7 +57,7 @@
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
 PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/opt/node/bin # modify if you need
 
-DAEMON_ARGS="/opt/cloud9/server.js -w /opt/openrov/cockpit/ -l 0.0.0.0 -a"               # path to your node.js server/app
+DAEMON_ARGS="/opt/cloud9/server.js -w /opt/openrov/ -l 0.0.0.0 -a"               # path to your node.js server/app
                                             # NB: don't use ~/ in path
 
 DESC="Cloud9 web IDE"                  # whatever fancy description you like
