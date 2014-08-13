@@ -201,7 +201,7 @@ cp $DIR/contrib/boot/* $DIR/boot/
 
 echo ------------------------------
 echo installing bower
-npm -g bower
+npm install -g bower
 
 echo ------------------------------
 echo done
