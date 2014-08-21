@@ -60,7 +60,7 @@ echo Staging packages for install
 echo -----------------------------
 #trying to mount bind instaed of copy to save space
 #cp -r $DIR/work/packages $ROOT/tmp/
-if [ ! -d $ROOT/tmp/packages ];
+if [ ! -d $ROOT/tmp/packages ]; then
 mount --bind $DIR/work/packages $ROOT/tmp/packages
 fi
 
