@@ -54,7 +54,9 @@ export ROOT=${PWD#}/root
 
 chroot_mount
 
-cp -r $DIR/work/packages $ROOT/tmp/
+#trying to mount bind instaed of copy to save space
+#cp -r $DIR/work/packages $ROOT/tmp/
+mount --bind $DIR/work/packages $ROOT/tmp/
 
 echo -----------------------------
 echo Customizing image
