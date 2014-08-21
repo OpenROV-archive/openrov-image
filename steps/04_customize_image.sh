@@ -60,8 +60,9 @@ echo Staging packages for install
 echo -----------------------------
 #trying to mount bind instaed of copy to save space
 #cp -r $DIR/work/packages $ROOT/tmp/
-mount --bind $DIR/work/packages $ROOT/tmp/
-mount | grep packages
+if [ ! -d $ROOT/tmp/packages ];
+mount --bind $DIR/work/packages $ROOT/tmp/packages
+fi
 
 echo -----------------------------
 echo Customizing image
