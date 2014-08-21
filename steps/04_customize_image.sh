@@ -54,9 +54,14 @@ export ROOT=${PWD#}/root
 
 chroot_mount
 
+
+echo -----------------------------
+echo Staging packages for install
+echo -----------------------------
 #trying to mount bind instaed of copy to save space
 #cp -r $DIR/work/packages $ROOT/tmp/
 mount --bind $DIR/work/packages $ROOT/tmp/
+mount | grep packages
 
 echo -----------------------------
 echo Customizing image
