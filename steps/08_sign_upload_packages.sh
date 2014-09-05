@@ -43,7 +43,7 @@ docker run \
 	-t \
 	-v $DIR/docker/deb-repository/gnupg/:/root/.gnupg \
 	-v $OUTPUT_DIR/packages:/tmp/packages \
-	-v ${GPG_PASSPHRASE_FILE}:/root/passphrase.txt
+	-v ${GPG_PASSPHRASE_FILE}:/root/passphrase.txt \
 	-e HOME=/root codewithpassion/package-server \
 	dpkg-sig -k $KEYID \
 		-g "--passphrase-file /root/passphrase.txt" \
@@ -54,7 +54,7 @@ docker run \
 	-t \
 	-v $DIR/docker/deb-repository/gnupg/:/root/.gnupg \
 	-v $OUTPUT_DIR/packages:/tmp/packages \
-	-v ${GPG_PASSPHRASE_FILE}:/root/passphrase.txt
+	-v ${GPG_PASSPHRASE_FILE}:/root/passphrase.txt \
 	-e HOME=/root codewithpassion/package-server \
 	deb-s3 --buket=openrov-deb-repository \
 		-c $DEB_CODENAME \
