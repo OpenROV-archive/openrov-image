@@ -49,12 +49,18 @@ docker run \
 		-g "--passphrase-file /root/passphrase.txt" \
 		-s openrov \
 		/tmp/packages/openrov*.deb 
-echo $AWSKEY
-echo $DEB_CODENAME
+
 docker run \
 	-t \
 	-v $DIR/docker/deb-repository/gnupg/:/root/.gnupg \
 	-v $OUTPUT_DIR/packages:/tmp/packages \
 	-v ${GPG_PASSPHRASE_FILE}:/root/passphrase.txt \
 	-e HOME=/root codewithpassion/package-server \
-	deb-s3 upload --bucket=openrov-deb-repository -c $DEB_CODENAME --access-key-id=$AWSKEY --secret-access-key=$AWSSECRET --sign=$KEYID --gpg-options="--passphrase-file /root/passphrase.txt" /tmp/packages/openrov*.deb
+	deb-s3 upload \
+		--bucket=openrov-deb-repository \
+		-c $DEB_CODENAME \
+		--access-key-id=$AWSKEY \
+		--secret-access-key=$AWSSECRET \
+		--sign=$KEYID \
+		--gpg-options="--passphrase-file /root/passphrase.txt" \
+		/tmp/packages/openrov*.deb
