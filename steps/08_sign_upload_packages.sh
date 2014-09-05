@@ -49,7 +49,8 @@ docker run \
 		-g "--passphrase-file /root/passphrase.txt" \
 		-s openrov \
 		/tmp/packages/openrov*.deb 
-
+echo $AWSKEY
+echo $DEB_CODENAME
 docker run \
 	-t \
 	-v $DIR/docker/deb-repository/gnupg/:/root/.gnupg \
