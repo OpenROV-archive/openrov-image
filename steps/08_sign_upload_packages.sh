@@ -9,7 +9,7 @@ if [ "$DEB_CODENAME" = "" ]; then
         exit 1
 fi
 
-if [ "$DEB_COMPONENT " = "" ]; then
+if [ "$DEB_COMPONENT" = "" ]; then
         echo "Please set the DEB_COMPONENT environment variable to define into what debian component we should upload the .deb files."
         exit 1
 fi
