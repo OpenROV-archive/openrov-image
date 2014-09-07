@@ -124,6 +124,7 @@ if [ "$USE_REPO" != "" ]; then
 		openrov-dtc \
 		openrov-ino \
 		openrov-mjpeg-streamer \
+	 	openrov-cloud9 \
 		openrov-samba-config	
 
 fi 
