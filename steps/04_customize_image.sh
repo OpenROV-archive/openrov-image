@@ -4,6 +4,7 @@ export IMAGE=$1
 export STEP_02_IMAGE=$DIR/work/step_02/image.step_02.img
 export STEP_04_IMAGE=$DIR/work/step_04/image.step_04.img
 export OUTPUT_IMAGE=$DIR/output/OpenROV.img
+export USE_REPO=${USE_REPO:-''} # use the repository at build.openrov.com/debian as package source
 
 . $DIR/lib/libtools.sh
 . $DIR/lib/libmount.sh
@@ -55,15 +56,17 @@ export ROOT=${PWD#}/root
 chroot_mount
 
 
-echo -----------------------------
-echo Staging packages for install
-echo -----------------------------
-#trying to mount bind instaed of copy to save space
-#cp -r $DIR/work/packages $ROOT/tmp/
-if [ ! -d $ROOT/tmp/packages ]
-then
-		 mkdir $ROOT/tmp/packages
-	   mount --bind $DIR/work/packages $ROOT/tmp/packages
+if [ "$USE_REPO" = "" ]; then
+
+	echo -----------------------------
+	echo Staging packages for install
+	echo -----------------------------
+	#trying to mount bind instaed of copy to save space
+	if [ ! -d $ROOT/tmp/packages ]
+	then
+		mkdir $ROOT/tmp/packages
+		mount --bind $DIR/work/packages $ROOT/tmp/packages
+	fi
 fi
 
 echo -----------------------------
@@ -91,13 +94,37 @@ echo "rov ALL=NOPASSWD: /opt/openrov/dashboard/linux/" >> /etc/sudoers
 echo -----------------------------
 echo Get pre-packaged deb packages
 echo -----------------------------
+mkdir -p /tmp/packages
 wget -P /tmp/packages/ http://openrov-software-nightlies.s3-us-west-2.amazonaws.com/arduino-firmware/openrov-arduino-firmware_${OROV_ARDUINO_FIRMWARE_VERSION}_all.deb /tmp/packages/
+
+
+echo -----------------------------
+echo Adding the apt-get configuration
+echo -----------------------------
+cat > /etc/apt/source.list.d/openrov-master-debian.list << __EOF__
+deb http://build.openrov.com/debian/ master debian
+__EOF__
+
 
 echo -----------------------------
 echo Installing packages
 echo -----------------------------
+
 ls -1 /tmp/packages/openrov-*.deb | grep -viw "openrov-emmc*" | xargs dpkg -i --force-overwrite 
 rm -rf /tmp/packages
+
+if [ "$USE_REPO" != "" ]; then
+	apt-get update
+	apt-get install openrov-avrdude \
+		openrov-cockpit \
+		openrov-dashboard \
+		openrov-avrdude \
+		openrov-dtc \
+		openrov-ino \
+		openrov-mjpeg-streamer \
+		openrov-samba-config	
+
+fi 
 
 echo -----------------------------
 echo Cleanup home directory
