@@ -9,6 +9,11 @@ if [ "$DEB_CODENAME" = "" ]; then
         exit 1
 fi
 
+if [ "$DEB_COMPONENT " = "" ]; then
+        echo "Please set the DEB_COMPONENT environment variable to define into what debian component we should upload the .deb files."
+        exit 1
+fi
+
 if [ "$AWS_CREDENTIALS" = "" ]; then
         echo "Please set the AWS_CREDENTIALS environment variable containing the path to a file with the key/value pairs for AWSKEY and AWSSECRET"
         exit 1
@@ -59,6 +64,7 @@ docker run \
 	deb-s3 upload \
 		--bucket=openrov-deb-repository \
 		-c $DEB_CODENAME \
+                -m $DEB_COMPONENT \
 		--access-key-id=$AWSKEY \
 		--secret-access-key=$AWSSECRET \
 		--sign=$KEYID \
