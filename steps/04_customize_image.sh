@@ -114,8 +114,9 @@ ls -1 /tmp/packages/openrov-*.deb | grep -viw "openrov-emmc*" | xargs dpkg -i --
 rm -rf /tmp/packages
 
 if [ "$USE_REPO" != "" ]; then
-	apt-get update
-	apt-get install openrov-avrdude \
+	apt-get update 
+	apt-get install -y \
+		openrov-avrdude \
 		openrov-cockpit \
 		openrov-dashboard \
 		openrov-avrdude \
