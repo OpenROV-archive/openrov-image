@@ -105,7 +105,7 @@ cat > /etc/apt/sources.list.d//openrov-master-debian.list << __EOF__
 deb http://build.openrov.com/debian/ master debian
 __EOF__
 echo Adding gpg key for build.openrov.com
-wget -O - -q http://build.openrov.com/debian/build.openrov.com.gpg.key
+wget -O - -q http://build.openrov.com/debian/build.openrov.com.gpg.key | apt-key add -
 
 echo -----------------------------
 echo Installing packages
