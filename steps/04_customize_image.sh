@@ -101,7 +101,7 @@ wget -P /tmp/packages/ http://openrov-software-nightlies.s3-us-west-2.amazonaws.
 echo -----------------------------
 echo Adding the apt-get configuration
 echo -----------------------------
-cat > /etc/apt/source.list.d/openrov-master-debian.list << __EOF__
+cat > /etc/apt/sources.list.d//openrov-master-debian.list << __EOF__
 deb http://build.openrov.com/debian/ master debian
 __EOF__
 
