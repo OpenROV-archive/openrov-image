@@ -65,6 +65,7 @@ docker run \
 		--bucket=openrov-deb-repository \
 		-c $DEB_CODENAME \
                 -m $DEB_COMPONENT \
+                --preserve-versions \
 		--access-key-id=$AWSKEY \
 		--secret-access-key=$AWSSECRET \
 		--sign=$KEYID \
