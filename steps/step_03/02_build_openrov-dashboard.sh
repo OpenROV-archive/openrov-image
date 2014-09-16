@@ -71,6 +71,7 @@ else
 fi
 npm install --arch=armhf || onerror
 git clean -d -x -f -e node_modules
+npm run bower
 
 cat > $ROOT/tmp/build_dashboard.sh << __EOF__
 #!/bin/sh
