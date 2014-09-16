@@ -21,7 +21,7 @@ echo -----------------------------
 
 IMAGE_DIR_NAME=$( dirname $STEP_04_IMAGE )
 
-if [ ! -d $IMAGE_DIR_NAME ] 
+if [ ! -d $IMAGE_DIR_NAME ]
 then
 	mkdir -p "$IMAGE_DIR_NAME"
 fi
@@ -37,7 +37,14 @@ export ROOT=${PWD#}/root
 
 chroot_mount
 
-cp -r $DIR/work/packages $ROOT/tmp/
+echo -----------------------------
+echo Staging packages for install
+echo -----------------------------
+if [ ! -d $ROOT/tmp/packages ]
+then
+		mkdir $ROOT/tmp/packages
+		mount --bind $DIR/work/packages $ROOT/tmp/packages
+fi
 
 echo -----------------------------
 echo Creating eMMC flashable image
@@ -62,6 +69,7 @@ rm $ROOT/tmp/update.sh
 echo Removing auto resize, this is not needed for the eMMC flashed image
 rm $ROOT/var/.RESIZE_ROOT_PARTITION
 
+umount $ROOT/tmp/packages
 
 chroot_umount
 unmount_image
