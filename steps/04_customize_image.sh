@@ -120,6 +120,7 @@ if [ "$USE_REPO" != "" ]; then
 		openrov-avrdude \
 		openrov-cockpit \
 		openrov-dashboard \
+		openrov-proxy \
 		openrov-avrdude \
 		openrov-dtc \
 		openrov-ino \
