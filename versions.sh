@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ "${BUILD_NUMBER}" = "" }; then
+if [ "${BUILD_NUMBER}" = "" ]; then
 	export BUILD_NUMBER=0000
 fi
 
