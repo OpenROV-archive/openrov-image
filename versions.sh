@@ -1,5 +1,9 @@
 #!/bin/sh
 
+if [ "${BUILD_NUMBER}" = "" }; then
+	export BUILD_NUMBER=0000
+fi
+
 if [ "$IMAGE_VERSION" = "" ]; then
 	export IMAGE_VERSION=2.5-custom
 fi
