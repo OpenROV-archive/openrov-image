@@ -28,7 +28,7 @@ if which pv > /dev/null ; then
 cd $IMAGE_NAME
 
 # fix the size of the image file
-sed -i 's/\[1024\*800\]/\[1024*1700]/' setup_sdcard.sh
+sed -i 's/\[1024\*800\]/\[1024*1900]/' setup_sdcard.sh
 
 echo "Building image file!"
 sleep 1

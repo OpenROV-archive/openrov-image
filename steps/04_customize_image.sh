@@ -56,7 +56,6 @@ export ROOT=${PWD#}/root
 
 chroot_mount
 
-
 if [ "$USE_REPO" = "" ]; then
 
 	echo -----------------------------
@@ -102,6 +101,7 @@ wget -P /tmp/packages/ http://openrov-software-nightlies.s3-us-west-2.amazonaws.
 echo -----------------------------
 echo Adding the apt-get configuration
 echo -----------------------------
+apt-get clean
 cat > /etc/apt/sources.list.d//openrov-${BRANCH}-debian.list << __EOF__
 deb http://build.openrov.com/debian/ ${BRANCH} debian
 __EOF__
@@ -130,6 +130,7 @@ if [ "$USE_REPO" != "" ]; then
 		openrov-samba-config	
 
 fi 
+apt-get clean
 
 echo -----------------------------
 echo Cleanup home directory
@@ -214,7 +215,7 @@ chmod +x $ROOT/tmp/update.sh
 
 chroot $ROOT /tmp/update.sh
 
-rm $ROOT/tmp/update.sh
+rm $ROOT/tmp/* -r
 
 echo Setting up auto resize on first boot
 touch $ROOT/var/.RESIZE_ROOT_PARTITION
