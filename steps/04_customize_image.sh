@@ -5,6 +5,7 @@ export STEP_02_IMAGE=$DIR/work/step_02/image.step_02.img
 export STEP_04_IMAGE=$DIR/work/step_04/image.step_04.img
 export OUTPUT_IMAGE=$DIR/output/OpenROV.img
 export USE_REPO=${USE_REPO:-''} # use the repository at build.openrov.com/debian as package source
+exporr BRANCH=${BRANCH:-'master'}
 
 . $DIR/lib/libtools.sh
 . $DIR/lib/libmount.sh
@@ -101,8 +102,8 @@ wget -P /tmp/packages/ http://openrov-software-nightlies.s3-us-west-2.amazonaws.
 echo -----------------------------
 echo Adding the apt-get configuration
 echo -----------------------------
-cat > /etc/apt/sources.list.d//openrov-master-debian.list << __EOF__
-deb http://build.openrov.com/debian/ master debian
+cat > /etc/apt/sources.list.d//openrov-${BRANCH}-debian.list << __EOF__
+deb http://build.openrov.com/debian/ ${BRANCH} debian
 __EOF__
 echo Adding gpg key for build.openrov.com
 wget -O - -q http://build.openrov.com/debian/build.openrov.com.gpg.key | apt-key add -
