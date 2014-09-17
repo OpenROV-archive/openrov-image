@@ -261,9 +261,9 @@ if [ ! -d $OUTPUT_DIR_NAME ];  then
 fi
 
 echo -----------------------------
-echo Copying image
+echo Moving image
 echo "> $OUTPUT_IMAGE"
-cp $STEP_04_IMAGE $OUTPUT_IMAGE
+mv $STEP_04_IMAGE $OUTPUT_IMAGE
 
 cd $OUTPUT_DIR_NAME
 cd $DIR
