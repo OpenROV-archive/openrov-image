@@ -9,6 +9,11 @@ export OUTPUT_IMAGE=$DIR/output/OpenROV-flash.img
 
 checkroot
 
+if [ "$IMAGE" != "" ]; then
+       export $STEP_04_IMAGE=$IMAGE
+fi
+
+
 if [ "$1" = "" ] && [ ! -f $STEP_04_IMAGE ]; then
 	echo "Please pass the name of the Step 4 image file or make sure it exists in: $STEP_04_IMAGE"
 	exit 1
@@ -25,7 +30,7 @@ if [ ! -d $IMAGE_DIR_NAME ]
 then
 	mkdir -p "$IMAGE_DIR_NAME"
 fi
-cp $STEP_04_IMAGE $OUTPUT_IMAGE
+mv $STEP_04_IMAGE $OUTPUT_IMAGE
 echo -----------------------------
 echo done
 echo -----------------------------
