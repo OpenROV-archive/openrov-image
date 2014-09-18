@@ -10,7 +10,7 @@ export OUTPUT_IMAGE=$DIR/output/OpenROV-flash.img
 checkroot
 
 if [ "$IMAGE" != "" ]; then
-       export $STEP_04_IMAGE=$IMAGE
+       export STEP_04_IMAGE=$IMAGE
 fi
 
 
