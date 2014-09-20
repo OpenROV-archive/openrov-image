@@ -12,18 +12,6 @@ if [ "$1" = "" ]; then
 	exit 1
 fi
 
-if [ "$2" = "" ] || [ "$2" = "--bone" ]; then
-	uboot=bone
-	image_suffix=
-
-elif [ "$2" = "--black" ]; then
-	uboot=bone_dtb
-	image_suffix=-black
-else
-	echo "Currently only --bone and --black are supported as targets!"
-	exit 1
-fi
-
 IMAGE_FULLNAME=$(basename "$IMAGE")
 IMAGE_NAME=$( basename $IMAGE_FULLNAME .tar.xz )
 
@@ -40,7 +28,7 @@ if which pv > /dev/null ; then
 cd $IMAGE_NAME
 
 # fix the size of the image file
-sed -i 's/\[1024\*800\]/\[1024*1700]/' setup_sdcard.sh
+sed -i 's/\[1024\*800\]/\[1024*1900]/' setup_sdcard.sh
 
 echo "Building image file!"
 sleep 1

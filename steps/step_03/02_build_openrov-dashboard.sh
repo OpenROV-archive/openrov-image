@@ -56,7 +56,7 @@ rm -rf openrov
 mkdir -p openrov
 cd openrov
 rm dashboard -rf
-if [ "$LOCAL_COCKPIT_SOURCE" = "" ];
+if [ "$LOCAL_DASHBOARD_SOURCE" = "" ];
 then
 	git clone $OPENROV_GIT dashboard
 	ls .
@@ -65,25 +65,25 @@ then
 	git pull origin
 	git checkout $OPENROV_BRANCH
 else
-	cp -r "$LOCAL_COCKPIT_SOURCE" dashboard
-	cd openrov/dashboard
+	echo Copying "$LOCAL_DASHBOARD_SOURCE" to dashboard 
+	cp -r "$LOCAL_DASHBOARD_SOURCE" dashboard
+	cd dashboard
 fi
 npm install --arch=armhf || onerror
 git clean -d -x -f -e node_modules
+npm run bower
 
 cat > $ROOT/tmp/build_dashboard.sh << __EOF__
 #!/bin/sh
 
 #install nodejs
-dpkg -i /tmp/openrov-nodejs*.deb
+apt-get install -y nodejs npm
+update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
 
 cd /opt/openrov/dashboard
-ls .
-/opt/node/bin/npm rebuild
+npm rebuild
 
 __EOF__
-
-cp $DIR/work/packages/openrov-nodejs* $ROOT/tmp/
 
 chmod +x $ROOT/tmp/build_dashboard.sh
 chroot $ROOT /tmp/build_dashboard.sh
@@ -116,7 +116,6 @@ cd $DIR/work/packages/
 fpm -f -m info@openrov.com -s dir -t deb -a armhf \
 	-n openrov-dashboard \
 	-v $DASHBOARD_VERSION \
-	-d 'openrov-nodejs' \
 	--before-install=$DIR/steps/step_03/openrov-dashboard-beforeinstall.sh \
 	--after-install=$DIR/steps/step_03/openrov-dashboard-afterinstall.sh \
 	--before-remove=$DIR/steps/step_03/openrov-dashboard-beforeremove.sh \

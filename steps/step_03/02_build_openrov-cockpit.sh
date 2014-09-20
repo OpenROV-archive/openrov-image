@@ -1,4 +1,4 @@
-#!/bin/sh
+!/bin/sh
 
 export DIR=${PWD#}
 
@@ -75,10 +75,11 @@ cat > $ROOT/tmp/build_cockpit.sh << __EOF__
 #!/bin/sh
 
 #install nodejs
-dpkg -i /tmp/openrov-nodejs*.deb
+apt-get install -y nodejs npm
+update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
 
 cd /opt/openrov
-/opt/node/bin/npm rebuild
+npm rebuild
 
 __EOF__
 
@@ -109,7 +110,6 @@ cd $DIR/work/packages/
 fpm -f -m info@openrov.com -s dir -t deb -a armhf \
 	-n openrov-cockpit \
 	-v $COCKPIT_VERSION \
-	-d 'openrov-nodejs' \
 	--before-install=$DIR/steps/step_03/openrov-cockpit-beforeinstall.sh \
 	--after-install=$DIR/steps/step_03/openrov-cockpit-afterinstall.sh \
 	--before-remove=$DIR/steps/step_03/openrov-cockpit-beforeremove.sh \

@@ -4,6 +4,8 @@ export IMAGE=$1
 export STEP_02_IMAGE=$DIR/work/step_02/image.step_02.img
 export STEP_04_IMAGE=$DIR/work/step_04/image.step_04.img
 export OUTPUT_IMAGE=$DIR/output/OpenROV.img
+export USE_REPO=${USE_REPO:-''} # use the repository at build.openrov.com/debian as package source
+exporr BRANCH=${BRANCH:-'master'}
 
 . $DIR/lib/libtools.sh
 . $DIR/lib/libmount.sh
@@ -54,16 +56,17 @@ export ROOT=${PWD#}/root
 
 chroot_mount
 
+if [ "$USE_REPO" = "" ]; then
 
-echo -----------------------------
-echo Staging packages for install
-echo -----------------------------
-#trying to mount bind instaed of copy to save space
-#cp -r $DIR/work/packages $ROOT/tmp/
-if [ ! -d $ROOT/tmp/packages ]
-then
-		 mkdir $ROOT/tmp/packages
-	   mount --bind $DIR/work/packages $ROOT/tmp/packages
+	echo -----------------------------
+	echo Staging packages for install
+	echo -----------------------------
+	#trying to mount bind instaed of copy to save space
+	if [ ! -d $ROOT/tmp/packages ]
+	then
+		mkdir $ROOT/tmp/packages
+		mount --bind $DIR/work/packages $ROOT/tmp/packages
+	fi
 fi
 
 echo -----------------------------
@@ -86,16 +89,48 @@ echo remove ubuntu user
 userdel -r -f ubuntu
 
 echo "rov ALL=NOPASSWD: /opt/openrov/cockpit/linux/" >> /etc/sudoers
+echo "rov ALL=NOPASSWD: /opt/openrov/dashboard/linux/" >> /etc/sudoers
 
 echo -----------------------------
 echo Get pre-packaged deb packages
 echo -----------------------------
+mkdir -p /tmp/packages
 wget -P /tmp/packages/ http://openrov-software-nightlies.s3-us-west-2.amazonaws.com/arduino-firmware/openrov-arduino-firmware_${OROV_ARDUINO_FIRMWARE_VERSION}_all.deb /tmp/packages/
+
+
+echo -----------------------------
+echo Adding the apt-get configuration
+echo -----------------------------
+apt-get clean
+cat > /etc/apt/sources.list.d//openrov-${BRANCH}-debian.list << __EOF__
+deb http://build.openrov.com/debian/ ${BRANCH} debian
+__EOF__
+echo Adding gpg key for build.openrov.com
+wget -O - -q http://build.openrov.com/debian/build.openrov.com.gpg.key | apt-key add -
 
 echo -----------------------------
 echo Installing packages
 echo -----------------------------
-ls -1 /tmp/packages/openrov-*.deb | grep -viw "openrov-emmc*" | xargs dpkg -i --force-overwrite
+
+ls -1 /tmp/packages/openrov-*.deb | grep -viw "openrov-emmc*" | xargs dpkg -i --force-overwrite 
+rm -rf /tmp/packages
+
+if [ "$USE_REPO" != "" ]; then
+	apt-get update 
+	apt-get install -y --force-yes -o Dpkg::Options::="--force-overwrite" \
+		openrov-avrdude \
+		openrov-cockpit \
+		openrov-dashboard \
+		openrov-proxy \
+		openrov-avrdude \
+		openrov-dtc \
+		openrov-ino \
+		openrov-mjpeg-streamer \
+	 	openrov-cloud9 \
+		openrov-samba-config	
+
+fi 
+apt-get clean
 
 echo -----------------------------
 echo Cleanup home directory
@@ -118,6 +153,7 @@ __EOF__
 
 ## fix dhcp
 cat >> /etc/dhcp/dhclient.conf << __EOF__
+timeout 5;
 lease {
 interface "eth0";
 fixed-address 192.168.254.1;
@@ -168,19 +204,24 @@ iface usb0 inet static
 
 __EOF__
 
+echo -------------------------
+echo Installing new kernel
+cd /tmp/
+wget http://rcn-ee.net/deb/wheezy-armhf/v3.15.5-bone4/install-me.sh
+bash install-me.sh
 
 __EOF_UPDATE__
 chmod +x $ROOT/tmp/update.sh
 
 chroot $ROOT /tmp/update.sh
 
-rm $ROOT/tmp/update.sh
+rm $ROOT/tmp/* -r
 
 echo Setting up auto resize on first boot
 touch $ROOT/var/.RESIZE_ROOT_PARTITION
 
 echo ------------------------------
-echo Fixing ardiono
+echo Fixing arduino 
 
 #fix arduino version
 echo 1.0.5 > $ROOT/usr/share/arduino/lib/version.txt
@@ -194,11 +235,17 @@ echo ------------------------------
 echo Customizing boot partition
 
 # change boot script for uart
-sed -i '/#optargs/a optargs=capemgr.enable_partno=BB-UART1' $DIR/boot/uEnv.txt
+sed -i '3ioptargs=capemgr.enable_partno=BB-UART1' $DIR/boot/uEnv.txt
 
 mkdir $DIR/boot/Docs
 cp $DIR/contrib/openrov.ico $DIR/boot/Docs/
 cp $DIR/contrib/boot/* $DIR/boot/
+
+
+echo ------------------------------
+echo installing bower
+npm install -g bower
+
 echo ------------------------------
 echo done
 echo ------------------------------
@@ -215,9 +262,9 @@ if [ ! -d $OUTPUT_DIR_NAME ];  then
 fi
 
 echo -----------------------------
-echo Copying image
+echo Moving image
 echo "> $OUTPUT_IMAGE"
-cp $STEP_04_IMAGE $OUTPUT_IMAGE
+mv $STEP_04_IMAGE $OUTPUT_IMAGE
 
 cd $OUTPUT_DIR_NAME
 cd $DIR

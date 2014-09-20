@@ -39,7 +39,7 @@
 #      modified by : Peter Host (www.oghme.com)
 # ______________________________________________________________________________
 ### BEGIN INIT INFO
-# Provides:          node_debian_init
+# Provides:          cloud9
 # Required-Start:    $remote_fs $named $syslog
 # Required-Stop:     $remote_fs $named $syslog
 # Default-Start:
@@ -57,7 +57,7 @@
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
 PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/opt/node/bin # modify if you need
 
-DAEMON_ARGS="/opt/cloud9/server.js -w /opt/openrov/cockpit/ -l 0.0.0.0 -a"               # path to your node.js server/app
+DAEMON_ARGS="/opt/cloud9/server.js -w /opt/openrov/ -l 0.0.0.0 -a"               # path to your node.js server/app
                                             # NB: don't use ~/ in path
 
 DESC="Cloud9 web IDE"                  # whatever fancy description you like
@@ -73,7 +73,15 @@ LOCAL_VAR_RUN=/var/run            # in case the init script is run by non-root u
                                             #         (see here: https://github.com/isaacs/npm/blob/master/README.md)
 
 NAME=node                                   # name of the node.js executable
-DAEMON=/opt/node/bin/$NAME                 # this SHOULD POINT TO where your node executable is
+if [ -f /opt/node/bin/$NAME ]; then
+        DAEMON=/opt/node/bin/$NAME
+elif [ -f /usr/bin/node ]; then
+        DAEMON=/usr/bin/$NAME
+else
+        echo "Couldn't find node!"
+        exit 1
+fi
+
 #
 #                                                                              #
 #                   END </MODIFY TO REFLECT YOUR SETTINGS>                     #

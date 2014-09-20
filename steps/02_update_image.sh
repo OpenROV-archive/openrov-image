@@ -44,7 +44,7 @@ chroot_mount
 cp /usr/bin/qemu-arm-static $ROOT/usr/bin/
 
 echo -----------------------------
-echo Updating ubuntu packages
+echo Updating packages
 echo -----------------------------
 
 cat > $ROOT/tmp/update.sh << __EOF__
@@ -57,8 +57,6 @@ sudo apt-get -y upgrade
 
 echo Installing additional packages
 sudo apt-get -y install \
-	linux-firmware \
-	devmem2 \
 	python-software-properties \
 	python-configobj \
 	python-jinja2 \
@@ -66,7 +64,7 @@ sudo apt-get -y install \
 	gcc \
 	g++ \
 	make \
-	libjpeg-dev \
+	libjpeg8-dev \
 	picocom \
 	zip \
 	unzip \
@@ -83,12 +81,25 @@ sudo apt-get -y install \
 	libftdi-dev \
 	libusb-dev \
 	samba \
+        curl \
 	mercurial #needed for cloud9
 
 #remove apache
-dpkg -r apache2
+apt-get -y remove apache2
+
+# Samba doesn't start on the chroot, we need to add an config section and reconfigure it, otherwise the openrov-samba-config packages failes to install
+echo Fixing samba 
+sed -i '/interfaces =/a interfaces = lo' /etc/samba/smb.conf
+sed -i '0,/interfaces =/{//d;}' /etc/samba/smb.conf
+dpkg --configure samba
 
 /etc/init.d/samba stop
+/etc/init.d/sshd stop
+
+echo Updating fstab for improved mount options
+sed -i 's/\/dev\/mmcblk0p2.*/\/dev\/mmcblk0p2  \/            ext4  data=writeback,commit=600,nodiratime,noatime,norelatime  0  1/' /etc/fstab
+
+echo "FSCKFIX=no" >> /etc/default/rcS 
 
 __EOF__
 chmod +x $ROOT/tmp/update.sh
@@ -98,6 +109,13 @@ chroot $ROOT /tmp/update.sh
 rm $ROOT/tmp/update.sh
 
 chroot_umount
+
+echo Setting the root fs mode to minimise impact of suddenly loosing power
+#tune2fs -O ^has_journal $ROOT_media
+tune2fs -o journal_data_writeback  $ROOT_media
+#tune2fs -O ^has_journal -o journal_data_writeback  $ROOT_media
+#tune2fs -O ^has_journal -o ^journal_data_writeback /dev/mapper/loop0p2
+
 unmount_image
  
 echo -----------------------------
