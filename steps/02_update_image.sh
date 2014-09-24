@@ -111,8 +111,8 @@ rm $ROOT/tmp/update.sh
 chroot_umount
 
 echo Setting the root fs mode to minimise impact of suddenly loosing power
-#tune2fs -O ^has_journal $ROOT_media
 tune2fs -o journal_data_writeback  $ROOT_media
+tune2fs -O ^has_journal $ROOT_media
 #tune2fs -O ^has_journal -o journal_data_writeback  $ROOT_media
 #tune2fs -O ^has_journal -o ^journal_data_writeback /dev/mapper/loop0p2
 
