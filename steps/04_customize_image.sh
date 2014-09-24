@@ -210,6 +210,11 @@ cd /tmp/
 wget http://rcn-ee.net/deb/wheezy-armhf/v3.15.5-bone4/install-me.sh
 bash install-me.sh
 
+
+echo ------------------------------
+echo installing bower
+npm install -g bower
+
 __EOF_UPDATE__
 chmod +x $ROOT/tmp/update.sh
 
@@ -242,9 +247,6 @@ cp $DIR/contrib/openrov.ico $DIR/boot/Docs/
 cp $DIR/contrib/boot/* $DIR/boot/
 
 
-echo ------------------------------
-echo installing bower
-npm install -g bower
 
 echo ------------------------------
 echo done
