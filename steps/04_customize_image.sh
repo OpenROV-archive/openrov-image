@@ -76,6 +76,10 @@ echo -----------------------------
 cat > $ROOT/tmp/update.sh << __EOF_UPDATE__
 #!/bin/bash
 
+echo ------------------------------
+echo installing bower
+npm install -g bower
+
 echo Setting up users
 echo -----------------------------
 
@@ -211,9 +215,6 @@ wget http://rcn-ee.net/deb/wheezy-armhf/v3.15.5-bone4/install-me.sh
 bash install-me.sh
 
 
-echo ------------------------------
-echo installing bower
-npm install -g bower
 
 __EOF_UPDATE__
 chmod +x $ROOT/tmp/update.sh
