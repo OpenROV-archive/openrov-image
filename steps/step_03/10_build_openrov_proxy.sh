@@ -63,7 +63,7 @@ unmount_image
 cd $DIR/work/packages/
 fpm -f -m info@openrov.com -s dir -t deb -a armhf \
 	-n openrov-proxy \
-	-v ${PROXY_VERSION}-${BUILD_NUMBER} \
+	-v ${PROXY_VERSION} \
         --after-install=$DIR/steps/step_03/openrov-proxy-afterinstall.sh \
         --before-remove=$DIR/steps/step_03/openrov-proxy-beforeremove.sh \
 	--description "OpenROV proxy package" \
