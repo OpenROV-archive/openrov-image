@@ -68,7 +68,7 @@ npm install --arch=armhf || onerror
 git clean -d -x -f -e node_modules
 
 cd src/static
-npm install
+npm install --production
 npm run bower
 
 cat > $ROOT/tmp/build_cockpit.sh << __EOF__
