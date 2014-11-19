@@ -78,9 +78,19 @@ If you wan't to log on to your BB, either connect a USB cable and use (from a Li
 
 Otherwise, from a Mac you have to use:
 
+
 	screen `ls /dev/{tty.usb*B,beaglebone-serial}` 115200
 
+Connecting to you OpenROV with Ethernet from your Mac:
+Connect your Beaglebone Black to your Mac with your ethernet cable. Make sure that the Green & Orange lights
+come on in the ethernet port on your Beaglebone Black - this verifies that you pushed in the cable enough.
+
+Open "System Preferences" >> "Network". 
+Select "USB Ethernet". Click "Configure IPv4" and select "Manually". Click "IP Address" and enter `192.168.254.1`. Click "Subnet Mask" and enter "255.255.255.0". Leave "Router", "DNS Server", and "Search Domains" blank. Click "Apply" to apply these changes.
+
+
 From Windows you can use any terminal application and connect to the USB port.
+
 
 Or SSH:
 
