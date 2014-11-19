@@ -85,17 +85,19 @@ Connecting to you OpenROV with Ethernet from your Mac:
 Connect your Beaglebone Black to your Mac with your ethernet cable. Make sure that the Green & Orange lights
 come on in the ethernet port on your Beaglebone Black - this verifies that you pushed in the cable enough.
 
-	1. Open "System Preferences" >> "Network". 
-	2. Select "USB Ethernet". 
-	3. Click "Configure IPv4" and select "Manually". 
-	4. Click "IP Address" and enter `192.168.254.x`, where 2 < x <= 255. 
-	5. Click "Subnet Mask" and enter "255.255.255.0". 
-	6. Leave "Router", "DNS Server", and "Search Domains" blank. 
-	7. Click "Apply" to apply these changes.
+	1. Open "System Preferences" >> "Network"
+	2. Select "USB Ethernet"
+	3. Click "Configure IPv4" and select "Manually"
+	4. Click "IP Address" and enter `192.168.254.x`, where 2 ≤ x ≤ 255
+	5. Click "Subnet Mask" and enter "255.255.255.0"
+	6. Leave "Router", "DNS Server", and "Search Domains" blank
+	7. Click "Apply" to apply these changes
 
-Open the Mac "Terminal".
+Open the Mac "Terminal", enter:
 	
 	ssh rov@192.168.254
+
+In the Termianl enter "yes" or hit 'enter' to continue beyond the security message. You should now be in your OpenROV.
 
 
 From Windows you can use any terminal application and connect to the USB port.
