@@ -39,7 +39,16 @@ Write the image onto you SD card:
 	2. Point the Win32DiskImager to the image file 'OpenROV-2.5-05.img.7z' and the SD card
 	3. Press 'Write' and wait till its written to the SD card
 
+*Mac:*
 
+	1. Download "PiFiller" here: http://ivanx.com/raspberrypi/ (PiFiller makes loading an image onto your Mac much safer).\
+	2. Download 'OpenROV-x.x.x-flash.img.7z'. Unzip it with Keka, 7zip, etc. 
+	3. Follow the directions on PiFiller to load the '.img' file onto you microSD card. 
+	4. It will take 5-10 minutes to load the '*.img' onto you microSD card. 
+	5. Properly eject the microSD card from your Mac & put the microSD card into your powered off Beaglebone.
+	6. With the microSD card in the Beaglebone, power on your Beaglebone. This will load the image onto the Beaglebone.
+	7. Wait for the Beaglebone lights to go "1-2-3-4" "4-3-2-1" continuously.
+	8. 
 Starting the OpenROV
 --------------------
 
@@ -82,8 +91,9 @@ Otherwise, from a Mac you have to use:
 	screen `ls /dev/{tty.usb*B,beaglebone-serial}` 115200
 
 Connecting to you OpenROV with Ethernet from your Mac:
-Connect your Beaglebone Black to your Mac with your ethernet cable. Make sure that the Green & Orange lights
-come on in the ethernet port on your Beaglebone Black - this verifies that you pushed in the cable enough.
+
+Connect your Beaglebone Black to your Mac with your ethernet cable. 
+Make sure that the Green & Orange lights come on in the ethernet port on your Beaglebone Black - this verifies that you pushed in the cable enough.
 
 	1. Open "System Preferences" >> "Network"
 	2. Select "USB Ethernet"
@@ -97,7 +107,7 @@ Open the Mac "Terminal", enter:
 	
 	ssh rov@192.168.254
 
-In the Termianl enter "yes" or hit 'enter' to continue beyond the security message. You should now be in your OpenROV.
+In the Terminal enter "yes" or hit 'enter' to continue beyond the security message. You should now be in your OpenROV.
 
 
 From Windows you can use any terminal application and connect to the USB port.
