@@ -106,12 +106,9 @@ If you wan't to log on to your BB, either connect a USB cable and use (from a Li
 
 Otherwise, from a Mac you have to use:
 
-
 	screen `ls /dev/{tty.usb*B,beaglebone-serial}` 115200
 
-
 From Windows you can use any terminal application and connect to the USB port.
-
 
 Or SSH:
 
