@@ -41,7 +41,7 @@ Write the image onto you SD card:
 
 *Mac:*
 
-	1. Download "PiFiller" here: http://ivanx.com/raspberrypi/ (PiFiller makes loading an image onto your Mac much safer).\
+	1. Download "PiFiller" here: http://ivanx.com/raspberrypi/ (PiFiller makes loading an image onto your Mac much safer)
 	2. Download 'OpenROV-x.x.x-flash.img.7z'. Unzip it with Keka, 7zip, etc. 
 	3. Follow the directions on PiFiller to load the '.img' file onto you microSD card. 
 	4. It will take 5-10 minutes to load the '*.img' onto you microSD card. 
