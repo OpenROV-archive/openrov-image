@@ -48,11 +48,14 @@ Just put the newly created sd-card into your BeagleBone (BB).
 
 Once its fully started, you should be able to browse to: `http://<IP.OF.THE.ROV>:8080`.
 
-The BB will try to get an IP address from your DHCP server. Besides that, it also listens on the IP address `192.168.254.1`. So, if you connect your BB directly via a network cable, you can change your computers IP address to `192.168.254.2` or anything on the `.254` subnet (in Linux, something like: `ifconfig eth0:0 192.168.254.2` up) and you should be able to connect to the BB by visiting:
+The BB will try to get an IP address from your DHCP server. Besides that, it also listens on the IP address `192.168.254.1`.
+So, if you connect your BB directly via a network cable, you can change your computers IP address to `192.168.254.2`
+or anything on the `.254` subnet (in Linux, something like: `ifconfig eth0:0 192.168.254.2` up) and you should be able to connect to the BB by visiting:
 `http://192.168.254.1:8080`
 
 You can also connect the BeagleBone to your computer via USB for testing.
-In this case, after you have installed the latest drivers for the BB (http://beagleboard.org/static/beaglebone/latest/README.htm), you will see a new drive in your Explorer or Linux Desktop. Open that drive and you will see a _START.htm_ file. Open that in Chrome and you will be redirected to:
+In this case, after you have installed the latest drivers for the BB (http://beagleboard.org/static/beaglebone/latest/README.htm),
+you will see a new drive in your Explorer or Linux Desktop. Open that drive and you will see a _START.htm_ file. Open that in Chrome and you will be redirected to:
 `http://192.168.7.2:8080`
 
 
@@ -176,7 +179,8 @@ The system will automatically spin up a virtual image and load the pre-reqs. To 
 
 	vagrant ssh
 
-There will be a _/vagrant_ folder in the virtual image that you can go to and run the build command below. That folder is a shared link to the folder on your local computer.
+There will be a _/vagrant_ folder in the virtual image that you can go to and run the build command below.
+That folder is a shared link to the folder on your local computer.
 
 
 How to build?
@@ -192,9 +196,11 @@ What happens?
 
 The demo images come with a script to build an SD card or a disk image.
 
-__First of all__, _build.sh_ creates a disk image with the demo image scripts (_steps/01_build_image.sh_). The output of this is saved in _work/steps/step_01/_
+__First of all__, _build.sh_ creates a disk image with the demo image scripts (_steps/01_build_image.sh_).
+The output of this is saved in _work/steps/step_01/_
 
-__Step 2__ is to update the image with the latest Ubuntu packages and install all the required additional packages (_steps/02_update_image.sh_). The output is saved in _work/steps/step_02/_
+__Step 2__ is to update the image with the latest Ubuntu packages and install all the required additional packages (_steps/02_update_image.sh_).
+The output is saved in _work/steps/step_02/_
 
 __Step 3__ is to get all the other tools we need from their source and compile them.
 This is:
@@ -208,11 +214,13 @@ This is:
 - Cloud9
 - Samba configuration (network sharing)
 
-Some of these packages are built via a cross compiler on the host machine. Where this is not possible, a chroot environment is used. For this, the image from _Step 2_ is copied and the software is built and installed on the image.
+Some of these packages are built via a cross compiler on the host machine. Where this is not possible, a chroot environment is used.
+For this, the image from _Step 2_ is copied and the software is built and installed on the image.
 After compilation/installation the relevent files are packaged in .deb files .
 
 All the scripts to build the softare are to be found in: _steps/step_03/*.sh_
 
-__Step 4__ is to customize the root environment. In this step we install the .deb packages and setup the hostname, ip address/network configuration, users and other things. Script: _steps/04_customize_image.sh_.
+__Step 4__ is to customize the root environment. In this step we install the .deb packages and setup the hostname,
+ip address/network configuration, users and other things. Script: _steps/04_customize_image.sh_.
 
 __Step 5__ is to compress the image and calculate the md5 of the image.
