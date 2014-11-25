@@ -3,6 +3,7 @@ export KEYID=B6CE4E93 # the key ID of the GPG key to sign deb packages
 
 export DIR=${PWD#}
 export OUTPUT_DIR=$DIR/output
+export DOCKER_IMAGE=openrov/debian-repository
 
 if [ "$DEB_CODENAME" = "" ]; then
         echo "Please set the DEB_CODENAME environment variable to define into what debian repo we should upload the .deb files."
@@ -34,7 +35,7 @@ checkroot
 
 cd $OUTPUT_DIR/packages
 
-docker pull codewithpassion/package-server
+docker pull ${DOCKER_IMAGE}
 
 # Docker command descrioption:
 # -t assigns a pseudo tty, we need that for gpg (used for signing packages and the deb repo)
@@ -49,7 +50,8 @@ docker run \
 	-v $DIR/docker/deb-repository/gnupg/:/root/.gnupg \
 	-v $OUTPUT_DIR/packages:/tmp/packages \
 	-v ${GPG_PASSPHRASE_FILE}:/root/passphrase.txt \
-	-e HOME=/root codewithpassion/package-server \
+	-e HOME=/root \
+	${DOCKER_IMAGE} \
 	dpkg-sig -k $KEYID \
 		-g "--passphrase-file /root/passphrase.txt" \
 		-s openrov \
@@ -60,7 +62,8 @@ docker run \
 	-v $DIR/docker/deb-repository/gnupg/:/root/.gnupg \
 	-v $OUTPUT_DIR/packages:/tmp/packages \
 	-v ${GPG_PASSPHRASE_FILE}:/root/passphrase.txt \
-	-e HOME=/root codewithpassion/package-server \
+	-e HOME=/root \
+	${DOCKER_IMAGE} \
 	deb-s3 upload \
 		--bucket=openrov-deb-repository \
 		-c $DEB_CODENAME \
