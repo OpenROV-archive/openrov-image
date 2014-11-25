@@ -4,6 +4,7 @@ export KEYID=B6CE4E93 # the key ID of the GPG key to sign deb packages
 export DIR=${PWD#}
 export OUTPUT_DIR=$DIR/output
 export DOCKER_IMAGE=openrov/debian-repository
+export PREFIX=""
 
 if [ "$DEB_CODENAME" = "" ]; then
         echo "Please set the DEB_CODENAME environment variable to define into what debian repo we should upload the .deb files."
@@ -23,6 +24,10 @@ fi
 if [ "$GPG_PASSPHRASE_FILE" = "" ]; then
         echo "Please set the GPG_PASSPHRASE_FILE environment variable containing the filename to the passphrase used for the GPG key."
         exit 1
+fi
+
+if [ "$1" = "-t" ]; then
+	PREFIX=--prefix=test
 fi
 
 . $DIR/lib/libtools.sh
@@ -68,6 +73,7 @@ docker run \
 		--bucket=openrov-deb-repository \
 		-c $DEB_CODENAME \
                 -m $DEB_COMPONENT \
+                ${PREFIX} \
 		--access-key-id=$AWSKEY \
 		--secret-access-key=$AWSSECRET \
 		--sign=$KEYID \
