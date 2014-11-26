@@ -47,8 +47,6 @@ checkroot
 
 cd $OUTPUT_DIR/packages
 
-docker pull ${DOCKER_IMAGE}
-
 # Docker command descrioption:
 # -t assigns a pseudo tty, we need that for gpg (used for signing packages and the deb repo)
 # -v /host/path:/container/path  mapps the host path to the container path read/write
@@ -76,11 +74,12 @@ docker run \
 	-v ${GPG_PASSPHRASE_FILE}:/root/passphrase.txt \
 	-e HOME=/root \
 	${DOCKER_IMAGE} \
-	deb-s3 upload \
+	/tmp/deb-s3/bin/deb-s3 upload \
 		--bucket=openrov-deb-repository \
+		-p \
 		-c $DEB_CODENAME \
-                -m $DEB_COMPONENT \
-                ${PREFIX} \
+        -m $DEB_COMPONENT \
+        ${PREFIX} \
 		--access-key-id=$AWSKEY \
 		--secret-access-key=$AWSSECRET \
 		--sign=$KEYID \

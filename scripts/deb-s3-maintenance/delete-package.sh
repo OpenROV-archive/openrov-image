@@ -35,7 +35,7 @@ if [ "${cmdarg_cfg['prefix']}" = "" ]; then
 	exit 1
 fi
 
-PREFIX="--prefix ${cmdarg_cfg['prefix']}"
+PREFIX="--prefix=${cmdarg_cfg['prefix']}"
 if [ "${cmdarg_cfg['production']}" = "true" ]; then
 	if [ "${cmdarg_cfg['force']}" = "" ]; then
 		echo "Are you sure you want to delete from production? (yes/no)"
@@ -50,7 +50,6 @@ if [ "${cmdarg_cfg['production']}" = "true" ]; then
 	fi
 	PREFIX=""
 fi
-
 
 if [ "${cmdarg_cfg['credentials']}" = "" ]; then
 	echo "No credentials specified!"
@@ -76,13 +75,9 @@ fi
 
 echo "${GPG_SECRET}" > "${OUTPUT}/.passphrase"
 
-
-
 PACKAGENAME="${cmdarg_argv[0]}"
 PACKAGEVERSION="${cmdarg_cfg['version']}"
 ARCH="${cmdarg_cfg['arch']}"
-
-
 
 DEB_CODENAME=${cmdarg_cfg['codename']} 
 DEB_COMPONENT=${cmdarg_cfg['component']} 
@@ -97,7 +92,7 @@ docker run \
 	-v ${GPG_PASSPHRASE_FILE}:/root/passphrase.txt \
 	-e HOME=/root \
 	${DOCKER_IMAGE} \
-	deb-s3 delete \
+	/tmp/deb-s3/bin/deb-s3 delete \
 		-a $ARCH \
 		--versions "${PACKAGEVERSION}" \
 		--bucket=openrov-deb-repository \
@@ -109,5 +104,22 @@ docker run \
 		--sign=$KEYID \
 		--gpg-options="--passphrase-file /root/passphrase.txt" \
 		"${PACKAGENAME}"
+
+# docker run \
+# 	-t \
+# 	-v $DIR/docker/deb-repository/gnupg/:/root/.gnupg \
+# 	-v ${GPG_PASSPHRASE_FILE}:/root/passphrase.txt \
+# 	-e HOME=/root \
+# 	${DOCKER_IMAGE} \
+# 	/tmp/deb-s3/bin/deb-s3 verify \
+# 		-f \
+# 		--bucket=openrov-deb-repository \
+# 		-c $DEB_CODENAME \
+#         -m $DEB_COMPONENT \
+#         ${PREFIX} \
+# 		--access-key-id=$AWSKEY \
+# 		--secret-access-key=$AWSSECRET \
+# 		--sign=$KEYID \
+# 		--gpg-options="--passphrase-file /root/passphrase.txt" 
 
 rm -rf $GPG_PASSPHRASE_FILE
