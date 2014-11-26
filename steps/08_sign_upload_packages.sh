@@ -17,8 +17,10 @@ if [ "$DEB_COMPONENT" = "" ]; then
 fi
 
 if [ "$AWS_CREDENTIALS" = "" ]; then
+	if [ "$AWSKEY" = "" ] && [ "$AWSSECRET" = "" ]; then
         echo "Please set the AWS_CREDENTIALS environment variable containing the path to a file with the key/value pairs for AWSKEY and AWSSECRET"
         exit 1
+    fi
 fi
 
 if [ "$GPG_PASSPHRASE_FILE" = "" ]; then
@@ -27,15 +29,20 @@ if [ "$GPG_PASSPHRASE_FILE" = "" ]; then
 fi
 
 if [ "$1" = "-t" ]; then
-	PREFIX=--prefix=test
+	PREFIX_VALUE=test
+	if [ "$2" != "" ]; then
+		PREFIX_VALUE=$2
+	fi
+	PREFIX=--prefix=$PREFIX_VALUE
 fi
 
 . $DIR/lib/libtools.sh
 . $DIR/lib/libmount.sh
 . $DIR/versions.sh
-. $AWS_CREDENTIALS # this is a environment variable that is set by the Jenkins Credentials Binding Plugin (see below) 
-                   # and it contains the path to a file with the AWS credentials as KEY=Value
-
+if [ !"$AWSKEY" = "" ] && [ !"$AWSSECRET" = "" ]; then
+	. $AWS_CREDENTIALS # this is a environment variable that is set by the Jenkins Credentials Binding Plugin (see below) 
+    	               # and it contains the path to a file with the AWS credentials as KEY=Value
+fi
 checkroot
 
 cd $OUTPUT_DIR/packages
