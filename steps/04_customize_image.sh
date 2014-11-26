@@ -96,18 +96,13 @@ echo "rov ALL=NOPASSWD: /opt/openrov/cockpit/linux/" >> /etc/sudoers
 echo "rov ALL=NOPASSWD: /opt/openrov/dashboard/linux/" >> /etc/sudoers
 
 echo -----------------------------
-echo Get pre-packaged deb packages
-echo -----------------------------
-mkdir -p /tmp/packages
-wget -P /tmp/packages/ http://openrov-software-nightlies.s3-us-west-2.amazonaws.com/arduino-firmware/openrov-arduino-firmware_${OROV_ARDUINO_FIRMWARE_VERSION}_all.deb /tmp/packages/
-
-
-echo -----------------------------
 echo Adding the apt-get configuration
 echo -----------------------------
 apt-get clean
 cat > /etc/apt/sources.list.d//openrov-${BRANCH}-debian.list << __EOF__
-deb http://build.openrov.com/debian/ ${BRANCH} debian
+deb http://build.openrov.com/debian/ master debian
+deb http://build.openrov.com/debian/ pre-release debian
+deb http://build.openrov.com/debian/ stable debian
 __EOF__
 echo Adding gpg key for build.openrov.com
 wget -O - -q http://build.openrov.com/debian/build.openrov.com.gpg.key | apt-key add -
@@ -116,24 +111,13 @@ echo -----------------------------
 echo Installing packages
 echo -----------------------------
 
-ls -1 /tmp/packages/openrov-*.deb | grep -viw "openrov-emmc*" | xargs dpkg -i --force-overwrite 
 rm -rf /tmp/packages
 
 if [ "$USE_REPO" != "" ]; then
-	apt-get update 
+	apt-get update
 	apt-get install -y --force-yes -o Dpkg::Options::="--force-overwrite" \
-		openrov-avrdude \
-		openrov-cockpit \
-		openrov-dashboard \
-		openrov-proxy \
-		openrov-avrdude \
-		openrov-dtc \
-		openrov-ino \
-		openrov-mjpeg-streamer \
-	 	openrov-cloud9 \
-		openrov-samba-config	
-
-fi 
+		-t $BRANCH openrov-rov-suite
+fi
 apt-get clean
 
 echo -----------------------------
@@ -227,7 +211,7 @@ echo Setting up auto resize on first boot
 touch $ROOT/var/.RESIZE_ROOT_PARTITION
 
 echo ------------------------------
-echo Fixing arduino 
+echo Fixing arduino
 
 #fix arduino version
 echo 1.0.5 > $ROOT/usr/share/arduino/lib/version.txt
