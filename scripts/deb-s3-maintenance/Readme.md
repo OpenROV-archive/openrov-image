@@ -26,3 +26,13 @@ For more parameters run:
 
 	delete-package.sh --help
 
+
+
+Credentials
+=======
+
+The credentials file needs to contain 3 bash variable assignments:
+
+	GPG_SECRET="<secret for the GPG key>"
+	AWSKEY=<AWS KEY>
+	AWSSECRET=<AWS SECRET>
