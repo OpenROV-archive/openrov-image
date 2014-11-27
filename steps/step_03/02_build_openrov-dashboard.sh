@@ -65,13 +65,13 @@ then
 	git pull origin
 	git checkout $OPENROV_BRANCH
 else
-	echo Copying "$LOCAL_DASHBOARD_SOURCE" to dashboard 
+	echo Copying "$LOCAL_DASHBOARD_SOURCE" to dashboard
 	cp -r "$LOCAL_DASHBOARD_SOURCE" dashboard
 	cd dashboard
 fi
 npm install --arch=armhf || onerror
 git clean -d -x -f -e node_modules
-npm run bower
+npm run bower --force-latest
 
 cat > $ROOT/tmp/build_dashboard.sh << __EOF__
 #!/bin/sh
