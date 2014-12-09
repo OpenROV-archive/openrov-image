@@ -99,11 +99,27 @@ echo -----------------------------
 echo Adding the apt-get configuration
 echo -----------------------------
 apt-get clean
-cat > /etc/apt/sources.list.d//openrov-${BRANCH}-debian.list << __EOF__
-deb http://build.openrov.com/debian/ master debian
-deb http://build.openrov.com/debian/ pre-release debian
+cat > /etc/apt/sources.list.d/openrov-stable.list << __EOF__
 deb http://build.openrov.com/debian/ stable debian
+deb [arch=all] http://build.openrov.com/debian/ stable debian
 __EOF__
+cat > /etc/apt/sources.list.d/openrov-pre-release.list << __EOF__
+deb http://build.openrov.com/debian/ pre-release debian
+#deb [arch=all] http://build.openrov.com/debian/ pre-release debian
+__EOF__
+
+cat > /etc/apt/preferences.d/openrov-master-300 << __EOF__
+Package: *
+Pin: release n=master, origin build.openrov.com
+Pin-Priority: 300
+__EOF__
+cat > /etc/apt/preferences.d/openrov-pre-release-400 << __EOF__
+Package: *
+Pin: release n=pre-release, origin build.openrov.com
+Pin-Priority: 400
+__EOF__
+
+
 echo Adding gpg key for build.openrov.com
 wget -O - -q http://build.openrov.com/debian/build.openrov.com.gpg.key | apt-key add -
 
