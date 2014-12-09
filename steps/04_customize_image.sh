@@ -103,6 +103,10 @@ cat > /etc/apt/sources.list.d/openrov-stable.list << __EOF__
 deb http://build.openrov.com/debian/ stable debian
 deb [arch=all] http://build.openrov.com/debian/ stable debian
 __EOF__
+cat > /etc/apt/sources.list.d/openrov-master.list << __EOF__
+deb http://build.openrov.com/debian/ master debian
+deb [arch=all] http://build.openrov.com/debian/ master debian
+__EOF__
 cat > /etc/apt/sources.list.d/openrov-pre-release.list << __EOF__
 deb http://build.openrov.com/debian/ pre-release debian
 #deb [arch=all] http://build.openrov.com/debian/ pre-release debian
