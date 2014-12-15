@@ -161,7 +161,7 @@ __EOF__
 
 ## fix dhcp
 cat >> /etc/dhcp/dhclient.conf << __EOF__
-timeout 5;
+timeout 300;
 lease {
 interface "eth0";
 fixed-address 192.168.254.1;
