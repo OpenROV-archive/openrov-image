@@ -2,10 +2,10 @@
 
 	function mount_image {
 		echo mounting image
-		
+
 		media_loop=$(losetup -f || true)
-		
-		if [ ! -d root ]; then 
+
+		if [ ! -d root ]; then
 			mkdir root
 		fi
 		if [ ! -d boot ]; then
@@ -25,6 +25,11 @@
 		losetup ${media_loop} $1
 
 		kpartx -av ${media_loop}
+		# If running inside Docker, make our nodes manually, because udev will not be working.
+		if [[ -f /.dockerenv ]]; then
+			dmsetup --noudevsync mknodes
+		fi
+
 		sleep 1
 		sync
 		test_loop=$(echo ${media_loop} | awk -F'/' '{print $3}')
@@ -59,6 +64,10 @@ function unmount_image {
 	umount $boot_dir
 
 	kpartx -d /dev/${loop_device}
+# If running inside Docker, make our nodes manually, because udev will not be working.
+	if [[ -f /.dockerenv ]]; then
+		sudo dmsetup --noudevsync mknodes
+	fi
 	losetup -d /dev/${loop_device}
 }
 
