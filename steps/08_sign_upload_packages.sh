@@ -1,4 +1,6 @@
 #!/bin/sh
+set -x
+set -e
 export KEYID=B6CE4E93 # the key ID of the GPG key to sign deb packages
 
 export DIR=${PWD#}
@@ -27,7 +29,7 @@ fi
 . $DIR/lib/libtools.sh
 . $DIR/lib/libmount.sh
 . $DIR/versions.sh
-. $AWS_CREDENTIALS # this is a environment variable that is set by the Jenkins Credentials Binding Plugin (see below) 
+. $AWS_CREDENTIALS # this is a environment variable that is set by the Jenkins Credentials Binding Plugin (see below)
                    # and it contains the path to a file with the AWS credentials as KEY=Value
 
 checkroot
@@ -39,8 +41,8 @@ docker pull codewithpassion/package-server
 # Docker command descrioption:
 # -t assigns a pseudo tty, we need that for gpg (used for signing packages and the deb repo)
 # -v /host/path:/container/path  mapps the host path to the container path read/write
-#    The packages folder contains the debian packages 
-#    the $GPG_PASSPHRASE_FILE is a path to the passphrase. This file and the environment variable is created and maintained by 
+#    The packages folder contains the debian packages
+#    the $GPG_PASSPHRASE_FILE is a path to the passphrase. This file and the environment variable is created and maintained by
 #    the Credentials Binding Plugin for Jenkins (https://wiki.jenkins-ci.org/display/JENKINS/Credentials+Binding+Plugin)
 # -e HOME=  sets the environment variable HOME
 
@@ -53,7 +55,7 @@ docker run \
 	dpkg-sig -k $KEYID \
 		-g "--passphrase-file /root/passphrase.txt" \
 		-s openrov \
-		/tmp/packages/openrov*.deb 
+		/tmp/packages/openrov*.deb
 
 docker run \
 	-t \

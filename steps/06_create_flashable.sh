@@ -1,4 +1,6 @@
 #!/bin/bash
+set -x
+set -e
 export DIR=${PWD#}
 export IMAGE=$1
 export STEP_04_IMAGE=$DIR/work/step_04/image.step_04.img

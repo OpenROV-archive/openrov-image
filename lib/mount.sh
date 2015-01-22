@@ -11,4 +11,4 @@ if [ "$1" = "" ]; then
 fi
 
 
-mount_image $1 
+mount_image $1
