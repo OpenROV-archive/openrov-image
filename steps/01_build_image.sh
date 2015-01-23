@@ -34,7 +34,7 @@ sed -i 's/\[1024\*1700\]/\[1024*1900]/' setup_sdcard.sh
 
 echo "Building image file!"
 sleep 1
-./setup_sdcard.sh --dtb beaglebone --img || exit 1
+bash -xe ./setup_sdcard.sh --dtb beaglebone --img || exit 1
 
 IMAGE_DIR_NAME=$( dirname $STEP_01_IMAGE )
 
