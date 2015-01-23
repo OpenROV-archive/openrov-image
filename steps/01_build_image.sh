@@ -32,14 +32,13 @@ cd $IMAGE_NAME
 # fix the size of the image file
 sed -i 's/\[1024\*1700\]/\[1024*1900]/' setup_sdcard.sh
 
-# Add docker aware
-sed -i '1i\
+# Add docker aware kpart command
+sed -ie 's/kpartx -av \${media_loop}/\
 kpartx -av \${media_loop}\
-# If running inside Docker, make our nodes manually, because udev will not be working.\
-if [[ -f /.dockerenv ]]; then\
+# If running inside Docker, make our nodes manually, because udev will not be working\
+if [[ -f \/.dockerenv ]]; then\
 	dmsetup --noudevsync mknodes\
-fi
-1,/kpartx -av \${media_loop}/d' setup_sdcard.sh
+fi/g' setup_sdcard.sh
 
 echo "Building image file!"
 sleep 1
