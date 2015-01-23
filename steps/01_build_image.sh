@@ -34,7 +34,7 @@ sed -i 's/\[1024\*1700\]/\[1024*1900]/' setup_sdcard.sh
 
 # Add docker aware
 sed -i '1i\
-setup_sdcard.sh\
+kpartx -av ${media_loop}\
 # If running inside Docker, make our nodes manually, because udev will not be working.\
 if [[ -f /.dockerenv ]]; then\
 	dmsetup --noudevsync mknodes\
