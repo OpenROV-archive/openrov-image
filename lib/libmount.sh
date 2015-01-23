@@ -59,9 +59,9 @@ function unmount_image {
 	loop_device=$(mount | grep $root_dir | grep -o '/dev/mapper/loop.' | grep -o 'loop.')
 
 
-	umount $root_dir/boot
-	umount $root_dir
-	umount $boot_dir
+	_umount 10 $root_dir/boot
+	_umount 10 $root_dir
+	_umount 10 $boot_dir
 
 	kpartx -d /dev/${loop_device}
 # If running inside Docker, make our nodes manually, because udev will not be working.
@@ -87,11 +87,11 @@ function chroot_mount {
 function chroot_umount {
 	echo Unmounting system directories
 	root_dir=${PWD#}/root
-	umount $root_dir/dev/pts
-	umount $root_dir/etc/resolv.conf
-	umount $root_dir/run
-	umount $root_dir/sys
-	umount $root_dir/proc
-	umount $root_dir/dev
+	_umount 10 $root_dir/dev/pts
+	_umount 10 $root_dir/etc/resolv.conf
+	_umount 10 $root_dir/run
+	_umount 10 $root_dir/sys
+	_umount 10 $root_dir/proc
+	_umount 10 $root_dir/dev
 
 }
