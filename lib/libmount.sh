@@ -58,17 +58,16 @@ function unmount_image {
 	# try to find the mapped dir
 	mount | grep ./root | grep -o '/dev/mapper/loop.' | grep -o 'loop.' | uniq | while read -r line ; do
 
-		mountpoint -q $root_dir/boot || _umount 10 $root_dir/boot
 		mountpoint -q $root_dir || _umount 10 $root_dir
 		mountpoint -q $boot_dir || _umount 10 $boot_dir
 
-		kpartx -d /dev/$line
 		losetup -d /dev/$line
+		kpartx -d /dev/$line
 		# If running inside Docker, make our nodes manually, because udev will not be working.
 		if [[ -f /.dockerenv ]]; then
 			sudo dmsetup --noudevsync mknodes
 		fi
-		
+
 	done
 
 }
@@ -89,11 +88,7 @@ function chroot_mount {
 function chroot_umount {
 	echo Unmounting system directories
 	root_dir=${PWD#}/root
-	_umount 10 $root_dir/dev/pts
-	_umount 10 $root_dir/etc/resolv.conf
-	_umount 10 $root_dir/run
-	_umount 10 $root_dir/sys
-	_umount 10 $root_dir/proc
-	_umount 10 $root_dir/dev
+	_umount 10 ${PWD#}/root
+	_umount 10 ${PWD#}/boot
 
 }
