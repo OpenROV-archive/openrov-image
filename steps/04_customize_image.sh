@@ -272,13 +272,6 @@ echo Moving image
 echo "> $OUTPUT_IMAGE"
 mv $STEP_04_IMAGE $OUTPUT_IMAGE
 
-cd $OUTPUT_DIR_NAME
-cd $DIR
-
-echo -----------------------------
-echo Copying packages
-cp -r $DIR/work/packages $OUTPUT_DIR_NAME
-
 echo -----------------------------
 echo Done step 4
 echo "Output can be found in: $OUTPUT_DIR_NAME"
