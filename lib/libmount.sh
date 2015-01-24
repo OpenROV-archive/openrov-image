@@ -90,7 +90,7 @@ function chroot_mount {
 function chroot_umount {
 	echo Unmounting system directories
 	root_dir=${PWD#}/root
-	_umount 10 ${PWD#}/root
-	_umount 10 ${PWD#}/boot
+	_umount 60 ${PWD#}/root
+	_umount 60 ${PWD#}/boot
 
 }
