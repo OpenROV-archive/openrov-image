@@ -259,9 +259,6 @@ echo ------------------------------
 echo done
 echo ------------------------------
 
-umount $ROOT/tmp
-umount $ROOT/tmp/packages
-
 chroot_umount
 unmount_image
 
