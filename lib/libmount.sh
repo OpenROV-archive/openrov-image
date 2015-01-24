@@ -56,19 +56,21 @@ function unmount_image {
 	boot_dir=${PWD#}/boot
 
 	# try to find the mapped dir
-	loop_device=$(mount | grep $root_dir | grep -o '/dev/mapper/loop.' | grep -o 'loop.')
+	mount | grep ./root | grep -o '/dev/mapper/loop.' | grep -o 'loop.' | uniq | while read -r line ; do
 
+		mountpoint -q $root_dir/boot || _umount 10 $root_dir/boot
+		mountpoint -q $root_dir || _umount 10 $root_dir
+		mountpoint -q $boot_dir || _umount 10 $boot_dir
 
-	_umount 10 $root_dir/boot
-	_umount 10 $root_dir
-	_umount 10 $boot_dir
+		kpartx -d /dev/$line
+		losetup -d /dev/$line
+		# If running inside Docker, make our nodes manually, because udev will not be working.
+		if [[ -f /.dockerenv ]]; then
+			sudo dmsetup --noudevsync mknodes
+		fi
+		
+	done
 
-	kpartx -d /dev/${loop_device}
-# If running inside Docker, make our nodes manually, because udev will not be working.
-	if [[ -f /.dockerenv ]]; then
-		sudo dmsetup --noudevsync mknodes
-	fi
-	losetup -d /dev/${loop_device}
 }
 
 function chroot_mount {
