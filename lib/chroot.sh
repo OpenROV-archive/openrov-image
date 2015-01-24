@@ -1,5 +1,6 @@
 #!/bin/bash
-
+set -x
+set -e
 DIR="$( cd "$( dirname "$0" )" && pwd )"
 . $DIR/libmount.sh
 . $DIR/libtools.sh
@@ -16,7 +17,7 @@ if [ "$1" = "-h" ]; then
 	echo "Usage: chroot.sh </path/to/image.img> [<command file to execute in chroot>]"
 fi
 
-mount_image $1 
+mount_image $1
 chroot_mount
 
 if [ "$2" != "" ]; then

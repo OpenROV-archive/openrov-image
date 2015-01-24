@@ -1,5 +1,6 @@
-#!/bin/sh
-
+#!/bin/bash
+set -x
+set -e
 export DIR=${PWD#}
 
 . $DIR/versions.sh
@@ -9,7 +10,7 @@ export PROXY_PACKAGE_DIR=$DIR/work/step_03/proxy
 
 if [ ! "$1" = "" ];
 then
-	STEP_03_IMAGE=$1	
+	STEP_03_IMAGE=$1
 fi
 
 if [ "$STEP_03_IMAGE" = "" ] || [ ! -f "$STEP_03_IMAGE" ];
@@ -34,7 +35,7 @@ git clone $PROXYGIT proxy
 cd proxy
 
 cat > $ROOT/tmp/build_proxy.sh << __EOF__
-#!/bin/sh
+#!/bin/bash
 
 echo Builing proxy
 cd /tmp/proxy/proxy-via-browser/
@@ -52,7 +53,7 @@ if [ ! -d $PROXY_PACKAGE_DIR/opt/openrov/proxy ]; then
 fi
 cp -r $ROOT/tmp/proxy/proxy-via-browser/* $PROXY_PACKAGE_DIR/opt/openrov/proxy
 
-cd $DIR 
+cd $DIR
 
 sync
 sleep 2

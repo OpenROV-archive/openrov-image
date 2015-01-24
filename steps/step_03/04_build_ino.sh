@@ -1,5 +1,6 @@
-#!/bin/sh
-
+#!/bin/bash
+set -x
+set -e
 export DIR=${PWD#}
 
 . $DIR/versions.sh
@@ -9,7 +10,7 @@ export INO_PACKAGE_DIR=$DIR/work/step_03/ino
 
 if [ ! "$1" = "" ];
 then
-	STEP_03_IMAGE=$1	
+	STEP_03_IMAGE=$1
 fi
 
 if [ "$STEP_03_IMAGE" = "" ] || [ ! -f "$STEP_03_IMAGE" ];
@@ -36,7 +37,7 @@ wget http://peak.telecommunity.com/dist/ez_setup.py
 
 
 cat > $ROOT/tmp/build_ino.sh << __EOF__
-#!/bin/sh
+#!/bin/bash
 
 echo Builing ino
 cd /tmp/ino
@@ -61,7 +62,7 @@ if [ ! -d $INO_PACKAGE_DIR/usr ]; then
 fi
 cp -r $ROOT/tmp/ino_install/usr $INO_PACKAGE_DIR
 
-cd $DIR 
+cd $DIR
 
 sync
 sleep 2

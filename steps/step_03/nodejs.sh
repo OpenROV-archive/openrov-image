@@ -1,6 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 # call with: nodejs.sh ~/work/ https://github.com/joyent/node.git v0.8.11 ~/node_deploy/
-
+set -x
+set -e
 export AR=arm-linux-gnueabihf-ar
 export CC=arm-linux-gnueabihf-gcc-4.8
 export CXX=arm-linux-gnueabihf-g++-4.8

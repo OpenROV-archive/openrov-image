@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/bash
+set -x
+set -e
 export DIR=${PWD#}
 
 . $DIR/versions.sh
@@ -74,7 +76,7 @@ git clean -d -x -f -e node_modules
 npm run bower --force-latest
 
 cat > $ROOT/tmp/build_dashboard.sh << __EOF__
-#!/bin/sh
+#!/bin/bash
 
 #install nodejs
 apt-get install -y nodejs npm

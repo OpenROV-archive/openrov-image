@@ -1,5 +1,6 @@
-#!/bin/sh
-
+#!/bin/bash
+set -x
+set -e
 export DIR=${PWD#}
 
 . $DIR/versions.sh
@@ -9,7 +10,7 @@ export AVRDUDE_PACKAGE_DIR=$DIR/work/step_03/avrdude
 
 if [ ! "$1" = "" ];
 then
-	STEP_03_IMAGE=$1	
+	STEP_03_IMAGE=$1
 fi
 
 if [ "$STEP_03_IMAGE" = "" ] || [ ! -f "$STEP_03_IMAGE" ];
@@ -40,7 +41,7 @@ echo ###
 #git apply $DIR/contrib/avrdude.patch
 
 cat > $ROOT/tmp/build_avrdude.sh << __EOF__
-#!/bin/sh
+#!/bin/bash
 
 echo Building avrdude
 cd /tmp/avrdude/avrdude

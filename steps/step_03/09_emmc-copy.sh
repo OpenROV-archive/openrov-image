@@ -1,5 +1,6 @@
-#!/bin/sh
-
+#!/bin/bash
+set -x
+set -e
 export DIR=${PWD#}
 
 . $DIR/versions.sh
@@ -16,4 +17,4 @@ fpm -f -m info@openrov.com -s empty -t deb -a armhf \
 	-d 'openrov-cockpit' \
    --after-install=$DIR/steps/step_03/emmc-afterinstall.sh \
 	--before-remove=$DIR/steps/step_03/emmc-beforeremove.sh \
-   --description "Package to copy the content of the image to the bbb eMMC" 
+   --description "Package to copy the content of the image to the bbb eMMC"

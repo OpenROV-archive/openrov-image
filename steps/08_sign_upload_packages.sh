@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -x
 set -e
 export KEYID=B6CE4E93 # the key ID of the GPG key to sign deb packages

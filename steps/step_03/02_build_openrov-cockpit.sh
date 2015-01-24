@@ -1,5 +1,6 @@
 !/bin/sh
-
+set -x
+set -e
 export DIR=${PWD#}
 
 . $DIR/versions.sh
@@ -72,7 +73,7 @@ npm install --production
 npm run bower
 
 cat > $ROOT/tmp/build_cockpit.sh << __EOF__
-#!/bin/sh
+#!/bin/bash
 
 #install nodejs
 apt-get install -y nodejs npm

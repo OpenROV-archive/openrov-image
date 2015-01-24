@@ -1,5 +1,6 @@
-#!/bin/sh
-
+#!/bin/bash
+set -x
+set -e
 export DIR=${PWD#}
 
 . $DIR/versions.sh
@@ -9,7 +10,7 @@ export MJPG_STREAMER_PACKAGE_DIR=$DIR/work/step_03/mjpg-streamer
 
 if [ ! "$1" = "" ];
 then
-	STEP_03_IMAGE=$1	
+	STEP_03_IMAGE=$1
 fi
 
 if [ "$STEP_03_IMAGE" = "" ] || [ ! -f "$STEP_03_IMAGE" ];
@@ -37,7 +38,7 @@ fi
 
 
 cat > $ROOT/tmp/build_mjpeg_streamer.sh << __EOF__
-#!/bin/sh
+#!/bin/bash
 
 cd /tmp/mjpg-streamer/mjpg-streamer
 mkdir -p /tmp/mjpg-streamer_install/usr/local/

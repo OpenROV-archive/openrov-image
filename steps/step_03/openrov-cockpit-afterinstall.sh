@@ -1,5 +1,6 @@
-#!/bin/sh
-
+#!/bin/bash
+set -x
+set -e
 # compile the device tree files
 /opt/openrov/cockpit/linux/update-devicetree-oberlays.sh
 
@@ -16,7 +17,7 @@ chgrp -R admin /opt/openrov/cockpit
 # setup reset and uart for non black BB
 cp /etc/rc.local /etc/rc.local_orig
 cat > /etc/rc.local << __EOF__
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # rc.local
 #
