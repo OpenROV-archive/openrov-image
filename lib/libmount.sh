@@ -65,6 +65,8 @@ function unmount_image {
 		kpartx -d /dev/$line
 		# If running inside Docker, make our nodes manually, because udev will not be working.
 		if [[ -f /.dockerenv ]]; then
+			dmsetup remove_all
+			losetup -D
 			sudo dmsetup --noudevsync mknodes
 		fi
 
