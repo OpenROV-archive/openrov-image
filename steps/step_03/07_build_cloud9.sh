@@ -14,7 +14,7 @@ export CLOUD9_DIR=$CLOUD9_PACKAGE_DIR/opt/cloud9
 checkroot
 
 if [ -d $CLOUD9_DIR ]; then
-	rm -rf $CLOUD9_DIR
+	sudo rm -rf $CLOUD9_DIR
 fi
 if [ ! -d $CLOUD9_DIR ]; then
 	mkdir -p $CLOUD9_DIR
