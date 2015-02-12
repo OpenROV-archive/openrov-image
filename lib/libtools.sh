@@ -12,7 +12,7 @@ _umount() {
 	echo "Usage: ${FUNCNAME} <timeout_secs> <mnt_point>"; return 1
 }
 timeout=$(($(date +%s) + ${1}))
-until umount -R "${2}" 2>/dev/null || [[ $(date +%s) -gt $timeout ]]; do
+until umount -R "${2}" 2>/dev/null || ( mountpoint "${2}" | grep 'is not a mountpoint' ||[[ $(date +%s) -gt $timeout ]]); do
 	:
 done
 }
