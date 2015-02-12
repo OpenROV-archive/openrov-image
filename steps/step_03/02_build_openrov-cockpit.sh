@@ -65,7 +65,7 @@ else
 	cp -r "$LOCAL_COCKPIT_SOURCE" openrov
 	cd openrov
 fi
-npm install --arch=armhf || onerror
+npm install --production --arch=armhf || onerror
 git clean -d -x -f -e node_modules
 
 cd src/static
