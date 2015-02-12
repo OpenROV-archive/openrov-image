@@ -43,7 +43,10 @@ export ROOT=${PWD#}/root
 chroot_mount
 
 # copy qemu for chrooting
-cp /usr/bin/qemu-arm-static $ROOT/usr/bin/
+#cp /usr/bin/qemu-arm-static $ROOT/usr/bin/
+cp $DIR/contrib/qemu-arm-static.gz $ROOT/usr/bin/
+gunzip $ROOT/usr/bin/qemu-arm-static.gz
+chmod +x $ROOT/usr/bin/qemu-arm-static
 
 echo -----------------------------
 echo Updating packages
