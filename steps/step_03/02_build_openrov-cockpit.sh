@@ -84,8 +84,6 @@ npm rebuild
 
 __EOF__
 
-cp $DIR/work/packages/openrov-nodejs* $ROOT/tmp/
-
 chmod +x $ROOT/tmp/build_cockpit.sh
 chroot $ROOT /tmp/build_cockpit.sh
 
