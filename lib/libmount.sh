@@ -58,8 +58,8 @@ function unmount_image {
 	# try to find the mapped dir
 	mount | grep ./root | grep -o '/dev/mapper/loop.' | grep -o 'loop.' | uniq | while read -r line ; do
 
-		mountpoint -q $root_dir || _umount 10 $root_dir
-		mountpoint -q $boot_dir || _umount 10 $boot_dir
+		mountpoint -q $root_dir && _umount 10 $root_dir
+		mountpoint -q $boot_dir && _umount 10 $boot_dir
 
 		losetup -d /dev/$line
 		kpartx -d /dev/$line
