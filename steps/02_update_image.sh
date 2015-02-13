@@ -113,7 +113,8 @@ chroot $ROOT /tmp/update.sh
 
 rm $ROOT/tmp/update.sh
 
-killall -9 qemu-arm-static
+killall -9 rsyslogd || true
+killall -9 dbus-daemon || true
 
 chroot_umount
 
