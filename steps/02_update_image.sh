@@ -113,6 +113,8 @@ chroot $ROOT /tmp/update.sh
 
 rm $ROOT/tmp/update.sh
 
+killall -9 qemu-arm-static
+
 chroot_umount
 
 echo Setting the root fs mode to minimise impact of suddenly loosing power
