@@ -32,6 +32,10 @@ export ROOT=${PWD#}/root
 cd $ROOT/tmp
 git clone $INOGIT
 
+pushd ino
+git reset -- hard $INO_GITHASH
+popd ino
+
 cd ino
 wget http://peak.telecommunity.com/dist/ez_setup.py
 
@@ -46,7 +50,7 @@ make install DESTDIR=/tmp/ino_install
 cd /tmp
 # install glob2, doesn't come with debian
 git clone https://github.com/miracle2k/python-glob2.git
-git reset -- hard $INO_GITHASH
+
 cd python-glob2
 python setup.py build
 python setup.py install --root=/tmp/ino_install
