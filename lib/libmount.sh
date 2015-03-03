@@ -58,19 +58,22 @@ function unmount_image {
 	# try to find the mapped dir
 	mount | grep ./root | grep -o '/dev/mapper/loop.' | grep -o 'loop.' | uniq | while read -r line ; do
 
-		mountpoint -q $root_dir && _umount 10 $root_dir
-		mountpoint -q $boot_dir && _umount 10 $boot_dir
-
-		losetup -d /dev/$line
 		kpartx -d /dev/$line
-		# If running inside Docker, make our nodes manually, because udev will not be working.
-		if [[ -f /.dockerenv ]]; then
-			dmsetup remove_all
-			losetup -D
-			sudo dmsetup --noudevsync mknodes
-		fi
+		losetup -d /dev/$line
 
 	done
+
+	mountpoint -q $root_dir && _umount 10 $root_dir
+	mountpoint -q $boot_dir && _umount 10 $boot_dir
+
+
+	# If running inside Docker, make our nodes manually, because udev will not be working.
+	if [[ -f /.dockerenv ]]; then
+		dmsetup remove_all
+		losetup -D
+		sudo dmsetup --noudevsync mknodes
+	fi
+
 
 }
 
