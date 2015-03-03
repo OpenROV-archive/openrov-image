@@ -32,9 +32,9 @@ export ROOT=${PWD#}/root
 cd $ROOT/tmp
 git clone $AVRDUDEGIT
 
-pushd avdude
+cd avdude
 git reset -- hard $AVRDUDE_GITHASH
-popd
+cd ..
 
 echo Current dir:
 pwd

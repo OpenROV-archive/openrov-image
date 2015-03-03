@@ -32,11 +32,9 @@ export ROOT=${PWD#}/root
 cd $ROOT/tmp
 git clone $INOGIT
 
-pushd ino
-git reset -- hard $INO_GITHASH
-popd ino
-
 cd ino
+git reset -- hard $INO_GITHASH
+
 wget http://peak.telecommunity.com/dist/ez_setup.py
 
 cat > $ROOT/tmp/build_ino.sh << __EOF__
