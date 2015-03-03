@@ -34,7 +34,6 @@ git clone $INOGIT
 
 cd ino
 wget http://peak.telecommunity.com/dist/ez_setup.py
-sudo apt-get install python-pip
 
 cat > $ROOT/tmp/build_ino.sh << __EOF__
 #!/bin/bash
