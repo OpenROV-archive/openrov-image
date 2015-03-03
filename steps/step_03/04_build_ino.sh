@@ -46,7 +46,7 @@ make install DESTDIR=/tmp/ino_install
 cd /tmp
 # install glob2, doesn't come with debian
 git clone https://github.com/miracle2k/python-glob2.git
-git reset -- hard INO_GITHASH
+git reset -- hard $INO_GITHASH
 cd python-glob2
 python setup.py build
 python setup.py install --root=/tmp/ino_install
