@@ -63,8 +63,8 @@ function unmount_image {
 
 	done
 
-	[ -f $root_dir] && mountpoint -q $root_dir && _umount 10 $root_dir
-	[ -f $boot_dir] && mountpoint -q $boot_dir && _umount 10 $boot_dir
+	[ -f $root_dir ] && mountpoint -q $root_dir && _umount 10 $root_dir
+	[ -f $boot_dir ] && mountpoint -q $boot_dir && _umount 10 $boot_dir
 
 
 	# If running inside Docker, make our nodes manually, because udev will not be working.
