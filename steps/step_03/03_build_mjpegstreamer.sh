@@ -35,7 +35,9 @@ if [ ! -d mjpg-streamer ];
 then
 	git clone $MJPG_STREAMERGIT mjpg-streamer
 fi
-
+pushd mjpg-streamer
+git reset -- hard $MJPG_STREAMER_GITHASH
+popd
 
 cat > $ROOT/tmp/build_mjpeg_streamer.sh << __EOF__
 #!/bin/bash
