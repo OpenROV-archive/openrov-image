@@ -138,7 +138,7 @@ rm -rf /tmp/packages
 if [ "$USE_REPO" != "" ]; then
 	apt-get update
 	apt-get install -y --force-yes -o Dpkg::Options::="--force-overwrite" \
-		openrov-rov-suite
+		-t $BRANCH openrov-rov-suite
 fi
 apt-get clean
 
