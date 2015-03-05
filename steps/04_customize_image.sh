@@ -1,11 +1,13 @@
 #!/bin/bash
+set -x
+set -e
 export DIR=${PWD#}
 export IMAGE=$1
 export STEP_02_IMAGE=$DIR/work/step_02/image.step_02.img
 export STEP_04_IMAGE=$DIR/work/step_04/image.step_04.img
 export OUTPUT_IMAGE=$DIR/output/OpenROV.img
 export USE_REPO=${USE_REPO:-''} # use the repository at build.openrov.com/debian as package source
-exporr BRANCH=${BRANCH:-'master'}
+
 
 . $DIR/lib/libtools.sh
 . $DIR/lib/libmount.sh
@@ -76,6 +78,10 @@ echo -----------------------------
 cat > $ROOT/tmp/update.sh << __EOF_UPDATE__
 #!/bin/bash
 
+echo ------------------------------
+echo installing bower
+npm install -g bower
+
 echo Setting up users
 echo -----------------------------
 
@@ -92,19 +98,34 @@ echo "rov ALL=NOPASSWD: /opt/openrov/cockpit/linux/" >> /etc/sudoers
 echo "rov ALL=NOPASSWD: /opt/openrov/dashboard/linux/" >> /etc/sudoers
 
 echo -----------------------------
-echo Get pre-packaged deb packages
-echo -----------------------------
-mkdir -p /tmp/packages
-wget -P /tmp/packages/ http://openrov-software-nightlies.s3-us-west-2.amazonaws.com/arduino-firmware/openrov-arduino-firmware_${OROV_ARDUINO_FIRMWARE_VERSION}_all.deb /tmp/packages/
-
-
-echo -----------------------------
 echo Adding the apt-get configuration
 echo -----------------------------
 apt-get clean
-cat > /etc/apt/sources.list.d//openrov-${BRANCH}-debian.list << __EOF__
-deb http://build.openrov.com/debian/ ${BRANCH} debian
+cat > /etc/apt/sources.list.d/openrov-stable.list << __EOF__
+deb http://build.openrov.com/debian/ stable debian
+deb [arch=all] http://build.openrov.com/debian/ stable debian
 __EOF__
+cat > /etc/apt/sources.list.d/openrov-master.list << __EOF__
+deb http://build.openrov.com/debian/ master debian
+#deb [arch=all] http://build.openrov.com/debian/ master debian
+__EOF__
+cat > /etc/apt/sources.list.d/openrov-pre-release.list << __EOF__
+deb http://build.openrov.com/debian/ pre-release debian
+#deb [arch=all] http://build.openrov.com/debian/ pre-release debian
+__EOF__
+
+cat > /etc/apt/preferences.d/openrov-master-300 << __EOF__
+Package: *
+Pin: release n=master, origin build.openrov.com
+Pin-Priority: 300
+__EOF__
+cat > /etc/apt/preferences.d/openrov-pre-release-400 << __EOF__
+Package: *
+Pin: release n=pre-release, origin build.openrov.com
+Pin-Priority: 400
+__EOF__
+
+
 echo Adding gpg key for build.openrov.com
 wget -O - -q http://build.openrov.com/debian/build.openrov.com.gpg.key | apt-key add -
 
@@ -112,24 +133,13 @@ echo -----------------------------
 echo Installing packages
 echo -----------------------------
 
-ls -1 /tmp/packages/openrov-*.deb | grep -viw "openrov-emmc*" | xargs dpkg -i --force-overwrite 
 rm -rf /tmp/packages
 
 if [ "$USE_REPO" != "" ]; then
-	apt-get update 
+	apt-get update
 	apt-get install -y --force-yes -o Dpkg::Options::="--force-overwrite" \
-		openrov-avrdude \
-		openrov-cockpit \
-		openrov-dashboard \
-		openrov-proxy \
-		openrov-avrdude \
-		openrov-dtc \
-		openrov-ino \
-		openrov-mjpeg-streamer \
-	 	openrov-cloud9 \
-		openrov-samba-config	
-
-fi 
+		openrov-rov-suite
+fi
 apt-get clean
 
 echo -----------------------------
@@ -153,7 +163,7 @@ __EOF__
 
 ## fix dhcp
 cat >> /etc/dhcp/dhclient.conf << __EOF__
-timeout 5;
+timeout 30;
 lease {
 interface "eth0";
 fixed-address 192.168.254.1;
@@ -210,6 +220,8 @@ cd /tmp/
 wget http://rcn-ee.net/deb/wheezy-armhf/v3.15.5-bone4/install-me.sh
 bash install-me.sh
 
+
+
 __EOF_UPDATE__
 chmod +x $ROOT/tmp/update.sh
 
@@ -221,7 +233,7 @@ echo Setting up auto resize on first boot
 touch $ROOT/var/.RESIZE_ROOT_PARTITION
 
 echo ------------------------------
-echo Fixing arduino 
+echo Fixing arduino
 
 #fix arduino version
 echo 1.0.5 > $ROOT/usr/share/arduino/lib/version.txt
@@ -242,16 +254,10 @@ cp $DIR/contrib/openrov.ico $DIR/boot/Docs/
 cp $DIR/contrib/boot/* $DIR/boot/
 
 
-echo ------------------------------
-echo installing bower
-npm install -g bower
 
 echo ------------------------------
 echo done
 echo ------------------------------
-
-umount $ROOT/tmp
-umount $ROOT/tmp/packages
 
 chroot_umount
 unmount_image
@@ -265,13 +271,6 @@ echo -----------------------------
 echo Moving image
 echo "> $OUTPUT_IMAGE"
 mv $STEP_04_IMAGE $OUTPUT_IMAGE
-
-cd $OUTPUT_DIR_NAME
-cd $DIR
-
-echo -----------------------------
-echo Copying packages
-cp -r $DIR/work/packages $OUTPUT_DIR_NAME
 
 echo -----------------------------
 echo Done step 4

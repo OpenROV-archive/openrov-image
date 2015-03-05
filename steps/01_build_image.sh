@@ -1,4 +1,6 @@
 #!/bin/bash
+set -x
+set -e
 export DIR=${PWD#}
 export IMAGE=$1
 export STEP_01_IMAGE=$DIR/work/step_01/image.step_01.img
@@ -28,11 +30,19 @@ if which pv > /dev/null ; then
 cd $IMAGE_NAME
 
 # fix the size of the image file
-sed -i 's/\[1024\*800\]/\[1024*1900]/' setup_sdcard.sh
+sed -i 's/\[1024\*1700\]/\[1024*1900]/' setup_sdcard.sh
+
+# Add docker aware kpart command
+sed -ie 's/kpartx -av \${media_loop}/\
+kpartx -av \${media_loop}\
+# If running inside Docker, make our nodes manually, because udev will not be working\
+if [[ -f \/.dockerenv ]]; then\
+	dmsetup --noudevsync mknodes\
+fi/g' setup_sdcard.sh
 
 echo "Building image file!"
 sleep 1
-./setup_sdcard.sh --dtb beaglebone --img || exit 1
+bash -xe ./setup_sdcard.sh --dtb beaglebone --img || exit 1
 
 IMAGE_DIR_NAME=$( dirname $STEP_01_IMAGE )
 

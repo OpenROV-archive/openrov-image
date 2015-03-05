@@ -1,5 +1,6 @@
-#!/bin/sh
-
+#!/bin/bash
+set -x
+set -e
 export DIR=${PWD#}
 
 . $DIR/versions.sh
@@ -9,7 +10,7 @@ export DTC_PACKAGE_DIR=$DIR/work/step_03/dtc
 
 if [ ! "$1" = "" ];
 then
-	STEP_03_IMAGE=$1	
+	STEP_03_IMAGE=$1
 fi
 
 if [ "$STEP_03_IMAGE" = "" ] || [ ! -f "$STEP_03_IMAGE" ];
@@ -34,11 +35,11 @@ git clone $DTCGIT
 cd dtc
 git checkout master -f
 git pull || true
-git checkout 65cc4d2748a2c2e6f27f1cf39e07a5dbabd80ebf -b 65cc4d2748a2c2e6f27f1cf39e07a5dbabd80ebf-build
+git checkout $DTC_GITHASH -b $DTC_GITHASH-build
 git pull git://github.com/RobertCNelson/dtc.git dtc-fixup-65cc4d2
 
 cat > $ROOT/tmp/build_dtc.sh << __EOF__
-#!/bin/sh
+#!/bin/bash
 
 echo Builing dtc
 cd /tmp/dtc

@@ -1,5 +1,6 @@
-#!/bin/sh
-
+#!/bin/bash
+set -x
+set -e
 # set the openrov dashboard startup
 ln -s /opt/openrov/dashboard/linux/dashboard.service /etc/init.d/dashboard
 update-rc.d dashboard defaults 21

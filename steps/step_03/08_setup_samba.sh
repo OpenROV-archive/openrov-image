@@ -1,5 +1,6 @@
-#!/bin/sh
-
+#!/bin/bash
+set -x
+set -e
 export DIR=${PWD#}
 
 . $DIR/versions.sh

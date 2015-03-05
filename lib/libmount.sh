@@ -2,10 +2,10 @@
 
 	function mount_image {
 		echo mounting image
-		
+
 		media_loop=$(losetup -f || true)
-		
-		if [ ! -d root ]; then 
+
+		if [ ! -d root ]; then
 			mkdir root
 		fi
 		if [ ! -d boot ]; then
@@ -25,6 +25,11 @@
 		losetup ${media_loop} $1
 
 		kpartx -av ${media_loop}
+		# If running inside Docker, make our nodes manually, because udev will not be working.
+		if [[ -f /.dockerenv ]]; then
+			dmsetup --noudevsync mknodes
+		fi
+
 		sleep 1
 		sync
 		test_loop=$(echo ${media_loop} | awk -F'/' '{print $3}')
@@ -51,15 +56,25 @@ function unmount_image {
 	boot_dir=${PWD#}/boot
 
 	# try to find the mapped dir
-	loop_device=$(mount | grep $root_dir | grep -o '/dev/mapper/loop.' | grep -o 'loop.')
+	mount | grep ./root | grep -o '/dev/mapper/loop.' | grep -o 'loop.' | uniq | while read -r line ; do
+
+		kpartx -d /dev/$line
+		losetup -d /dev/$line
+
+	done
+
+	[ -f $root_dir ] && mountpoint -q $root_dir && _umount 10 $root_dir
+	[ -f $boot_dir ] && mountpoint -q $boot_dir && _umount 10 $boot_dir
 
 
-	umount $root_dir/boot
-	umount $root_dir
-	umount $boot_dir
+	# If running inside Docker, make our nodes manually, because udev will not be working.
+	if [[ -f /.dockerenv ]]; then
+		dmsetup remove_all
+		losetup -D
+		sudo dmsetup --noudevsync mknodes
+	fi
 
-	kpartx -d /dev/${loop_device}
-	losetup -d /dev/${loop_device}
+
 }
 
 function chroot_mount {
@@ -78,11 +93,7 @@ function chroot_mount {
 function chroot_umount {
 	echo Unmounting system directories
 	root_dir=${PWD#}/root
-	umount $root_dir/dev/pts
-	umount $root_dir/etc/resolv.conf
-	umount $root_dir/run
-	umount $root_dir/sys
-	umount $root_dir/proc
-	umount $root_dir/dev
+	_umount 60 ${PWD#}/root
+	_umount 60 ${PWD#}/boot
 
 }

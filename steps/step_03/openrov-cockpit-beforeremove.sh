@@ -1,5 +1,6 @@
-#!/bin/sh
-
+#!/bin/bash
+set -x
+set -e
 rm /etc/init.d/openrov
 
 update-rc.d openrov remove

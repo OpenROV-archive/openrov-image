@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/bash
+set -x
+set -e
 export DIR=${PWD#}
 
 . $DIR/lib/libtools.sh

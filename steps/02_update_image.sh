@@ -1,4 +1,6 @@
 #!/bin/bash
+set -x
+set -e
 export DIR=${PWD#}
 export IMAGE=$1
 export STEP_01_IMAGE=$DIR/work/step_01/image.step_01.img
@@ -21,7 +23,7 @@ echo -----------------------------
 
 IMAGE_DIR_NAME=$( dirname $STEP_02_IMAGE )
 
-if [ ! -d $IMAGE_DIR_NAME ] 
+if [ ! -d $IMAGE_DIR_NAME ]
 then
 	mkdir -p "$IMAGE_DIR_NAME"
 fi
@@ -41,7 +43,10 @@ export ROOT=${PWD#}/root
 chroot_mount
 
 # copy qemu for chrooting
-cp /usr/bin/qemu-arm-static $ROOT/usr/bin/
+#cp /usr/bin/qemu-arm-static $ROOT/usr/bin/
+cp $DIR/contrib/qemu-arm-static.gz $ROOT/usr/bin/
+gunzip $ROOT/usr/bin/qemu-arm-static.gz
+chmod +x $ROOT/usr/bin/qemu-arm-static
 
 echo -----------------------------
 echo Updating packages
@@ -88,7 +93,7 @@ sudo apt-get -y install \
 apt-get -y remove apache2
 
 # Samba doesn't start on the chroot, we need to add an config section and reconfigure it, otherwise the openrov-samba-config packages failes to install
-echo Fixing samba 
+echo Fixing samba
 sed -i '/interfaces =/a interfaces = lo' /etc/samba/smb.conf
 sed -i '0,/interfaces =/{//d;}' /etc/samba/smb.conf
 dpkg --configure samba
@@ -99,7 +104,7 @@ dpkg --configure samba
 echo Updating fstab for improved mount options
 sed -i 's/\/dev\/mmcblk0p2.*/\/dev\/mmcblk0p2  \/            ext4  data=writeback,commit=600,nodiratime,noatime,norelatime  0  1/' /etc/fstab
 
-echo "FSCKFIX=no" >> /etc/default/rcS 
+echo "FSCKFIX=no" >> /etc/default/rcS
 
 __EOF__
 chmod +x $ROOT/tmp/update.sh
@@ -108,16 +113,21 @@ chroot $ROOT /tmp/update.sh
 
 rm $ROOT/tmp/update.sh
 
+killall -9 rsyslogd || true
+killall -9 dbus-daemon || true
+
 chroot_umount
 
 echo Setting the root fs mode to minimise impact of suddenly loosing power
-#tune2fs -O ^has_journal $ROOT_media
 tune2fs -o journal_data_writeback  $ROOT_media
+# This has been failing silently in the past so removing for now
+#tune2fs -O ^has_journal $ROOT_media
+
 #tune2fs -O ^has_journal -o journal_data_writeback  $ROOT_media
 #tune2fs -O ^has_journal -o ^journal_data_writeback /dev/mapper/loop0p2
 
 unmount_image
- 
+
 echo -----------------------------
 echo Done step 2
 echo -----------------------------

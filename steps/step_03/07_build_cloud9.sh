@@ -1,5 +1,6 @@
-#!/bin/sh
-
+#!/bin/bash
+set -x
+set -e
 export DIR=${PWD#}
 
 . $DIR/versions.sh
@@ -12,7 +13,9 @@ export CLOUD9_DIR=$CLOUD9_PACKAGE_DIR/opt/cloud9
 
 checkroot
 
-
+if [ -d $CLOUD9_DIR ]; then
+	sudo rm -rf $CLOUD9_DIR
+fi
 if [ ! -d $CLOUD9_DIR ]; then
 	mkdir -p $CLOUD9_DIR
 fi
@@ -20,7 +23,7 @@ fi
 cd $CLOUD9_DIR
 git clone https://github.com/ajaxorg/cloud9.git .
 git pull
-git checkout 5b62a7c83445ccba9f50592d41a7128b1f1fe868 #latest known working version
+git checkout $CLOUD9_GITHASH
 npm install --arch=armhf
 
 cp $DIR/contrib/cloud9.service $CLOUD9_DIR

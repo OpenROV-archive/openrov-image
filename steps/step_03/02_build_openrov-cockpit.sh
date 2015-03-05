@@ -1,5 +1,6 @@
 !/bin/sh
-
+set -x
+set -e
 export DIR=${PWD#}
 
 . $DIR/versions.sh
@@ -64,15 +65,15 @@ else
 	cp -r "$LOCAL_COCKPIT_SOURCE" openrov
 	cd openrov
 fi
-npm install --arch=armhf || onerror
+npm install --production --arch=armhf || onerror
 git clean -d -x -f -e node_modules
 
 cd src/static
-npm install
+npm install --production
 npm run bower
 
 cat > $ROOT/tmp/build_cockpit.sh << __EOF__
-#!/bin/sh
+#!/bin/bash
 
 #install nodejs
 apt-get install -y nodejs npm
@@ -82,8 +83,6 @@ cd /opt/openrov
 npm rebuild
 
 __EOF__
-
-cp $DIR/work/packages/openrov-nodejs* $ROOT/tmp/
 
 chmod +x $ROOT/tmp/build_cockpit.sh
 chroot $ROOT /tmp/build_cockpit.sh

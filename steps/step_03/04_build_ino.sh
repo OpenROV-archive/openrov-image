@@ -1,5 +1,6 @@
-#!/bin/sh
-
+#!/bin/bash
+set -x
+set -e
 export DIR=${PWD#}
 
 . $DIR/versions.sh
@@ -9,7 +10,7 @@ export INO_PACKAGE_DIR=$DIR/work/step_03/ino
 
 if [ ! "$1" = "" ];
 then
-	STEP_03_IMAGE=$1	
+	STEP_03_IMAGE=$1
 fi
 
 if [ "$STEP_03_IMAGE" = "" ] || [ ! -f "$STEP_03_IMAGE" ];
@@ -32,11 +33,12 @@ cd $ROOT/tmp
 git clone $INOGIT
 
 cd ino
+git reset -- hard $INO_GITHASH
+
 wget http://peak.telecommunity.com/dist/ez_setup.py
 
-
 cat > $ROOT/tmp/build_ino.sh << __EOF__
-#!/bin/sh
+#!/bin/bash
 
 echo Builing ino
 cd /tmp/ino
@@ -46,6 +48,7 @@ make install DESTDIR=/tmp/ino_install
 cd /tmp
 # install glob2, doesn't come with debian
 git clone https://github.com/miracle2k/python-glob2.git
+
 cd python-glob2
 python setup.py build
 python setup.py install --root=/tmp/ino_install
@@ -61,7 +64,7 @@ if [ ! -d $INO_PACKAGE_DIR/usr ]; then
 fi
 cp -r $ROOT/tmp/ino_install/usr $INO_PACKAGE_DIR
 
-cd $DIR 
+cd $DIR
 
 sync
 sleep 2

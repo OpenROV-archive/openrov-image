@@ -1,7 +1,10 @@
 #!/bin/bash
-
+set -x
+set -e
 DIR="$( cd "$( dirname "$0" )" && pwd )"
 . $DIR/libmount.sh
+. $DIR/libtools.sh
+
 echo $DIR
 
 if [ "$1" = "" ]; then
@@ -11,4 +14,4 @@ if [ "$1" = "" ]; then
 fi
 
 
-mount_image $1 
+mount_image $1
