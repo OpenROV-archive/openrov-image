@@ -77,6 +77,8 @@ echo -----------------------------
 
 cat > $ROOT/tmp/update.sh << __EOF_UPDATE__
 #!/bin/bash
+set -x
+set -e
 
 echo ------------------------------
 echo installing bower
