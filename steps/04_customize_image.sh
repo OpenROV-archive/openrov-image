@@ -7,7 +7,7 @@ export STEP_02_IMAGE=$DIR/work/step_02/image.step_02.img
 export STEP_04_IMAGE=$DIR/work/step_04/image.step_04.img
 export OUTPUT_IMAGE=$DIR/output/OpenROV.img
 export USE_REPO=${USE_REPO:-''} # use the repository at build.openrov.com/debian as package source
-
+export REPO=openrov-deb-repository.s3.amazonaws.com
 
 . $DIR/lib/libtools.sh
 . $DIR/lib/libmount.sh
@@ -106,16 +106,16 @@ echo Adding the apt-get configuration
 echo -----------------------------
 apt-get clean
 cat > /etc/apt/sources.list.d/openrov-stable.list << __EOF__
-deb http://build.openrov.com/debian/ stable debian
-deb [arch=all] http://build.openrov.com/debian/ stable debian
+deb http://$REPO stable debian
+deb [arch=all] http://$REPO stable debian
 __EOF__
 cat > /etc/apt/sources.list.d/openrov-master.list << __EOF__
-deb http://build.openrov.com/debian/ master debian
-#deb [arch=all] http://build.openrov.com/debian/ master debian
+deb http://$REPO master debian
+#deb [arch=all] http://$REPO master debian
 __EOF__
 cat > /etc/apt/sources.list.d/openrov-pre-release.list << __EOF__
-deb http://build.openrov.com/debian/ pre-release debian
-#deb [arch=all] http://build.openrov.com/debian/ pre-release debian
+deb http://$REPO pre-release debian
+#deb [arch=all] http://$REPO pre-release debian
 __EOF__
 
 cat > /etc/apt/preferences.d/openrov-master-300 << __EOF__
@@ -131,7 +131,7 @@ __EOF__
 
 
 echo Adding gpg key for build.openrov.com
-wget -O - -q http://build.openrov.com/debian/build.openrov.com.gpg.key | apt-key add -
+wget -O - -q http://($REPO)build.openrov.com.gpg.key | apt-key add -
 
 echo -----------------------------
 echo Installing packages
