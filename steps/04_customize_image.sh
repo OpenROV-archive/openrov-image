@@ -79,7 +79,7 @@ cat > $ROOT/tmp/update.sh << __EOF_UPDATE__
 #!/bin/bash
 set -x
 set -e
-
+export REPO=$REPO
 echo ------------------------------
 echo installing bower
 #npm install -ddd -g bower
@@ -131,7 +131,7 @@ __EOF__
 
 
 echo Adding gpg key for build.openrov.com
-wget -O - -q http://$(REPO)build.openrov.com.gpg.key | apt-key add -
+wget -O - -q http://$(REPO)/build.openrov.com.gpg.key | apt-key add -
 
 echo -----------------------------
 echo Installing packages
