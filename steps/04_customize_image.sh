@@ -95,7 +95,8 @@ echo rov:OpenROV | chpasswd
 echo "PATH=\$PATH:/opt/node/bin" >> /home/rov/.profile
 
 echo remove ubuntu user
-userdel -r -f ubuntu
+#already deleted by this point
+#userdel -r -f ubuntu
 
 echo "rov ALL=NOPASSWD: /opt/openrov/cockpit/linux/" >> /etc/sudoers
 echo "rov ALL=NOPASSWD: /opt/openrov/dashboard/linux/" >> /etc/sudoers
