@@ -88,7 +88,8 @@ echo Setting up users
 echo -----------------------------
 
 echo Adding user 'rov'
-useradd rov -m -s /bin/bash -g admin
+#ROV already exists at this point
+#useradd rov -m -s /bin/bash -g admin
 echo rov:OpenROV | chpasswd
 # Include node in PATH
 echo "PATH=\$PATH:/opt/node/bin" >> /home/rov/.profile
