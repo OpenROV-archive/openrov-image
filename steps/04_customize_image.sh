@@ -82,7 +82,7 @@ set -e
 
 echo ------------------------------
 echo installing bower
-npm install -g bower
+sudo npm install -g bower
 
 echo Setting up users
 echo -----------------------------
