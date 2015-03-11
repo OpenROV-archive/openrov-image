@@ -131,7 +131,7 @@ __EOF__
 
 
 echo Adding gpg key for build.openrov.com
-wget -O - -q http://($REPO)build.openrov.com.gpg.key | apt-key add -
+wget -O - -q http://$(REPO)build.openrov.com.gpg.key | apt-key add -
 
 echo -----------------------------
 echo Installing packages
