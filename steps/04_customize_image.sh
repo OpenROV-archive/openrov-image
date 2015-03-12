@@ -265,6 +265,10 @@ echo "vm.dirty_background_ratio = 5" | sudo tee --append /etc/sysctl.conf
 echo "vm.dirty_ratio = 10" | sudo tee --append /etc/sysctl.conf
 echo "# End Injected by OpenROV_Customize_Image" | sudo tee --append /etc/sysctl.conf
 
+echo ------------------------------
+echo Adjusting the tmpfs to store tmp in ram
+echo "tmpfs   /tmp         tmpfs   nodev,nosuid          0  0" | sudo tee --append /etc/fstab
+echo "tmpfs   /var/log         tmpfs   nodev,nosuid          0  0" | sudo tee --append /etc/fstab
 
 echo ------------------------------
 echo done
