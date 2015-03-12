@@ -257,6 +257,13 @@ mkdir $DIR/boot/Docs
 cp $DIR/contrib/openrov.ico $DIR/boot/Docs/
 cp $DIR/contrib/boot/* $DIR/boot/
 
+echo ------------------------------
+echo Adjusting background disk writting behavior
+
+echo "# Injected by OpenROV_Customize_Image" | sudo tee --append /etc/sysctl.conf
+echo "vm.dirty_background_ratio = 5" | sudo tee --append /etc/sysctl.conf
+echo "vm.dirty_ratio = 10" | sudo tee --append /etc/sysctl.conf
+echo "# End Injected by OpenROV_Customize_Image" | sudo tee --append /etc/sysctl.conf
 
 
 echo ------------------------------
