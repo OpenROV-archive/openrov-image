@@ -36,7 +36,8 @@ cd proxy
 
 cat > $ROOT/tmp/build_proxy.sh << __EOF__
 #!/bin/bash
-
+set -x
+set -e
 echo Builing proxy
 cd /tmp/proxy/proxy-via-browser/
 

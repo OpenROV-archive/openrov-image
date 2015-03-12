@@ -41,6 +41,8 @@ popd
 
 cat > $ROOT/tmp/build_mjpeg_streamer.sh << __EOF__
 #!/bin/bash
+set -x
+set -e
 
 cd /tmp/mjpg-streamer/mjpg-streamer
 mkdir -p /tmp/mjpg-streamer_install/usr/local/

@@ -77,7 +77,8 @@ npm run bower --force-latest
 
 cat > $ROOT/tmp/build_dashboard.sh << __EOF__
 #!/bin/bash
-
+set -x
+set -e
 #install nodejs
 apt-get install -y nodejs npm
 update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10

@@ -39,7 +39,8 @@ wget http://peak.telecommunity.com/dist/ez_setup.py
 
 cat > $ROOT/tmp/build_ino.sh << __EOF__
 #!/bin/bash
-
+set -x
+set -e
 echo Builing ino
 cd /tmp/ino
 python ez_setup.py
