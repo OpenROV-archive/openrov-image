@@ -45,7 +45,8 @@ echo ###
 
 cat > $ROOT/tmp/build_avrdude.sh << __EOF__
 #!/bin/bash
-
+set -x
+set -e
 echo Building avrdude
 cd /tmp/avrdude/avrdude
 PATH=/usr/:$PATH

@@ -1,0 +1,23 @@
+{
+  "name": "openrov-image",
+  "version": "30.0.0",
+  "description": "Build scripts for generating a pre-compiled SD card image of the OpenROV Suite",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OpenROV/openrov-image.git"
+  },
+  "keywords": [
+    "OpenROV",
+    "Image"
+  ],
+  "author": "BrianAdams",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/OpenROV/openrov-image/issues"
+  },
+  "homepage": "https://github.com/OpenROV/openrov-image"
+}
