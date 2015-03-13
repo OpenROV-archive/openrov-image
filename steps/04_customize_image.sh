@@ -224,6 +224,18 @@ cd /tmp/
 wget http://rcn-ee.net/deb/wheezy-armhf/v3.15.5-bone4/install-me.sh
 bash install-me.sh
 
+echo ------------------------------
+echo Adjusting background disk writting behavior
+
+echo "# Injected by OpenROV_Customize_Image" >> /etc/sysctl.conf
+echo "vm.dirty_background_ratio = 5" >> /etc/sysctl.conf
+echo "vm.dirty_ratio = 10" >> /etc/sysctl.conf
+echo "# End Injected by OpenROV_Customize_Image" >> /etc/sysctl.conf
+
+echo ------------------------------
+echo Adjusting the tmpfs to store tmp in ram
+echo "tmpfs   /tmp         tmpfs   nodev,nosuid          0  0" >> /etc/fstab
+echo "tmpfs   /var/log         tmpfs   nodev,nosuid          0  0" >> /etc/fstab
 
 
 __EOF_UPDATE__
@@ -256,19 +268,6 @@ sed -i '3ioptargs=capemgr.enable_partno=BB-UART1' $DIR/boot/uEnv.txt
 mkdir $DIR/boot/Docs
 cp $DIR/contrib/openrov.ico $DIR/boot/Docs/
 cp $DIR/contrib/boot/* $DIR/boot/
-
-echo ------------------------------
-echo Adjusting background disk writting behavior
-
-echo "# Injected by OpenROV_Customize_Image" >> /etc/sysctl.conf
-echo "vm.dirty_background_ratio = 5" >> /etc/sysctl.conf
-echo "vm.dirty_ratio = 10" >> /etc/sysctl.conf
-echo "# End Injected by OpenROV_Customize_Image" >> /etc/sysctl.conf
-
-echo ------------------------------
-echo Adjusting the tmpfs to store tmp in ram
-echo "tmpfs   /tmp         tmpfs   nodev,nosuid          0  0" >> /etc/fstab
-echo "tmpfs   /var/log         tmpfs   nodev,nosuid          0  0" >> /etc/fstab
 
 echo ------------------------------
 echo done
