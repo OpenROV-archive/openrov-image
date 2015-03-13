@@ -7,7 +7,7 @@ export STEP_02_IMAGE=$DIR/work/step_02/image.step_02.img
 export STEP_04_IMAGE=$DIR/work/step_04/image.step_04.img
 export OUTPUT_IMAGE=$DIR/output/OpenROV.img
 export USE_REPO=${USE_REPO:-''} # use the repository at build.openrov.com/debian as package source
-export REPO=openrov-deb-repository.s3.amazonaws.com
+export REPO=build.openrov.com/debian
 
 . $DIR/lib/libtools.sh
 . $DIR/lib/libmount.sh
