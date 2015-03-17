@@ -48,6 +48,7 @@ docker pull codewithpassion/package-server
 
 docker run \
 	-t \
+  -rm \
 	-v $DIR/docker/deb-repository/gnupg/:/root/.gnupg \
 	-v $OUTPUT_DIR/packages:/tmp/packages \
 	-v ${GPG_PASSPHRASE_FILE}:/root/passphrase.txt \
@@ -59,6 +60,7 @@ docker run \
 
 docker run \
 	-t \
+  -rm \
 	-v $DIR/docker/deb-repository/gnupg/:/root/.gnupg \
 	-v $OUTPUT_DIR/packages:/tmp/packages \
 	-v ${GPG_PASSPHRASE_FILE}:/root/passphrase.txt \
