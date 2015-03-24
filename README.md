@@ -1,6 +1,8 @@
 openrov-image
 =============
 
+For submitting issues, use the primary software repository: https://github.com/OpenROV/openrov-software
+
 Get and install the OpenROV disk image
 ======================================
 
