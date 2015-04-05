@@ -66,7 +66,7 @@ files=($(find $OUTPUT_DIR/packages -type f -name "openrov*.deb" -printf "%f\n"))
 set +e
 for item in ${files[*]}
 do
-  wget http://deb-repo.openrov.com/pool/o/op/${item} -O /tmp/packages/${item}
+  wget http://deb-repo.openrov.com/pool/o/op/${item} -O $OUTPUT_DIR/packages/${item}
 done
 set -e
 docker run \
