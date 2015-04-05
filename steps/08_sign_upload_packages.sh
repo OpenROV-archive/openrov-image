@@ -52,7 +52,7 @@ docker run \
 	-v $DIR/docker/deb-repository/gnupg/:/root/.gnupg \
 	-v $OUTPUT_DIR/packages:/tmp/packages \
 	-v ${GPG_PASSPHRASE_FILE}:/root/passphrase.txt \
-	-e HOME=/root --entry-point dpkg-sig openrov/debs3 \
+	-e HOME=/root --entrypoint dpkg-sig openrov/debs3 \
 	 -k $KEYID \
 		-g "--passphrase-file /root/passphrase.txt" \
 		-s openrov \
