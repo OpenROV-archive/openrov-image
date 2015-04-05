@@ -62,7 +62,7 @@ docker run \
 #       and use that as the file to upload. Prevent the same file being
 #       signed a second time from breaking the existing manifests
 #       in the repository. https://github.com/krobertson/deb-s3/issues/46
-files=($(find /tmp/packages -type f -name "openrov*.deb" -printf "%f\n"))
+files=($(find $OUTPUT_DIR/packages -type f -name "openrov*.deb" -printf "%f\n"))
 set +e
 for item in ${files[*]}
 do
