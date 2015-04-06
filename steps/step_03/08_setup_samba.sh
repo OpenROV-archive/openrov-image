@@ -49,7 +49,7 @@ cat > $SAMBA_PACKAGE_DIR/etc/samba/smb.conf.openrov << __EOF__
 ## Browsing/Identification ###
 
 # Change this to the workgroup/NT-domain name your Samba server will part of
-   workgroup = OPENROV
+   workgroup = ROVS
 
 # server string is the equivalent of the NT Description field
    server string = %h server (Samba, Ubuntu)
