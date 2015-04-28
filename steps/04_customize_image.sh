@@ -118,6 +118,7 @@ deb http://$REPO pre-release debian
 #deb [arch=all] http://$REPO pre-release debian
 __EOF__
 
+
 cat > /etc/apt/preferences.d/openrov-master-300 << __EOF__
 Package: *
 Pin: release n=master, origin deb-repo.openrov.com
@@ -150,7 +151,12 @@ if [ "$USE_REPO" != "" ]; then
 	apt-get update
 	apt-get install -y --force-yes -o Dpkg::Options::="--force-overwrite" \
 		-t $BRANCH openrov-rov-suite
+  if [ "$MAKE_FLASH" != "" ]; then
+		apt-get install -y --force-yes -o Dpkg::Options::="--force-overwrite" \
+			-t $BRANCH openrov-emmc-copy
+  fi
 fi
+
 apt-get clean
 
 echo -----------------------------
