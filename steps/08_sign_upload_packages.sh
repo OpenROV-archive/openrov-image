@@ -58,6 +58,17 @@ docker run \
 		-s openrov \
 		/tmp/packages/openrov*.deb
 
+# hack: try to overwrite the file with one that is already in the repo
+#       and use that as the file to upload. Prevent the same file being
+#       signed a second time from breaking the existing manifests
+#       in the repository. https://github.com/krobertson/deb-s3/issues/46
+files=($(find $OUTPUT_DIR/packages -type f -name "openrov*.deb" -printf "%f\n"))
+set +e
+for item in ${files[*]}
+do
+  wget http://deb-repo.openrov.com/pool/o/op/${item} -O $OUTPUT_DIR/packages/${item}_tmp && mv $OUTPUT_DIR/packages/${item}_tmp $OUTPUT_DIR/packages/${item}
+done
+set -e
 docker run \
 	-t \
   -rm \

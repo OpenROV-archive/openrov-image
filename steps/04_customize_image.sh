@@ -118,15 +118,21 @@ deb http://$REPO pre-release debian
 #deb [arch=all] http://$REPO pre-release debian
 __EOF__
 
+
 cat > /etc/apt/preferences.d/openrov-master-300 << __EOF__
 Package: *
-Pin: release n=master, origin build.openrov.com
+Pin: release n=master, origin deb-repo.openrov.com
 Pin-Priority: 300
 __EOF__
 cat > /etc/apt/preferences.d/openrov-pre-release-400 << __EOF__
 Package: *
-Pin: release n=pre-release, origin build.openrov.com
+Pin: release n=pre-release, origin deb-repo.openrov.com
 Pin-Priority: 400
+__EOF__
+cat > /etc/apt/preferences.d/openrov-stable-release-1001 << __EOF__
+Package: *
+Pin: release n=pre-release, origin deb-repo.openrov.com
+Pin-Priority: 1001
 __EOF__
 
 
@@ -140,10 +146,17 @@ echo -----------------------------
 rm -rf /tmp/packages
 
 if [ "$USE_REPO" != "" ]; then
+	apt-get clean
+	rm -rf /var/lib/apt/lists/*
 	apt-get update
 	apt-get install -y --force-yes -o Dpkg::Options::="--force-overwrite" \
 		-t $BRANCH openrov-rov-suite
+  if [ "$MAKE_FLASH" != "" ]; then
+		apt-get install -y --force-yes -o Dpkg::Options::="--force-overwrite" \
+			-t $BRANCH openrov-emmc-copy
+  fi
 fi
+
 apt-get clean
 
 echo -----------------------------

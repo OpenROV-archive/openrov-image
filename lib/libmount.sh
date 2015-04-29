@@ -55,6 +55,9 @@ function unmount_image {
 	root_dir=${PWD#}/root
 	boot_dir=${PWD#}/boot
 
+	[ -f $root_dir ] && mountpoint -q $root_dir && _umount 10 $root_dir
+	[ -f $boot_dir ] && mountpoint -q $boot_dir && _umount 10 $boot_dir
+
 	# try to find the mapped dir
 	mount | grep ./root | grep -o '/dev/mapper/loop.' | grep -o 'loop.' | uniq | while read -r line ; do
 
@@ -62,11 +65,7 @@ function unmount_image {
 		losetup -d /dev/$line
 
 	done
-
-	[ -f $root_dir ] && mountpoint -q $root_dir && _umount 10 $root_dir
-	[ -f $boot_dir ] && mountpoint -q $boot_dir && _umount 10 $boot_dir
-
-
+	
 	# If running inside Docker, make our nodes manually, because udev will not be working.
 	if [[ -f /.dockerenv ]]; then
 		dmsetup remove_all
