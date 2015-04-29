@@ -40,7 +40,8 @@ git pull git://github.com/RobertCNelson/dtc.git dtc-fixup-65cc4d2
 
 cat > $ROOT/tmp/build_dtc.sh << __EOF__
 #!/bin/bash
-
+set -x
+set -e
 echo Builing dtc
 cd /tmp/dtc
 

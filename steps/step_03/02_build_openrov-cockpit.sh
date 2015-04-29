@@ -74,7 +74,8 @@ npm run bower
 
 cat > $ROOT/tmp/build_cockpit.sh << __EOF__
 #!/bin/bash
-
+set -x
+set -e
 #install nodejs
 apt-get install -y nodejs npm
 update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10

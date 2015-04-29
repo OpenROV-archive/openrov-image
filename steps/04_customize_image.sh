@@ -7,7 +7,7 @@ export STEP_02_IMAGE=$DIR/work/step_02/image.step_02.img
 export STEP_04_IMAGE=$DIR/work/step_04/image.step_04.img
 export OUTPUT_IMAGE=$DIR/output/OpenROV.img
 export USE_REPO=${USE_REPO:-''} # use the repository at build.openrov.com/debian as package source
-
+export REPO=deb-repo.openrov.com
 
 . $DIR/lib/libtools.sh
 . $DIR/lib/libmount.sh
@@ -77,22 +77,26 @@ echo -----------------------------
 
 cat > $ROOT/tmp/update.sh << __EOF_UPDATE__
 #!/bin/bash
-
+set -x
+set -e
+export REPO=$REPO
 echo ------------------------------
 echo installing bower
-npm install -g bower
+#npm install -ddd -g bower
 
 echo Setting up users
 echo -----------------------------
 
 echo Adding user 'rov'
-useradd rov -m -s /bin/bash -g admin
+#ROV already exists at this point
+#useradd rov -m -s /bin/bash -g admin
 echo rov:OpenROV | chpasswd
 # Include node in PATH
 echo "PATH=\$PATH:/opt/node/bin" >> /home/rov/.profile
 
 echo remove ubuntu user
-userdel -r -f ubuntu
+#already deleted by this point
+#userdel -r -f ubuntu
 
 echo "rov ALL=NOPASSWD: /opt/openrov/cockpit/linux/" >> /etc/sudoers
 echo "rov ALL=NOPASSWD: /opt/openrov/dashboard/linux/" >> /etc/sudoers
@@ -102,32 +106,38 @@ echo Adding the apt-get configuration
 echo -----------------------------
 apt-get clean
 cat > /etc/apt/sources.list.d/openrov-stable.list << __EOF__
-deb http://build.openrov.com/debian/ stable debian
-deb [arch=all] http://build.openrov.com/debian/ stable debian
+deb http://$REPO stable debian
+deb [arch=all] http://$REPO stable debian
 __EOF__
 cat > /etc/apt/sources.list.d/openrov-master.list << __EOF__
-deb http://build.openrov.com/debian/ master debian
-#deb [arch=all] http://build.openrov.com/debian/ master debian
+deb http://$REPO master debian
+#deb [arch=all] http://$REPO master debian
 __EOF__
 cat > /etc/apt/sources.list.d/openrov-pre-release.list << __EOF__
-deb http://build.openrov.com/debian/ pre-release debian
-#deb [arch=all] http://build.openrov.com/debian/ pre-release debian
+deb http://$REPO pre-release debian
+#deb [arch=all] http://$REPO pre-release debian
 __EOF__
+
 
 cat > /etc/apt/preferences.d/openrov-master-300 << __EOF__
 Package: *
-Pin: release n=master, origin build.openrov.com
+Pin: release n=master, origin deb-repo.openrov.com
 Pin-Priority: 300
 __EOF__
 cat > /etc/apt/preferences.d/openrov-pre-release-400 << __EOF__
 Package: *
-Pin: release n=pre-release, origin build.openrov.com
+Pin: release n=pre-release, origin deb-repo.openrov.com
 Pin-Priority: 400
+__EOF__
+cat > /etc/apt/preferences.d/openrov-stable-release-1001 << __EOF__
+Package: *
+Pin: release n=pre-release, origin deb-repo.openrov.com
+Pin-Priority: 1001
 __EOF__
 
 
 echo Adding gpg key for build.openrov.com
-wget -O - -q http://build.openrov.com/debian/build.openrov.com.gpg.key | apt-key add -
+wget -O - -q http://${REPO}/build.openrov.com.gpg.key | apt-key add -
 
 echo -----------------------------
 echo Installing packages
@@ -136,10 +146,17 @@ echo -----------------------------
 rm -rf /tmp/packages
 
 if [ "$USE_REPO" != "" ]; then
+	apt-get clean
+	rm -rf /var/lib/apt/lists/*
 	apt-get update
 	apt-get install -y --force-yes -o Dpkg::Options::="--force-overwrite" \
-		openrov-rov-suite
+		-t $BRANCH openrov-rov-suite
+  if [ "$MAKE_FLASH" != "" ]; then
+		apt-get install -y --force-yes -o Dpkg::Options::="--force-overwrite" \
+			-t $BRANCH openrov-emmc-copy
+  fi
 fi
+
 apt-get clean
 
 echo -----------------------------
@@ -220,6 +237,18 @@ cd /tmp/
 wget http://rcn-ee.net/deb/wheezy-armhf/v3.15.5-bone4/install-me.sh
 bash install-me.sh
 
+echo ------------------------------
+echo Adjusting background disk writting behavior
+
+echo "# Injected by OpenROV_Customize_Image" >> /etc/sysctl.conf
+echo "vm.dirty_background_ratio = 5" >> /etc/sysctl.conf
+echo "vm.dirty_ratio = 10" >> /etc/sysctl.conf
+echo "# End Injected by OpenROV_Customize_Image" >> /etc/sysctl.conf
+
+echo ------------------------------
+echo Adjusting the tmpfs to store tmp in ram
+echo "tmpfs   /tmp         tmpfs   nodev,nosuid          0  0" >> /etc/fstab
+echo "tmpfs   /var/log         tmpfs   nodev,nosuid          0  0" >> /etc/fstab
 
 
 __EOF_UPDATE__
@@ -252,8 +281,6 @@ sed -i '3ioptargs=capemgr.enable_partno=BB-UART1' $DIR/boot/uEnv.txt
 mkdir $DIR/boot/Docs
 cp $DIR/contrib/openrov.ico $DIR/boot/Docs/
 cp $DIR/contrib/boot/* $DIR/boot/
-
-
 
 echo ------------------------------
 echo done

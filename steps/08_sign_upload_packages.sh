@@ -36,7 +36,7 @@ checkroot
 
 cd $OUTPUT_DIR/packages
 
-docker pull codewithpassion/package-server
+docker pull openrov/debs3
 
 # Docker command descrioption:
 # -t assigns a pseudo tty, we need that for gpg (used for signing packages and the deb repo)
@@ -48,22 +48,34 @@ docker pull codewithpassion/package-server
 
 docker run \
 	-t \
+  -rm \
 	-v $DIR/docker/deb-repository/gnupg/:/root/.gnupg \
 	-v $OUTPUT_DIR/packages:/tmp/packages \
 	-v ${GPG_PASSPHRASE_FILE}:/root/passphrase.txt \
-	-e HOME=/root codewithpassion/package-server \
-	dpkg-sig -k $KEYID \
+	-e HOME=/root --entrypoint dpkg-sig openrov/debs3 \
+	 -k $KEYID \
 		-g "--passphrase-file /root/passphrase.txt" \
 		-s openrov \
 		/tmp/packages/openrov*.deb
 
+# hack: try to overwrite the file with one that is already in the repo
+#       and use that as the file to upload. Prevent the same file being
+#       signed a second time from breaking the existing manifests
+#       in the repository. https://github.com/krobertson/deb-s3/issues/46
+files=($(find $OUTPUT_DIR/packages -type f -name "openrov*.deb" -printf "%f\n"))
+set +e
+for item in ${files[*]}
+do
+  wget http://deb-repo.openrov.com/pool/o/op/${item} -O $OUTPUT_DIR/packages/${item}_tmp && mv $OUTPUT_DIR/packages/${item}_tmp $OUTPUT_DIR/packages/${item}
+done
+set -e
 docker run \
 	-t \
+  -rm \
 	-v $DIR/docker/deb-repository/gnupg/:/root/.gnupg \
 	-v $OUTPUT_DIR/packages:/tmp/packages \
 	-v ${GPG_PASSPHRASE_FILE}:/root/passphrase.txt \
-	-e HOME=/root codewithpassion/package-server \
-	deb-s3 upload \
+	-e HOME=/root openrov/debs3 upload \
 		--bucket=openrov-deb-repository \
 		-c $DEB_CODENAME \
                 -m $DEB_COMPONENT \
