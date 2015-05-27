@@ -105,7 +105,7 @@ echo -----------------------------
 echo Adding the apt-get configuration
 echo -----------------------------
 apt-get clean
-if [ $BRANCH == "master" ]
+if [ $BRANCH == "master" ]; then
 	#statements
 cat > /etc/apt/sources.list.d/openrov-stable.list << __EOF__
 deb http://$REPO stable debian
@@ -120,7 +120,7 @@ deb http://$REPO pre-release debian
 #deb [arch=all] http://$REPO pre-release debian
 __EOF__
 
-elif
+else
 	#statements
 cat > /etc/apt/sources.list.d/openrov-stable.list << __EOF__
 deb http://$REPO stable debian
