@@ -120,7 +120,7 @@ deb http://$REPO pre-release debian
 #deb [arch=all] http://$REPO pre-release debian
 __EOF__
 
-else
+elif
 	#statements
 cat > /etc/apt/sources.list.d/openrov-stable.list << __EOF__
 deb http://$REPO stable debian
