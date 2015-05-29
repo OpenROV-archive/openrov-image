@@ -168,7 +168,7 @@ if [ "$USE_REPO" != "" ]; then
 	apt-get update
 	apt-get install -y --force-yes -o Dpkg::Options::="--force-overwrite" \
 		-t $BRANCH openrov-rov-suite
-  if [ "$MAKE_FLASH" != "" ]; then
+  if [ "$MAKE_FLASH" == "true" ]; then
 		apt-get install -y --force-yes -o Dpkg::Options::="--force-overwrite" \
 			-t $BRANCH openrov-emmc-copy
   fi
