@@ -1,6 +1,6 @@
 {
   "name": "openrov-image",
-  "version": "30.0.0",
+  "version": "30.1.0",
   "description": "Build scripts for generating a pre-compiled SD card image of the OpenROV Suite",
   "main": "index.js",
   "scripts": {
