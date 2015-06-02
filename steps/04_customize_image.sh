@@ -84,23 +84,6 @@ echo ------------------------------
 echo installing bower
 #npm install -ddd -g bower
 
-echo Setting up users
-echo -----------------------------
-
-echo Adding user 'rov'
-#ROV already exists at this point
-#useradd rov -m -s /bin/bash -g admin
-echo rov:OpenROV | chpasswd
-# Include node in PATH
-echo "PATH=\$PATH:/opt/node/bin" >> /home/rov/.profile
-
-echo remove ubuntu user
-#already deleted by this point
-#userdel -r -f ubuntu
-
-echo "rov ALL=NOPASSWD: /opt/openrov/cockpit/linux/" >> /etc/sudoers
-echo "rov ALL=NOPASSWD: /opt/openrov/dashboard/linux/" >> /etc/sudoers
-
 echo -----------------------------
 echo Adding the apt-get configuration
 echo -----------------------------
@@ -176,99 +159,6 @@ fi
 
 apt-get clean
 
-echo -----------------------------
-echo Cleanup home directory
-echo -----------------------------
-cd /home
-find . -type d -not -name rov -and -not -name . | xargs rm -rf
-
-echo -----------------------------
-echo Setting up network
-echo -----------------------------
-
-#fix hostname
-echo OpenROV > /etc/hostname
-
-cat > /etc/hosts << __EOF__
-127.0.0.1       localhost
-127.0.1.1       OpenROV
-
-__EOF__
-
-## fix dhcp
-cat >> /etc/dhcp/dhclient.conf << __EOF__
-timeout 30;
-lease {
-interface "eth0";
-fixed-address 192.168.254.1;
-option subnet-mask 255.255.255.0;
-option routers 192.168.254.1;
-renew 2 2037/1/12 00:00:01;
-rebind 2 2037/1/12 00:00:01;
-expire 2 2037/1/12 00:00:01;
-}
-
-__EOF__
-
-
-## fix network
-
-cat > /etc/network/interfaces << __EOF__
-auto lo
-iface lo inet loopback
-
-auto eth0
-iface eth0 inet dhcp
-
-auto eth0:0
-iface eth0:0 inet static
-name Ethernet alias LAN card
-address 192.168.254.1
-netmask 255.255.255.0
-broadcast 192.168.254.255
-network 192.168.254.0
-
-# Example to keep MAC address between reboots
-#hwaddress ether DE:AD:BE:EF:CA:FE
-
-# WiFi Example
-#auto wlan0
-#iface wlan0 inet dhcp
-#    wpa-ssid "essid"
-#    wpa-psk  "password"
-
-# Ethernet/RNDIS gadget (g_ether)
-# ... or on host side, usbnet and random hwaddr
-iface usb0 inet static
-    address 192.168.7.2
-    netmask 255.255.255.0
-    network 192.168.7.0
-    gateway 192.168.7.1
-
-
-__EOF__
-
-echo -------------------------
-echo Installing new kernel
-cd /tmp/
-wget http://rcn-ee.net/deb/wheezy-armhf/v3.15.5-bone4/install-me.sh
-bash install-me.sh
-
-echo ------------------------------
-echo Adjusting background disk writting behavior
-
-echo "# Injected by OpenROV_Customize_Image" >> /etc/sysctl.conf
-echo "vm.dirty_background_ratio = 5" >> /etc/sysctl.conf
-echo "vm.dirty_ratio = 10" >> /etc/sysctl.conf
-echo "# End Injected by OpenROV_Customize_Image" >> /etc/sysctl.conf
-
-echo ------------------------------
-echo Adjusting the tmpfs to store tmp in ram
-echo "tmpfs   /tmp         tmpfs   nodev,nosuid          0  0" >> /etc/fstab
-echo "tmpfs   /var/log         tmpfs   nodev,nosuid          0  0" >> /etc/fstab
-
-
-__EOF_UPDATE__
 chmod +x $ROOT/tmp/update.sh
 
 chroot $ROOT /tmp/update.sh
@@ -298,6 +188,7 @@ sed -i '3ioptargs=capemgr.enable_partno=BB-UART1' $DIR/boot/uEnv.txt
 mkdir $DIR/boot/Docs
 cp $DIR/contrib/openrov.ico $DIR/boot/Docs/
 cp $DIR/contrib/boot/* $DIR/boot/
+
 
 echo ------------------------------
 echo done
