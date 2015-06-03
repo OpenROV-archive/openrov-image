@@ -56,7 +56,7 @@
 		fi
 
 		mountpoint -q ${PWD#}/root && echo Mounted ROOT partition at ${PWD#}/root
-		mountpoint -q ${PWD#}/boot && echo Mounted BOOT partition at ${PWD#}/boot
+		(mountpoint -q ${PWD#}/boot && echo Mounted BOOT partition at ${PWD#}/boot) || true
 
 	}
 
