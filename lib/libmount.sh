@@ -38,17 +38,26 @@
 			export media_prefix="/dev/mapper/${test_loop}p"
 			export ROOT_media=${media_prefix}2
 			export BOOT_media=${media_prefix}1
+
+			mount $ROOT_media root
+			mount $BOOT_media boot
+			mount $BOOT_media root/boot
+
+		elif [ -e /dev/mapper/${test_loop}p1 ]; then
+			export media_prefix="/dev/mapper/${test_loop}p"
+			export ROOT_media=${media_prefix}1
+
+			mount $ROOT_media root
+
 		else
 			ls -lh /dev/mapper/
 			echo "There was an error mounting the image! Not sure what to do."
 			exit 1
 		fi
-		mount $ROOT_media root
-		mount $BOOT_media boot
-		mount $BOOT_media root/boot
 
-		echo Mounted ROOT partition at ${PWD#}/root
-		echo Mounted BOOT partition at ${PWD#}/boot
+		mountpoint -q ${PWD#}/root && echo Mounted ROOT partition at ${PWD#}/root
+		mountpoint -q ${PWD#}/boot && echo Mounted BOOT partition at ${PWD#}/boot
+
 	}
 
 function unmount_image {
@@ -65,7 +74,7 @@ function unmount_image {
 		losetup -d /dev/$line
 
 	done
-	
+
 	# If running inside Docker, make our nodes manually, because udev will not be working.
 	if [[ -f /.dockerenv ]]; then
 		dmsetup remove_all
