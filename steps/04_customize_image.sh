@@ -158,6 +158,7 @@ if [ "$USE_REPO" != "" ]; then
 fi
 
 apt-get clean
+__EOF_UPDATE__
 
 chmod +x $ROOT/tmp/update.sh
 
