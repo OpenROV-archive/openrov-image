@@ -58,6 +58,9 @@ export ROOT=${PWD#}/root
 
 chroot_mount
 
+# copy the qemu files for chroot to arm
+cp usr/bin/qemu-arm-static $ROOT/usr/bin/qemu-arm-static
+
 if [ "$USE_REPO" = "" ]; then
 
 	echo -----------------------------
