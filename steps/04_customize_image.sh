@@ -186,8 +186,9 @@ cd $DIR
 echo ------------------------------
 echo Customizing boot partition
 
+#This no longer works on debian
 # change boot script for uart
-sed -i '3ioptargs=capemgr.enable_partno=BB-UART1' $DIR/boot/uEnv.txt
+#sed -i '3ioptargs=capemgr.enable_partno=BB-UART1' $DIR/boot/uEnv.txt
 
 mkdir $DIR/boot/Docs
 cp $DIR/contrib/openrov.ico $DIR/boot/Docs/
