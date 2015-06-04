@@ -190,9 +190,9 @@ echo Customizing boot partition
 # change boot script for uart
 #sed -i '3ioptargs=capemgr.enable_partno=BB-UART1' $DIR/boot/uEnv.txt
 
-mkdir $DIR/boot/Docs
-cp $DIR/contrib/openrov.ico $DIR/boot/Docs/
-cp $DIR/contrib/boot/* $DIR/boot/
+#mkdir $DIR/boot/Docs
+#cp $DIR/contrib/openrov.ico $DIR/boot/Docs/
+#cp $DIR/contrib/boot/* $DIR/boot/
 
 
 echo ------------------------------
