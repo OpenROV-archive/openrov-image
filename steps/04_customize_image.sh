@@ -84,13 +84,19 @@ set -x
 set -e
 export REPO=$REPO
 echo ------------------------------
-echo installing bower
+#echo installing bower
 #npm install -ddd -g bower
+dpkg --list | grep 'apache2' && apt-get remove -y apache2
 
 echo -----------------------------
 echo Adding the apt-get configuration
 echo -----------------------------
 apt-get clean
+
+#add code to make sure the wheezy backports are available
+sed -i 's|#deb http://ftp.debian.org/debian jessie-backports|deb http://ftp.debian.org/debian jessie-backports|g'  /etc/apt/sources.list
+sed -i 's|#deb http://ftp.debian.org/debian wheezy-backports|deb http://ftp.debian.org/debian wheezy-backports|g'  /etc/apt/sources.list
+
 if [ $BRANCH == "master" ]; then
 	#statements
 #cat > /etc/apt/sources.list.d/openrov-stable.list << __EOF__
