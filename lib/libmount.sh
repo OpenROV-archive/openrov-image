@@ -113,11 +113,12 @@ function chroot_umount {
 	        if [ "x${LINK:0:${#PREFIX}}" = "x$PREFIX" ]; then
 	            # this process is in the chroot...
 	            PID=$(basename $(dirname "$ROOT"))
-	            kill -9 "$PID"
+	            echo kill -9 "$PID"
 	            FOUND=1
 	        fi
 	    fi
 	done
+	ps aux
 
 
 	_umount 60 ${PWD#}/root
