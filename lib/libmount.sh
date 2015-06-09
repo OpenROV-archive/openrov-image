@@ -104,7 +104,7 @@ function chroot_umount {
 
 	#Kill processes running from chroot
 	#http://askubuntu.com/questions/162319/how-do-i-stop-all-processes-in-a-chroot
-	PREFIX=root_dir
+	PREFIX=$root_dir
 	FOUND=0
 
 	for ROOT in /proc/*/root; do
