@@ -101,6 +101,25 @@ function chroot_mount {
 function chroot_umount {
 	echo Unmounting system directories
 	root_dir=${PWD#}/root
+
+	#Kill processes running from chroot
+	#http://askubuntu.com/questions/162319/how-do-i-stop-all-processes-in-a-chroot
+	PREFIX=root_dir
+	FOUND=0
+
+	for ROOT in /proc/*/root; do
+	    LINK=$(readlink $ROOT)
+	    if [ "x$LINK" != "x" ]; then
+	        if [ "x${LINK:0:${#PREFIX}}" = "x$PREFIX" ]; then
+	            # this process is in the chroot...
+	            PID=$(basename $(dirname "$ROOT"))
+	            kill -9 "$PID"
+	            FOUND=1
+	        fi
+	    fi
+	done
+
+
 	_umount 60 ${PWD#}/root
 	_umount 60 ${PWD#}/boot
 
