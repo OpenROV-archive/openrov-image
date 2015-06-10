@@ -94,9 +94,13 @@ wget -qO- https://deb.nodesource.com/setup | bash -
 apt-get install -y nodejs curl
 
 #may need to patch old NPM here.
-
+sed -i '/function getLocalAddresses() {/a return' /usr/lib/node_modules/npm/node_modules/npmconf/config-defs.js
+	
 #echo "Upgrade npm"
-wget -qO- https://www.npmjs.org/install.sh | sh
+#disabling upgrade due to seg fault on nouser id search
+#wget -qO- https://www.npmjs.org/install.sh | sh
+
+
 
 #	apt-get install -y npm
 /usr/bin/npm --version
