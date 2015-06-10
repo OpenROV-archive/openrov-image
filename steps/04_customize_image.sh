@@ -94,9 +94,9 @@ apt-get install -y nodejs curl
 
 echo "Upgrade npm"
 #wget -qO- https://www.npmjs.org/install.sh | sh
-npm --version
-apt-get install -y npm
 
+apt-get install -y npm
+npm --version
 
 echo -----------------------------
 echo Adding the apt-get configuration
