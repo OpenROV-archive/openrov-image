@@ -90,12 +90,12 @@ dpkg --list | grep 'apache2' && apt-get remove -y apache2
 
 echo "Add Node JS from source repo"
 wget -qO- https://deb.nodesource.com/setup | bash -
-apt-get install -y nodejs curl
+apt-get install -y nodejs, npm>=2.9.0 curl
 
 echo "Upgrade npm"
 #wget -qO- https://www.npmjs.org/install.sh | sh
 
-apt-get install -y npm
+#apt-get install -y npm
 npm --version
 
 echo -----------------------------
