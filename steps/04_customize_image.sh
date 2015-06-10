@@ -89,9 +89,11 @@ echo ------------------------------
 dpkg --list | grep 'apache2' && apt-get remove -y apache2
 
 #echo "Add Node JS from source repo"
-#wget -qO- https://deb.nodesource.com/setup | bash -
-apt-get update
-apt-get install -y nodejs nodejs-legacy curl
+wget -qO- https://deb.nodesource.com/setup | bash -
+#apt-get update
+apt-get install -y nodejs curl
+
+#may need to patch old NPM here.
 
 #echo "Upgrade npm"
 wget -qO- https://www.npmjs.org/install.sh | sh
