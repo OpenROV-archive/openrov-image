@@ -88,6 +88,9 @@ echo ------------------------------
 #npm install -ddd -g bower
 dpkg --list | grep 'apache2' && apt-get remove -y apache2
 
+echo "Add Node JS from source repo"
+wget -qO- https://deb.nodesource.com/setup | bash -
+
 echo -----------------------------
 echo Adding the apt-get configuration
 echo -----------------------------
