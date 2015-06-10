@@ -97,7 +97,7 @@ apt-get install -y nodejs nodejs-legacy curl
 wget -qO- https://www.npmjs.org/install.sh | sh
 
 #	apt-get install -y npm
-npm --version
+/usr/bin/npm --version
 
 echo -----------------------------
 echo Adding the apt-get configuration
