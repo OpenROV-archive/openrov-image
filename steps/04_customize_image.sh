@@ -88,12 +88,13 @@ echo ------------------------------
 #npm install -ddd -g bower
 dpkg --list | grep 'apache2' && apt-get remove -y apache2
 
-echo "Add Node JS from source repo"
-wget -qO- https://deb.nodesource.com/setup | bash -
-apt-get install -y nodejs npm>=2.9.0 curl
+#echo "Add Node JS from source repo"
+#wget -qO- https://deb.nodesource.com/setup | bash -
+apt-get update
+apt-get install -y nodejs curl
 
-echo "Upgrade npm"
-#wget -qO- https://www.npmjs.org/install.sh | sh
+#echo "Upgrade npm"
+wget -qO- https://www.npmjs.org/install.sh | sh
 
 #	apt-get install -y npm
 npm --version
