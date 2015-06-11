@@ -106,7 +106,7 @@ function chroot_umount {
 	#http://askubuntu.com/questions/162319/how-do-i-stop-all-processes-in-a-chroot
 	PREFIX=$root_dir
 	FOUND=0
-
+  set +e
 	for ROOT in /proc/*/root; do
 	    LINK=$(readlink $ROOT)
 	    if [ "x$LINK" != "x" ]; then
@@ -118,6 +118,7 @@ function chroot_umount {
 	        fi
 	    fi
 	done
+	set -e
 	ps aux
 
 
