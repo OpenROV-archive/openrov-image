@@ -95,7 +95,7 @@ apt-get install -y nodejs curl
 
 #may need to patch old NPM here.
 sed -i '/function getLocalAddresses() {/a return' /usr/lib/node_modules/npm/node_modules/npmconf/config-defs.js
-	
+
 #echo "Upgrade npm"
 #disabling upgrade due to seg fault on nouser id search
 #wget -qO- https://www.npmjs.org/install.sh | sh
@@ -103,6 +103,10 @@ sed -i '/function getLocalAddresses() {/a return' /usr/lib/node_modules/npm/node
 
 
 #	apt-get install -y npm
+/usr/bin/npm --version
+
+/usr/bin/npm install npm -g
+
 /usr/bin/npm --version
 
 echo -----------------------------
