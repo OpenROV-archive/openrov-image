@@ -105,7 +105,15 @@ sed -i '/function getLocalAddresses() {/a return' /usr/lib/node_modules/npm/node
 #	apt-get install -y npm
 /usr/bin/npm --version
 
-/usr/bin/npm install npm -g
+#brute force through qemu falts
+set +e
+
+until /usr/bin/npm install npm -g
+do
+  sleep 0.1
+done
+
+set -e
 
 /usr/bin/npm --version
 
