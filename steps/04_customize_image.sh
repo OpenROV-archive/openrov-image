@@ -126,6 +126,11 @@ apt-get clean
 sed -i 's|#deb http://ftp.debian.org/debian jessie-backports|deb http://ftp.debian.org/debian jessie-backports|g'  /etc/apt/sources.list
 sed -i 's|#deb http://ftp.debian.org/debian wheezy-backports|deb http://ftp.debian.org/debian wheezy-backports|g'  /etc/apt/sources.list
 
+cat > /etc/apt/apt.config << __EOF__
+APT::Install-Recommends "0";
+APT::Install-Suggests "0";
+__EOF__
+
 if [ $BRANCH == "master" ]; then
 	#statements
 #cat > /etc/apt/sources.list.d/openrov-stable.list << __EOF__
