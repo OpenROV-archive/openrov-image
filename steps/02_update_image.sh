@@ -101,11 +101,6 @@ dpkg --configure samba
 /etc/init.d/samba stop
 /etc/init.d/sshd stop
 
-echo Updating fstab for improved mount options
-sed -i 's/\/dev\/mmcblk0p2.*/\/dev\/mmcblk0p2  \/            ext4  data=writeback,commit=600,nodiratime,noatime,norelatime  0  1/' /etc/fstab
-
-echo "FSCKFIX=no" >> /etc/default/rcS
-
 __EOF__
 chmod +x $ROOT/tmp/update.sh
 
@@ -117,10 +112,6 @@ killall -9 rsyslogd || true
 killall -9 dbus-daemon || true
 
 chroot_umount
-
-echo Setting the root fs mode to minimise impact of suddenly loosing power
-tune2fs -o journal_data_writeback  $ROOT_media
-tune2fs -O ^has_journal $ROOT_media
 
 #tune2fs -O ^has_journal -o journal_data_writeback  $ROOT_media
 #tune2fs -O ^has_journal -o ^journal_data_writeback /dev/mapper/loop0p2

@@ -88,34 +88,8 @@ echo ------------------------------
 #npm install -ddd -g bower
 dpkg --list | grep 'apache2' && apt-get remove -y apache2
 
-#echo "Add Node JS from source repo"
-wget -qO- https://deb.nodesource.com/setup | bash -
-#apt-get update
-apt-get install -y nodejs curl
-
 #may need to patch old NPM here.
 sed -i '/function getLocalAddresses() {/a return' /usr/lib/node_modules/npm/node_modules/npmconf/config-defs.js
-
-#echo "Upgrade npm"
-#disabling upgrade due to seg fault on nouser id search
-#wget -qO- https://www.npmjs.org/install.sh | sh
-
-
-
-#	apt-get install -y npm
-/usr/bin/npm --version
-
-#brute force through qemu falts
-set +e
-
-until /usr/bin/npm install npm -g
-do
-  sleep 0.1
-done
-
-set -e
-
-/usr/bin/npm --version
 
 echo -----------------------------
 echo Adding the apt-get configuration
@@ -126,9 +100,9 @@ apt-get clean
 sed -i 's|#deb http://ftp.debian.org/debian jessie-backports|deb http://ftp.debian.org/debian jessie-backports|g'  /etc/apt/sources.list
 sed -i 's|#deb http://ftp.debian.org/debian wheezy-backports|deb http://ftp.debian.org/debian wheezy-backports|g'  /etc/apt/sources.list
 
-cat > /etc/apt/apt.config << __EOF__
-APT::Install-Recommends "0";
-APT::Install-Suggests "0";
+#cat > /etc/apt/apt.config << __EOF__
+#APT::Install-Recommends "0";
+#APT::Install-Suggests "0";
 __EOF__
 
 if [ $BRANCH == "master" ]; then
