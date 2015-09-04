@@ -103,7 +103,7 @@ sed -i 's|#deb http://ftp.debian.org/debian wheezy-backports|deb http://ftp.debi
 #cat > /etc/apt/apt.config << __EOF__
 #APT::Install-Recommends "0";
 #APT::Install-Suggests "0";
-__EOF__
+#__EOF__
 
 if [ $BRANCH == "master" ]; then
 	#statements
