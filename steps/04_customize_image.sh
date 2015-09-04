@@ -89,7 +89,7 @@ echo ------------------------------
 dpkg --list | grep 'apache2' && apt-get remove -y apache2
 
 #may need to patch old NPM here.
-sed -i '/function getLocalAddresses() {/a return' /usr/lib/node_modules/npm/node_modules/npmconf/config-defs.js
+sed -i '/function getLocalAddresses() {/a return' /usr/lib/node_modules/npm/node_modules/npmconf/config-defs.js || true
 
 echo -----------------------------
 echo Adding the apt-get configuration
