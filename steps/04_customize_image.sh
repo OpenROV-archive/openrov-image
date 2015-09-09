@@ -123,35 +123,11 @@ __EOF__
 else
 	#statements
 cat > /etc/apt/sources.list.d/openrov-stable.list << __EOF__
-deb http://$REPO stable debian
+deb http://$REPO unstable wheezy
 #deb [arch=all] http://$REPO stable debian
 __EOF__
-#cat > /etc/apt/sources.list.d/openrov-master.list << __EOF__
-#deb http://$REPO master debian
-#deb [arch=all] http://$REPO master debian
-#__EOF__
-cat > /etc/apt/sources.list.d/openrov-pre-release.list << __EOF__
-deb http://$REPO pre-release debian
-#deb [arch=all] http://$REPO pre-release debian
-__EOF__
+
 fi
-
-cat > /etc/apt/preferences.d/openrov-master-300 << __EOF__
-Package: *
-Pin: release n=master, origin deb-repo.openrov.com
-Pin-Priority: 300
-__EOF__
-cat > /etc/apt/preferences.d/openrov-pre-release-400 << __EOF__
-Package: *
-Pin: release n=pre-release, origin deb-repo.openrov.com
-Pin-Priority: 400
-__EOF__
-cat > /etc/apt/preferences.d/openrov-stable-release-1001 << __EOF__
-Package: *
-Pin: release n=stable, origin deb-repo.openrov.com
-Pin-Priority: 1001
-__EOF__
-
 
 echo Adding gpg key for build.openrov.com
 wget -O - -q http://${REPO}/build.openrov.com.gpg.key | apt-key add -
