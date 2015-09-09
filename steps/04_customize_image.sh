@@ -123,7 +123,7 @@ __EOF__
 else
 	#statements
 cat > /etc/apt/sources.list.d/openrov-stable.list << __EOF__
-deb http://$REPO unstable wheezy
+deb http://$REPO wheezy unstable
 #deb [arch=all] http://$REPO stable debian
 __EOF__
 
