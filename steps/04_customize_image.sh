@@ -160,7 +160,7 @@ chroot $ROOT /tmp/update.sh
 rm $ROOT/tmp/* -r
 
 echo Setting up auto resize on first boot
-touch $ROOT/var/.RESIZE_ROOT_PARTITION
+#touch $ROOT/var/.RESIZE_ROOT_PARTITION
 
 echo ------------------------------
 echo Fixing arduino
