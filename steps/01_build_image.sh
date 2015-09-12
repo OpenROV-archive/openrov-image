@@ -42,7 +42,7 @@ fi/g' setup_sdcard.sh
 
 echo "Building image file!"
 sleep 1
-bash -xe ./setup_sdcard.sh --dtb beaglebone --img || exit 1
+bash -xe ./setup_sdcard.sh --dtb beaglebone --boot_label OPENROV --enable-systemd --img || exit 1
 
 IMAGE_DIR_NAME=$( dirname $STEP_01_IMAGE )
 
