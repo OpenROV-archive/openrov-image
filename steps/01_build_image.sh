@@ -60,7 +60,7 @@ then
 elif [ -f image-2gb.img ]
 then
 	cp image-2gb.img $STEP_01_IMAGE
-	cp image_flash-2gb.img ${STEP_01_IMAGE}.flasher
+	cp image-flash-2gb.img ${STEP_01_IMAGE}.flasher.img
 fi
 
 echo ------------------------------
