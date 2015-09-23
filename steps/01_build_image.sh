@@ -40,9 +40,11 @@ if [[ -f \/.dockerenv ]]; then\
 	dmsetup --noudevsync mknodes\
 fi/g' setup_sdcard.sh
 
-echo "Building image file!"
+echo "Building image files!"
 sleep 1
 bash -xe ./setup_sdcard.sh --dtb beaglebone --boot_label OPENROV --enable-systemd --bbb-old-bootloader-in-emmc --img || exit 1
+bash -xe ./setup_sdcard.sh --dtb beaglebone --boot_label OPENROV --emmc-flasher --enable-systemd --bbb-old-bootloader-in-emmc --img || exit 1
+
 
 IMAGE_DIR_NAME=$( dirname $STEP_01_IMAGE )
 
