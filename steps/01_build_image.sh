@@ -4,6 +4,7 @@ set -e
 export DIR=${PWD#}
 export IMAGE=$1
 export STEP_01_IMAGE=$DIR/work/step_01/image.step_01.img
+export STEP_01_FLASH_IMAGE=$DIR/work/step_01/image.step_01.flash.img
 
 . $DIR/lib/libtools.sh
 
@@ -60,7 +61,7 @@ then
 elif [ -f image-2gb.img ]
 then
 	cp image-2gb.img $STEP_01_IMAGE
-	cp image-flash-2gb.img ${STEP_01_IMAGE}.flasher.img
+	cp image-flash-2gb.img ${STEP_01_FLASH_IMAGE}
 fi
 
 echo ------------------------------
