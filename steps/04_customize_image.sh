@@ -158,7 +158,7 @@ __EOF_UPDATE__
 chmod +x $ROOT/tmp/update.sh
 
 chroot $ROOT /tmp/update.sh
-
+source $ROOT/tmp/version.txt
 rm $ROOT/tmp/* -r
 
 echo Setting up auto resize on first boot
@@ -191,7 +191,7 @@ echo ------------------------------
 echo done
 echo ------------------------------
 
-source $ROOT/tmp/version.txt
+
 
 chroot_umount
 unmount_image
