@@ -148,6 +148,8 @@ if [ "$USE_REPO" != "" ]; then
 #		apt-get install -y \
 #			openrov-emmc-copy
 #  fi
+
+  dpkg -s openrov-rov-suite | grep Version | sed 's|Version: |OROV_VERSION=|g' > /tmp/version.txt
 fi
 
 apt-get clean
@@ -189,6 +191,8 @@ echo ------------------------------
 echo done
 echo ------------------------------
 
+source $ROOT/tmp/version.txt
+
 chroot_umount
 unmount_image
 
@@ -200,7 +204,9 @@ fi
 echo -----------------------------
 echo Moving image
 echo "> $OUTPUT_IMAGE"
-mv $STEP_04_IMAGE $OUTPUT_IMAGE
+
+#mv $STEP_04_IMAGE $OUTPUT_IMAGE
+mv $STEP_04_IMAGE IMAGE-${OROV_VERSION}~$OUTPUT_IMAGE
 
 echo -----------------------------
 echo Done step 4
