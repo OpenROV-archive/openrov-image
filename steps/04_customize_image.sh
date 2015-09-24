@@ -144,10 +144,10 @@ if [ "$USE_REPO" != "" ]; then
 	apt-get update
 	apt-get install -y \
 		openrov-rov-suite
-  if [ "$MAKE_FLASH" == "true" ]; then
-		apt-get install -y \
-			openrov-emmc-copy
-  fi
+#  if [ "$MAKE_FLASH" == "true" ]; then
+#		apt-get install -y \
+#			openrov-emmc-copy
+#  fi
 fi
 
 apt-get clean
