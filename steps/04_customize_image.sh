@@ -206,7 +206,7 @@ echo Moving image
 echo "> $OUTPUT_IMAGE"
 
 #mv $STEP_04_IMAGE $OUTPUT_IMAGE
-mv $STEP_04_IMAGE IMAGE-${OROV_VERSION}~$OUTPUT_IMAGE
+mv $STEP_04_IMAGE ${$OUTPUT_DIR_NAME}/OpenROV-SUITE-${OROV_VERSION}-IMAGE-${IMAGE_VERSION).img
 
 echo -----------------------------
 echo Done step 4
