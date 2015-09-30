@@ -111,9 +111,9 @@ if [ $BRANCH == "master" ]; then
 #deb http://$REPO stable debian
 #deb [arch=all] http://$REPO stable debian
 #__EOF__
-cat > /etc/apt/sources.list.d/openrov-master.list << __EOF__
-deb http://$REPO master debian
-#deb [arch=all] http://$REPO master debian
+cat > /etc/apt/sources.list.d/openrov-stable.list << __EOF__
+deb http://$REPO jessie stable
+#deb [arch=all] http://$REPO jessie stabke
 __EOF__
 #cat > /etc/apt/sources.list.d/openrov-pre-release.list << __EOF__
 #deb http://$REPO pre-release debian
@@ -122,7 +122,7 @@ __EOF__
 
 else
 	#statements
-cat > /etc/apt/sources.list.d/openrov-stable.list << __EOF__
+cat > /etc/apt/sources.list.d/openrov-unstable.list << __EOF__
 deb http://$REPO jessie unstable
 #deb [arch=all] http://$REPO stable debian
 __EOF__
