@@ -110,6 +110,13 @@ deb http://$REPO jessie {$BRANCH}
 #deb [arch=all] http://$REPO jessie ${BRANCH}
 __EOF__
 
+#Always build images from the deb files in unstable.  Push "stable" packages to stable
+#after the image has been validated.
+cat > /etc/apt/sources.list.d/openrov-imageseed.list << __EOF__
+deb http://$REPO jessie unstable
+#deb [arch=all] http://$REPO jessie ${BRANCH}
+__EOF__
+
 echo Adding gpg key for build.openrov.com
 wget -O - -q http://${REPO}/build.openrov.com.gpg.key | apt-key add -
 
@@ -129,6 +136,9 @@ if [ "$USE_REPO" != "" ]; then
 #		apt-get install -y \
 #			openrov-emmc-copy
 #  fi
+
+#take the unstable update repo out of the list
+rm /etc/apt/sources.list.d/openrov-imageseed.list
 
   dpkg -s openrov-rov-suite | grep Version | sed 's|Version: |OROV_VERSION=|g' > /tmp/version.txt
 fi
