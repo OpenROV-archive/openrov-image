@@ -106,7 +106,7 @@ sed -i 's|#deb http://ftp.debian.org/debian wheezy-backports|deb http://ftp.debi
 #__EOF__
 
 cat > /etc/apt/sources.list.d/openrov-${BRANCH}.list << __EOF__
-deb http://$REPO jessie {$BRANCH}
+deb http://$REPO jessie ${BRANCH}
 #deb [arch=all] http://$REPO jessie ${BRANCH}
 __EOF__
 
