@@ -43,9 +43,9 @@ fi/g' setup_sdcard.sh
 
 echo "Building image files!"
 sleep 1
-bash -xe ./setup_sdcard.sh --dtb beaglebone --boot_label OPENROV --emmc-flasher --enable-systemd --bbb-old-bootloader-in-emmc --img || exit 1
+bash -xe ./setup_sdcard.sh --dtb openrov-beaglebone --boot_label OPENROV --emmc-flasher --enable-systemd --bbb-old-bootloader-in-emmc --img || exit 1
 cp image-2gb.img image-flash-2gb.img
-bash -xe ./setup_sdcard.sh --dtb beaglebone --boot_label OPENROV --enable-systemd --bbb-old-bootloader-in-emmc --img || exit 1
+bash -xe ./setup_sdcard.sh --dtb openrov-beaglebone --boot_label OPENROV --enable-systemd --bbb-old-bootloader-in-emmc --img || exit 1
 
 
 IMAGE_DIR_NAME=$( dirname $STEP_01_IMAGE )
