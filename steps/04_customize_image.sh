@@ -267,6 +267,9 @@ echo Adjusting the tmpfs to store tmp in ram
 echo "tmpfs   /tmp         tmpfs   nodev,nosuid          0  0" >> /etc/fstab
 echo "tmpfs   /var/log         tmpfs   nodev,nosuid          0  0" >> /etc/fstab
 
+echo ------------------------------
+echo preventing SSHD from using DNS to resolve the client IP which takes long as the BB doesn't have internet ususally
+echo UseDNS no >> /etc/ssh/sshd_config
 
 __EOF_UPDATE__
 chmod +x $ROOT/tmp/update.sh
