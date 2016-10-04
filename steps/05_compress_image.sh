@@ -13,8 +13,8 @@ checkroot
 
 
 cd $OUTPUT_DIR
+for f in *.img; do
+md5sum $f > $f.md5
 
-mv OpenROV.img OpenROV-${IMAGE_VERSION}.img
-md5sum OpenROV-${IMAGE_VERSION}.img > OpenROV-${IMAGE_VERSION}.img.md5
-
-7zr a -t7z -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on OpenROV-${IMAGE_VERSION}.img.7z OpenROV-${IMAGE_VERSION}.img
+7zr a -t7z -m0=lzma2 -mx=9 -mfb=64 -md=32m -ms=on $f.7z $f
+done

@@ -58,6 +58,9 @@ export ROOT=${PWD#}/root
 
 chroot_mount
 
+# copy the qemu files for chroot to arm
+cp /usr/bin/qemu-arm-static $ROOT/usr/bin/qemu-arm-static
+
 if [ "$USE_REPO" = "" ]; then
 
 	echo -----------------------------
@@ -81,77 +84,38 @@ set -x
 set -e
 export REPO=$REPO
 echo ------------------------------
-echo installing bower
+#echo installing bower
 #npm install -ddd -g bower
+dpkg --list | grep 'apache2' && apt-get remove -y apache2
 
-echo Setting up users
-echo -----------------------------
-
-echo Adding user 'rov'
-#ROV already exists at this point
-#useradd rov -m -s /bin/bash -g admin
-echo rov:OpenROV | chpasswd
-# Include node in PATH
-echo "PATH=\$PATH:/opt/node/bin" >> /home/rov/.profile
-
-echo remove ubuntu user
-#already deleted by this point
-#userdel -r -f ubuntu
-
-echo "rov ALL=NOPASSWD: /opt/openrov/cockpit/linux/" >> /etc/sudoers
-echo "rov ALL=NOPASSWD: /opt/openrov/dashboard/linux/" >> /etc/sudoers
+#may need to patch old NPM here.
+sed -i '/function getLocalAddresses() {/a return' /usr/lib/node_modules/npm/node_modules/npmconf/config-defs.js || true
 
 echo -----------------------------
 echo Adding the apt-get configuration
 echo -----------------------------
 apt-get clean
-if [ $BRANCH == "master" ]; then
-	#statements
-#cat > /etc/apt/sources.list.d/openrov-stable.list << __EOF__
-#deb http://$REPO stable debian
-#deb [arch=all] http://$REPO stable debian
-#__EOF__
-cat > /etc/apt/sources.list.d/openrov-master.list << __EOF__
-deb http://$REPO master debian
-#deb [arch=all] http://$REPO master debian
-__EOF__
-#cat > /etc/apt/sources.list.d/openrov-pre-release.list << __EOF__
-#deb http://$REPO pre-release debian
-#deb [arch=all] http://$REPO pre-release debian
+
+#add code to make sure the wheezy backports are available
+sed -i 's|#deb http://ftp.debian.org/debian jessie-backports|deb http://ftp.debian.org/debian jessie-backports|g'  /etc/apt/sources.list
+sed -i 's|#deb http://ftp.debian.org/debian wheezy-backports|deb http://ftp.debian.org/debian wheezy-backports|g'  /etc/apt/sources.list
+
+#cat > /etc/apt/apt.config << __EOF__
+#APT::Install-Recommends "0";
+#APT::Install-Suggests "0";
 #__EOF__
 
-else
-	#statements
-cat > /etc/apt/sources.list.d/openrov-stable.list << __EOF__
-deb http://$REPO stable debian
-#deb [arch=all] http://$REPO stable debian
-__EOF__
-#cat > /etc/apt/sources.list.d/openrov-master.list << __EOF__
-#deb http://$REPO master debian
-#deb [arch=all] http://$REPO master debian
-#__EOF__
-cat > /etc/apt/sources.list.d/openrov-pre-release.list << __EOF__
-deb http://$REPO pre-release debian
-#deb [arch=all] http://$REPO pre-release debian
-__EOF__
-fi
-
-cat > /etc/apt/preferences.d/openrov-master-300 << __EOF__
-Package: *
-Pin: release n=master, origin deb-repo.openrov.com
-Pin-Priority: 300
-__EOF__
-cat > /etc/apt/preferences.d/openrov-pre-release-400 << __EOF__
-Package: *
-Pin: release n=pre-release, origin deb-repo.openrov.com
-Pin-Priority: 400
-__EOF__
-cat > /etc/apt/preferences.d/openrov-stable-release-1001 << __EOF__
-Package: *
-Pin: release n=stable, origin deb-repo.openrov.com
-Pin-Priority: 1001
+cat > /etc/apt/sources.list.d/openrov-${BRANCH}.list << __EOF__
+deb http://$REPO jessie ${BRANCH}
+#deb [arch=all] http://$REPO jessie ${BRANCH}
 __EOF__
 
+#Always build images from the deb files in unstable.  Push "stable" packages to stable
+#after the image has been validated.
+cat > /etc/apt/sources.list.d/openrov-imageseed.list << __EOF__
+deb http://$REPO jessie unstable
+#deb [arch=all] http://$REPO jessie ${BRANCH}
+__EOF__
 
 echo Adding gpg key for build.openrov.com
 wget -O - -q http://${REPO}/build.openrov.com.gpg.key | apt-key add -
@@ -166,113 +130,26 @@ if [ "$USE_REPO" != "" ]; then
 	apt-get clean
 	rm -rf /var/lib/apt/lists/*
 	apt-get update
-	apt-get install -y --force-yes -o Dpkg::Options::="--force-overwrite" \
-		-t $BRANCH openrov-rov-suite
-  if [ "$MAKE_FLASH" == "true" ]; then
-		apt-get install -y --force-yes -o Dpkg::Options::="--force-overwrite" \
-			-t $BRANCH openrov-emmc-copy
-  fi
+	apt-get install -y \
+		openrov-rov-suite
+#  if [ "$MAKE_FLASH" == "true" ]; then
+#		apt-get install -y \
+#			openrov-emmc-copy
+#  fi
+
+#take the unstable update repo out of the list
+rm /etc/apt/sources.list.d/openrov-imageseed.list
+
+  dpkg -s openrov-rov-suite | grep Version | sed 's|Version: |OROV_VERSION=|g' > /tmp/version.txt
 fi
 
 apt-get clean
-
-echo -----------------------------
-echo Cleanup home directory
-echo -----------------------------
-cd /home
-find . -type d -not -name rov -and -not -name . | xargs rm -rf
-
-echo -----------------------------
-echo Setting up network
-echo -----------------------------
-
-#fix hostname
-echo OpenROV > /etc/hostname
-
-cat > /etc/hosts << __EOF__
-127.0.0.1       localhost
-127.0.1.1       OpenROV
-
-__EOF__
-
-## fix dhcp
-cat >> /etc/dhcp/dhclient.conf << __EOF__
-timeout 30;
-lease {
-interface "eth0";
-fixed-address 192.168.254.1;
-option subnet-mask 255.255.255.0;
-option routers 192.168.254.1;
-renew 2 2037/1/12 00:00:01;
-rebind 2 2037/1/12 00:00:01;
-expire 2 2037/1/12 00:00:01;
-}
-
-__EOF__
-
-
-## fix network
-
-cat > /etc/network/interfaces << __EOF__
-auto lo
-iface lo inet loopback
-
-auto eth0
-iface eth0 inet dhcp
-
-auto eth0:0
-iface eth0:0 inet static
-name Ethernet alias LAN card
-address 192.168.254.1
-netmask 255.255.255.0
-broadcast 192.168.254.255
-network 192.168.254.0
-
-# Example to keep MAC address between reboots
-#hwaddress ether DE:AD:BE:EF:CA:FE
-
-# WiFi Example
-#auto wlan0
-#iface wlan0 inet dhcp
-#    wpa-ssid "essid"
-#    wpa-psk  "password"
-
-# Ethernet/RNDIS gadget (g_ether)
-# ... or on host side, usbnet and random hwaddr
-iface usb0 inet static
-    address 192.168.7.2
-    netmask 255.255.255.0
-    network 192.168.7.0
-    gateway 192.168.7.1
-
-
-__EOF__
-
-echo -------------------------
-echo Installing new kernel
-cd /tmp/
-wget http://rcn-ee.net/deb/wheezy-armhf/v3.15.5-bone4/install-me.sh
-bash install-me.sh
-
-echo ------------------------------
-echo Adjusting background disk writting behavior
-
-echo "# Injected by OpenROV_Customize_Image" >> /etc/sysctl.conf
-echo "vm.dirty_background_ratio = 5" >> /etc/sysctl.conf
-echo "vm.dirty_ratio = 10" >> /etc/sysctl.conf
-echo "# End Injected by OpenROV_Customize_Image" >> /etc/sysctl.conf
-
-echo ------------------------------
-echo Adjusting the tmpfs to store tmp in ram
-echo "tmpfs   /tmp         tmpfs   nodev,nosuid          0  0" >> /etc/fstab
-echo "tmpfs   /var/log         tmpfs   nodev,nosuid          0  0" >> /etc/fstab
-
-
 __EOF_UPDATE__
+
 chmod +x $ROOT/tmp/update.sh
 
 chroot $ROOT /tmp/update.sh
-
+source $ROOT/tmp/version.txt
 rm $ROOT/tmp/* -r
 
 echo Setting up auto resize on first boot
@@ -292,16 +169,20 @@ cd $DIR
 echo ------------------------------
 echo Customizing boot partition
 
+#This no longer works on debian
 # change boot script for uart
-sed -i '3ioptargs=capemgr.enable_partno=BB-UART1' $DIR/boot/uEnv.txt
+#sed -i '3ioptargs=capemgr.enable_partno=BB-UART1' $DIR/boot/uEnv.txt
 
-mkdir $DIR/boot/Docs
-cp $DIR/contrib/openrov.ico $DIR/boot/Docs/
-cp $DIR/contrib/boot/* $DIR/boot/
+#mkdir $DIR/boot/Docs
+#cp $DIR/contrib/openrov.ico $DIR/boot/Docs/
+#cp $DIR/contrib/boot/* $DIR/boot/
+
 
 echo ------------------------------
 echo done
 echo ------------------------------
+
+
 
 chroot_umount
 unmount_image
@@ -314,7 +195,9 @@ fi
 echo -----------------------------
 echo Moving image
 echo "> $OUTPUT_IMAGE"
-mv $STEP_04_IMAGE $OUTPUT_IMAGE
+
+#mv $STEP_04_IMAGE $OUTPUT_IMAGE
+mv $STEP_04_IMAGE ${OUTPUT_DIR_NAME}/OpenROV-SUITE-${OROV_VERSION}-IMAGE-${IMAGE_VERSION}.img
 
 echo -----------------------------
 echo Done step 4

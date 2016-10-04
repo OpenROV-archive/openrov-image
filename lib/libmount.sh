@@ -38,17 +38,26 @@
 			export media_prefix="/dev/mapper/${test_loop}p"
 			export ROOT_media=${media_prefix}2
 			export BOOT_media=${media_prefix}1
+
+			mount $ROOT_media root
+			mount $BOOT_media boot
+			mount $BOOT_media root/boot
+
+		elif [ -e /dev/mapper/${test_loop}p1 ]; then
+			export media_prefix="/dev/mapper/${test_loop}p"
+			export ROOT_media=${media_prefix}1
+
+			mount $ROOT_media root
+
 		else
 			ls -lh /dev/mapper/
 			echo "There was an error mounting the image! Not sure what to do."
 			exit 1
 		fi
-		mount $ROOT_media root
-		mount $BOOT_media boot
-		mount $BOOT_media root/boot
 
-		echo Mounted ROOT partition at ${PWD#}/root
-		echo Mounted BOOT partition at ${PWD#}/boot
+		mountpoint -q ${PWD#}/root && echo Mounted ROOT partition at ${PWD#}/root
+		(mountpoint -q ${PWD#}/boot && echo Mounted BOOT partition at ${PWD#}/boot) || true
+
 	}
 
 function unmount_image {
@@ -61,11 +70,11 @@ function unmount_image {
 	# try to find the mapped dir
 	mount | grep ./root | grep -o '/dev/mapper/loop.' | grep -o 'loop.' | uniq | while read -r line ; do
 
-		kpartx -d /dev/$line
-		losetup -d /dev/$line
+		kpartx -d /dev/$line || true
+		losetup -d /dev/$line || true
 
 	done
-	
+
 	# If running inside Docker, make our nodes manually, because udev will not be working.
 	if [[ -f /.dockerenv ]]; then
 		dmsetup remove_all
@@ -92,6 +101,27 @@ function chroot_mount {
 function chroot_umount {
 	echo Unmounting system directories
 	root_dir=${PWD#}/root
+
+	#Kill processes running from chroot
+	#http://askubuntu.com/questions/162319/how-do-i-stop-all-processes-in-a-chroot
+	PREFIX=$root_dir
+	FOUND=0
+  set +e
+	for ROOT in /proc/*/root; do
+	    LINK=$(readlink $ROOT)
+	    if [ "x$LINK" != "x" ]; then
+	        if [ "x${LINK:0:${#PREFIX}}" = "x$PREFIX" ]; then
+	            # this process is in the chroot...
+	            PID=$(basename $(dirname "$ROOT"))
+	            echo kill -9 "$PID"
+	            FOUND=1
+	        fi
+	    fi
+	done
+	set -e
+	ps aux
+
+
 	_umount 60 ${PWD#}/root
 	_umount 60 ${PWD#}/boot
 
